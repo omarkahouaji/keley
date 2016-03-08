@@ -1,0 +1,26 @@
+header {
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: #3dbfb7;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    height: 7rem;
+    padding: 0 15px;
+    position: fixed;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    top: 0;
+    width: 100%
+}
+
+.site-logo {
+    display: inline-block;
+}
+
+.ok-header__logo:hover {color: #546edb}
