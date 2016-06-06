@@ -1,0 +1,199 @@
+<!doctype html>
+<html data-ng-app="App">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mes Courbes</title>
+    <head>
+      <link href="css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
+      <link href="css/style.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="css/ion.rangeSlider.css">
+      <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
+      <link rel="stylesheet" type="text/css" href="css/normalize.css">
+      <link rel="stylesheet" href="css/basic-styles.css" media="screen">
+      <link rel="stylesheet" href="css/header.css" media="screen">
+      <link rel="stylesheet" href="/css/okayNav.css" media="screen">
+      <link rel="stylesheet" href="/css/croppie.css" />
+      <script src="/js/jquery.js"></script>
+      <script src="/js/jquery.okayNav.js"></script>
+      <script src="/js/highcharts.js"></script>
+      <script src="/js/exporting.js"></script>
+      <script src="/js/bootstrap.js"></script>
+      <script src="/js/croppie.js"></script>
+      <script type="text/javascript">
+
+
+
+      var charts = <%-charts%>;
+      $(function () {
+      $.each(charts.data, function (i, dataset) {
+      console.log(dataset);
+      var pro = [];
+      var a={};
+      for (var i = 0; i < dataset.name.length; i++) {
+      a={};
+      a.x=dataset.xData[i];
+      a.y=dataset.yData[i];
+      a.name=dataset.name[i];
+      a.id=dataset.id[i];
+      pro.push(a);
+      }
+
+
+
+      
+      $('<div class="chart-spacing '+dataset.id_chart+'" ></div><div class="chart '+dataset.id_chart+'"><span>Courbe : </span><span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span><span>Le '+dataset.creation_date+'</span>'+
+      '<div class="dropdown dropdown-chart">'+
+  '<button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
+    '<span><i class="icon-arrow" style="font-size:8px"></i></span>'+
+  '</button>'+
+  '<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">'+
+    '<li><a href="#" onclick="delete_chart('+dataset.id_chart+');return false;">Supprimer courbe</a></li>'+
+    '<li><a href="editChart/'+dataset.id_chart+'" >Modifier courbe</a></li>'+
+  '</ul>'+
+'</div>'+
+        '</div>')
+      .appendTo('#container');
+
+
+      
+      $('<div class="'+dataset.id_chart+'" width="600px"></div>')
+      .appendTo('#container')
+      .highcharts({
+      title:{
+      text:null
+      },
+      chart: {
+      type: 'spline',
+      },
+      exporting:{
+      enabled:false,
+      },
+      credits: {
+      enabled: false
+      },
+      plotOptions: {
+      spline: {
+      lineWidth:1,
+      marker:{
+      fillColor:'#eb0c4b',
+      width:15,
+      height:15
+      },
+      dataLabels: {
+                useHTML:true,
+                                    style: {
+                        fontSize:"11px",color:"#eb0c4b"
+                    },
+                enabled: true,
+                formatter: function () {
+                    return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>"; 
+                }
+      },
+      enableMouseTracking: false,
+      },
+      series: {
+      color: '#000000'
+      }
+      },
+      xAxis: {
+      gridLineWidth: 1,
+      gridLineColor:"#edeaea",
+      categories: dataset.xData,
+      plotLines: [{
+      color: '#000000',
+      //value: dataset.xData
+      }]
+      },
+      yAxis: {
+      gridLineColor:"#edeaea",
+      max:5,
+      title: {
+      text: null
+      }
+      },
+      series: [{
+      showInLegend: false,
+      data: pro
+      }]
+      });
+    $('</div>')
+    .appendTo('#container');
+    });
+    });
+    </script>
+    <title>Mes courbes</title>
+  </head>
+</head>
+<body class="home" >
+  <%- include layouts/header.ejs %>
+  <main>
+  <div class="container">
+    <div class="row">
+      <%- include layouts/profileNav.ejs %>
+      <div class="col-md-7">
+        <div class="profil" style="padding: 15px">
+        <!--
+          <ul class="pager">
+            <li class="previous">
+              <input type="checkbox" id="private-checkbox" />
+              <label for="private-checkbox">Privés<i class=" icon-private "></i>
+              </label>
+            </li>
+            <li>
+              <input type="checkbox" id="friends-checkbox" />
+              <label for="friends-checkbox">Amis<i class=" icon-friends "></i>
+              </label>
+            </li>
+            <li class="next">
+              <input type="checkbox" id="public-checkbox" />
+              <label for="public-checkbox">Publics<i class=" icon-public "></i>
+              </label>
+            </li>
+          </ul>
+          -->
+          <form action="/create-chart">
+            <button class="btn  btn-block informations_btn" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
+          </form>
+          <div>
+            
+            <div id="container"></div></div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </main>
+<script type="text/javascript" src="/js/crop_avatar.js"></script>
+
+
+
+
+  <script type="text/javascript">
+
+                function delete_chart(id_chart){
+                          
+        $.ajax({
+          url:'/deleteChart/'+id_chart,
+          type: 'GET',
+          dataType: 'json',
+          success:function(data){
+            var json = JSON.parse(data);
+            console.log(json);
+            if(json.msg=='success'){   
+                console.log('deleted yesssss !!!');
+                $('.'+id_chart).remove();
+
+            }
+          }
+        });
+        $('.'+id_chart).remove();
+  console.log(id_chart);
+}
+
+  var navigation = $('#nav-main').okayNav();
+  </script>
+</body>
+</html>

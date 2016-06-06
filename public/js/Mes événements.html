@@ -1,0 +1,245 @@
+<!doctype html>
+<html data-ng-app="App">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mes événements</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/fileinput.css">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/basic-styles.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/okayNav.css">
+
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery.okayNav.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/ng-infinite-scroll.js"></script>
+    <script src="/js/angular-animate.js"></script>
+    <script src="/js/ui-bootstrap.js"></script>
+
+    <script type="text/javascript">
+        var iApp = angular.module("App", ['infinite-scroll','ngAnimate','ui.bootstrap']);
+        iApp.controller('DemoController', function($scope, Reddit) {
+            $scope.hoveringOver = function(value) {
+                $scope.overStar = value;
+                $scope.percent = 100 * (value / $scope.max);
+            };
+            $scope.reddit = new Reddit();
+            $scope.types = {private: false, public:false,friends:false};
+        });
+
+        iApp.factory('Reddit', function($http) {
+            var Reddit = function() {
+            this.events = [];
+            this.busy = false;
+            this.after = 0;
+            };
+            Reddit.prototype.nextPage = function() {
+                if (this.busy) return;
+                this.busy = true;
+                var url = "http://localhost:85/api.immortality.life/index.php/events/all_final/"+83+"/" + this.after + "?&callback=JSON_CALLBACK";
+                $http.jsonp(url).success(function(data) {
+                //console.log(data);
+                var events =data.data;
+                for (var i = 0; i < events.length; i++) {
+                    this.events.push(events[i]);
+                }
+                this.after = this.events.length - 1+10;
+                this.busy = false;
+            }.bind(this));
+            };
+            return Reddit;
+});
+
+        iApp.filter('myfilter', function() {
+            return function( items, types) {
+            var filtered = [];
+            angular.forEach(items, function(item) {
+                   if(types.private == false && types.public == false && types.friends ==false) {
+                        filtered.push(item);
+                    }   
+                 if(types.private == true && item.chart_privacy == '0'){
+                     filtered.push(item);
+                 }
+                 if(types.friends == true && item.chart_privacy == '1'){
+                     filtered.push(item);
+                 }
+                 if(types.public == true && item.chart_privacy == '2'){
+                     filtered.push(item);
+                 }
+            });
+            return filtered;
+        };
+    });             
+</script>
+
+</head>
+<body class="home"  data-ng-controller="DemoController" >
+    <header id="header">
+   <div class="container">
+            <div class="pull-left" style="margin-top: 7px">
+                    <a href="/index"><img class="logo" src="/images/logo.svg"></a>
+                    <div class="search form-group has-feedback">
+                      <input type="text" class="form-control" placeholder="chercher sur immortality" />
+                      <i class="icon-search x form-control-feedback"></i>
+                    </div>
+                    </div>
+        <nav role="navigation" id="nav-main" class="nav-prop okayNav">
+        <ul>
+            <li><a href="#"><i class=" icon-home x"></i></a></li>
+            <li><a href="#"><i class=" icon-profil x"></i></a></li>
+            <li><a href="/charts"><i class=" icon-chart x"></i></a></li>
+            <li><a href="/events"><i class=" icon-event x"></i></a></li>
+            <li><a href="#"><i class=" icon-notifs x"></i></a></li>
+            <li><a href="/logout"><i class=" icon-logout x"></i></a></li>
+        </ul>
+    </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class=" col-md-offset-1 col-md-3 ">
+                    <div class="informations">
+                        <div class="edit-content">
+                        
+                             <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/83/N_YNUO4mQNkJAZ_rrKCfjWVl.jpg" class="edit-img">
+                             
+                            <span class="edit" data-toggle="modal" data-target="#myModal">
+                            <i class="icon-edit"></i>
+                        </span>
+                        </div>
+                        <div>
+                            <span class="img-title">Daniel Doppler</span>
+                            <span class="profil-age">44 ans - Paris </span>
+                        </div>
+                        <div class="etat text-left">
+                            <span class="etat-profil">L'état de mon profil</span>
+                            <div class="progress-profil ">
+                                <span class="progress-val-profil">undefined%</span>
+                                <span class="progress-bar-profil"><span class="progress-in-profil" style="width: undefined%"></span></span>
+                            </div>
+                        </div>
+                        <div class="items list-group">
+                            <a href="/profile" class="list-group-item"><i class=" icon-profil x"></i><span>Mes informations</span></a>
+                            <a href="/friends" class="list-group-item"><i class=" icon-friends x "></i><span>Mes amis</span></a>
+                            <a href="#" class="list-group-item"><i class=" icon-public x"></i><span>Mes abonnements</span></a>
+                            <a href="/events" class="list-group-item"><i class=" icon-event x"></i><span>Mes événements</span></a>
+                            <a href="/charts" class="list-group-item"><i class=" icon-chart x "></i><span>Mes courbes</span></a>
+                        </div>
+                    </div>
+
+
+
+
+                        <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Charger une image</h4>
+      </div>
+      <form class="form-horizontal" action="/uploadAvatar" method="post" enctype="multipart/form-data" id="form">
+      <div class="modal-body">
+         <input id="input-id" class="file" name="file" type="file"></input>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" id="event-form" name="submit" value="Valider" class="btn btn-default">Ajouter</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+                </div>
+                <div class="  col-md-7">
+                    <div class="profil" style="padding: 15px">
+                        <ul class="pager">
+                            <li class="previous">
+                                <input type="checkbox" id="private-checkbox" data-ng-model='types.private' />
+                                <label for="private-checkbox">Privés<i class=" icon-private "></i>
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" id="friends-checkbox" data-ng-model='types.friends'/>
+                                <label for="friends-checkbox">Amis<i class=" icon-friends "></i>
+                                </label>
+                            </li>
+                            <li class="next">
+                                <input type="checkbox" id="public-checkbox" data-ng-model='types.public' />
+                                <label for="public-checkbox">Publics<i class=" icon-public " ></i>
+                                </label>
+                            </li>
+                        </ul>
+                       <form action="/create-event">
+                        <button class="btn  btn-block" type="submit"><i class="icon-event x"></i>Ajouter un événement</button>
+                        </form>
+                        <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
+                            <div class="events row" ng-repeat="event in reddit.events | myfilter:types" >  
+                                <div class="row">
+                                                   <div class="col-md-12">
+                            </div>
+                                    <div class="event-header">
+                                        <div class="event-left">
+                                            <span class="event-title">{{event.title}}</span>
+                                            <span class="event-date">du 20 au 21 novembre 2015</span>      
+                                        </div>     
+                                        <div class="event-right">                
+                                            <span class="event-chart">{{event.chart_name}}</span>
+                                            <i class=" icon-friends "></i>
+                                                <div ng-init="x = event.note"><uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" step="0.1" aria-labelledby="custom-icons-1"></uib-rating></div>
+                                            <div id="omar"></div>
+                                        </div>        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="event-description col-md-12">
+                                        {{event.description}}
+                                    </div>
+                                </div>
+                                <div class="row">    
+                                    <div class="event-images">
+                                        <div  ng-repeat='img in event.uploads'>
+                                        <a href="#img{{$index}}{{event.id_event}}">
+                                        <img  class="event-image pull-left img-responsive" ng-src="http://localhost:85/api.immortality.life/application/uploads/{{event.user_id}}/{{event.id_event}}/{{img.file}}">
+                                        </a>
+                                        <a href="#_" class="lightbox" id="img{{$index}}{{event.id_event}}">
+                                          <img src="http://localhost:85/api.immortality.life/application/uploads/{{event.user_id}}/{{event.id_event}}/{{img.file}}">
+                                        </a>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="event-comment-like">
+                                    <span class="green">2</span>
+                                    <i class=" icon-heart "></i>
+                                    <span class="green">5</span>
+                                    <i class=" icon-comment"></i>
+                                </div>
+                            </div>
+                            <div ng-show='reddit.busy'>Loading data...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="text/javascript">
+        $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').focus()
+})
+        var navigation = $('#nav-main').okayNav();
+    </script>
+</body>
+</html>

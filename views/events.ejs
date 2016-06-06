@@ -1,0 +1,204 @@
+<!doctype html>
+<html data-ng-app="App">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mes événements</title>
+    <!-- <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css"> -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/css/style.css"> 
+    <!--  <link rel="stylesheet" href="/css/color2.css">-->
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/basic-styles.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/okayNav.css">
+    <link rel="stylesheet" href="/css/ngGallery.css">
+    <link rel="stylesheet" href="/css/screen.css">
+    <link rel="stylesheet" href="/css/croppie.css" />
+    <link rel="stylesheet" href="/css/croppie.css" />
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jquery.okayNav.js"></script>
+    <script src="/js/angular.min.js"></script>
+    <script src="/js/ng-infinite-scroll.js"></script>
+    <script src="/js/angular-animate.js"></script>
+    <script src="/js/ui-bootstrap.js"></script>
+    <script src="/js/ngGallery.js"></script>
+    <script src="/js/moment.js"></script>
+    <script src="/js/croppie.js"></script>
+    <script src="/js/moment-with-locales.js"></script>
+    <%- include ../public/js/events.js %>
+
+
+
+
+  </head>
+  <body class="home"  data-ng-controller="DemoController as ctrl" >
+    <%- include layouts/header.ejs %>
+<main>
+<div class="container">
+  <div class="row">
+    <%- include layouts/profileNav.ejs %>
+    <div class="  col-md-7">
+      <div class="profil" style="padding: 15px">
+        <ul class="pager">
+          <li class="previous">
+            <input type="checkbox" id="private-checkbox" data-ng-model='types.private' />
+            <label for="private-checkbox">Privés<i class=" icon-private "></i>
+            </label>
+          </li>
+          <li>
+            <input type="checkbox" id="friends-checkbox" data-ng-model='types.friends'/>
+            <label for="friends-checkbox">Amis<i class=" icon-friends "></i>
+            </label>
+          </li>
+          <li class="next">
+            <input type="checkbox" id="public-checkbox" data-ng-model='types.public' />
+            <label for="public-checkbox">Publics<i class=" icon-public " ></i>
+            </label>
+          </li>
+        </ul>
+        <form action="/create-event">
+          <button class="btn  btn-block informations_btn" type="submit"><i class="icon-event x"></i>Ajouter un événement</button>
+        </form>
+        <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
+          <div  class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types" ng-hide="deleted" id="{{event.id_event}}">
+            <div >
+              <div class="row">
+                <div class="col-md-12">
+                </div>
+                <div class="event-header">
+                  <div class="event-left">
+                    <a ng-href="/event/{{event.id_event}}" class="event-title">{{event.title}}</a>
+                    <span class="event-date">{{'Le '+dateEvent(event.start_date)}} </span>
+                  </div>
+                  <div class="event-right">
+                    <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
+                    <i class=" icon-friends "></i>
+                    <div class="dropdown dropdown-event">
+                      <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span><i class="icon-arrow" style="font-size:8px"></i></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
+                        <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
+                        <li><a href=""  data-toggle="modal" data-target="#aaa" data-yourparameter="{{event.id_event}}">Supprimer evenement</a></li>
+                      </ul>
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+                    <div ng-init="x = event.note">
+                      <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <!--row-->
+              <div class="row">
+                <div class="event-description col-md-12">
+                  {{event.description}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="event-images" class="popup-gallery">
+                  <div thumbs-num="11">
+                    <ng-gallery images=event.images ></ng-gallery>
+                  </div>
+                </div>
+              </div>
+              <div class="event-comment-like">
+                <div class="like-btn"> <span ng-class="event.isLiked==true ? 'red' : ''" ng-click="addLike($event,event);increment(event)"><i class=" icon-heart "></i></span></div>
+                <div>
+                  <span class="green" ng-model="likeModel">{{event.likes.length}}</span>
+                  <i class=" icon-heart "></i>
+                  <div class="comments-btn" ng-click="show= !show">
+                    <span class="green" ng-model="abc" >{{event.comments.length}}</span>
+                    <i class="icon-comment "></i>
+                  </div>
+                </div>
+              </div>
+              <form  action="/postComment" method="post">
+                <div class="comments" ng-init="show = false" ng-show="show">
+                  <div class="comments-item" ng-repeat="comment in event.comments">
+                    <div class="comments-container">
+                      <img class="comments-img " ng-src="<%=path_avatar%>/{{comment.user[0].id_user}}/{{comment.user[0].avatar}}" >
+                      <h5 class="comments-user-name">{{comment.user[0].first_name}}</h5>
+                      <span class="comments-date">{{formatDate(comment.creation_date )}}</span>
+                      <p>{{comment.content}}</p>
+                    </div>
+                  </div>
+                  <div class="added"></div>
+                  <div class="post-comment">
+                    <img class="post-comment-img " src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" >
+                    <input ng-model="content" id="com-{{$index}}"  type="text" placeholder="Votre commentaire ... "></input>
+                    
+                    <input ng-click="addComment($event,event,content);content=''"  type="submit" style="position: absolute; left: -9999px"/>
+                    
+                  </div>
+                  
+                </div>
+              </form>
+            </div>
+          </div>
+          <div ng-show='reddit.busy'>Loading data...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="aaa" tabindex="-1" role="dialog" aria-labelledby="myModalLabell">
+    <div class="modal-dialog" role="document">
+        <div class="modal-header">
+
+        </div>
+      <div class="modal-content">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <span>Voulez-vous supprimer l'évenement ?</span>
+      <div class="bbb"><button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Non</button></div>
+      
+       <!-- <a href="/events" ng-click="delete($event,yourparameter);deleted=true">Oui</a> -->
+      </div>
+    </div>
+  </div>
+
+
+
+</main>
+
+
+
+    <script type="text/javascript">
+
+      $('#aaa').on('show.bs.modal', function (e) {
+        var yourparameter = e.relatedTarget.dataset.yourparameter;
+        console.log("omar");
+        console.log(yourparameter);
+        $('<a data-dismiss="modal"  class="tmp_modal btn btn-default" onclick="mdelete('+yourparameter+')">Oui'+
+          '</a>').appendTo('.bbb');
+      });
+
+      $('#aaa').on('hidden.bs.modal', function (e) {
+        $('.tmp_modal').remove();
+      });
+
+
+
+
+
+    var navigation = $('#nav-main').okayNav(); //navbar
+    </script>
+  </body>
+</html>

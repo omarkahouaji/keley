@@ -1,0 +1,159 @@
+<!doctype html>
+<html data-ng-app="App">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Amis</title>
+
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="/css/style.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/ion.rangeSlider.css">
+<link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
+<link rel="stylesheet" type="text/css" href="/css/normalize.css">
+<link rel="stylesheet" href="/css/basic-styles.css" media="screen">
+<link rel="stylesheet" href="/css/header.css" media="screen">
+<link rel="stylesheet" href="/css/okayNav.css" media="screen">
+<link rel="stylesheet" href="/css/default.date.css" media="screen">
+<link rel="stylesheet" href="/css/default.css" media="screen">
+<link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
+<link rel="stylesheet" href="/css/bootstrap-tagsinput.css" media="screen">
+
+
+  
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.js"></script>
+<script src="/js/ion.rangeSlider.js"></script>
+<script src="/js/bootstrap-select.js"></script>
+<script src="/js/picker.js"></script>
+<script src="/js/legacy.js"></script>
+<script src="/js/picker.date.js"></script>
+<script src="/js/canvas-to-blob.min.js"></script>
+<script src="/js/fileinput.js"></script>
+<script src="/js/bootstrap-tagsinput.js"></script>
+<script src="/js/angular.min.js"></script>
+ <link rel="stylesheet" href="/css/croppie.css" />
+
+<script src="/js/highcharts.js"></script>
+<script src="/js/ng-infinite-scroll.js"></script>
+<script src="/js/exporting.js"></script>
+<script src="/js/jquery.okayNav.js"></script>
+ <script src="/js/croppie.js"></script>
+<script type="text/javascript">
+     console.log(<%-friend%>);
+     var iApp = angular.module("App", ['infinite-scroll']);
+
+
+     iApp.controller('DemoController', function($scope, Reddit) {
+      $scope.reddit = new Reddit();
+      //$scope.types = {private: false, public:false};
+  });
+
+// Reddit constructor function to encapsulate HTTP and pagination logic
+iApp.factory('Reddit', function($http) {
+  var Reddit = function() {
+    this.friends = [];
+    this.busy = false;
+    this.after = 0;
+};
+
+Reddit.prototype.nextPage = function() {
+
+    if (this.busy) return;
+    this.busy = true;
+    if(<%-friend%>==false){
+      var url = "/getFriends/"+<%-informations.id_user%>+"/" + this.after;
+    }
+    else{
+      var url = "/getFriends/"+<%-friends_data.id_user%>+"/" + this.after;
+    }
+    
+    $http.get(url).success(function(data) {
+        console.log(data);
+        var friends =data.data;
+        for (var i = 0; i < friends.length; i++) {
+            this.friends.push(friends[i]);
+        }
+        this.after = this.friends.length ;
+        this.busy = false;
+    }.bind(this));
+};
+
+return Reddit;
+});
+</script>
+</head>
+<body class="home" data-ng-controller="DemoController">
+<div class="wait hidden " id="wait">
+<div class="col-md-offset-4 col-md-4">
+    <img src="/images/reload.svg">
+</div>
+<div class="col-md-offset-4 col-md-4">
+  <span> la création de votre événement est en cours ...</span>
+</div>
+</div>
+  <%- include layouts/header.ejs %>
+  <main>
+    <div class="container">
+      <div class="row">
+      <%if(friend==false){%>
+        <%- include layouts/profileNav.ejs %>
+        <%}else{%>
+          <%- include layouts/profileNavFriend.ejs %>
+          <%}%>
+        <div class="col-md-7">
+          <div class="friends-box">
+          <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
+                <div class="friends_block" ng-repeat="friend in reddit.friends" >
+                <a ng-href="/{{friend.id_friend}}/informations">
+                <img ng-src="{{friend.avatar =='no_avatar' && '/images/default.svg' || 'http://localhost:85/api.immortality.life/application/uploads/avatars/'+friend.id_friend+'/'+friend.avatar }}"></a>
+                <a ng-href="/{{friend.id_friend}}/informations">
+                <span class="friend_block_user">{{friend.first_name+' '+friend.last_name}}</span></a>
+                <div class="friends_block_chart">
+                <span class="friends_block_chart_text">{{friend.nbr}}</span><i class="icon-chart friends_block_chart_icon"></i>
+                </div>
+                </div>
+                <div ng-show='reddit.busy'>Loading data...</div>
+          </div>
+          </div>
+  </div>
+</div>
+</div>
+</main>
+   
+
+
+
+
+
+
+
+
+
+
+<!-- endbuild -->
+<script type="text/javascript" src="/js/crop_avatar.js"></script>
+<script type="text/javascript">
+  $("#input-id").fileinput();
+  var $input = $('.datepicker').pickadate({
+    format:'yyyy-mm-dd',
+    onSet:function(){
+      document.getElementById('date').value=this.get(); 
+    }
+  });
+  var navigation = $('#nav-main').okayNav();
+
+  
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

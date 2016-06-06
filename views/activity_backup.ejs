@@ -1,0 +1,42 @@
+<%for(var i=0;i<activity.length;i++){
+
+            if(activity[i].type=='2'){ %>
+                <div>
+                    <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=activity[i].id_user%>/<%=activity[i].avatar%>" alt="..">
+                    <span><%=activity[i].first_name+' '+activity[i].last_name+' et '+activity[i].friend_first_name+' '+activity[i].friend_last_name+' sont devenus amis'%>
+                    </span>
+                    <i class=" icon-friends "></i>
+                </div> 
+            <%}%>
+
+            <% if(activity[i].type=='3'){ %>
+                <div>
+                    <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=activity[i].id_user%>/<%=activity[i].avatar%>" alt="...">
+                    <span><%=activity[i].first_name+' '+activity[i].last_name+' a ajouté une nouvelle courbe'%></span>
+                    <i class=" icon-chart "></i>
+                </div> 
+            <%}%>
+
+            <% if(activity[i].type=='4'){ %>
+                <div>
+                    <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=activity[i].id_user%>/<%=activity[i].avatar%>" alt="...">
+                    <span><%=activity[i].first_name+' '+activity[i].last_name+' a ajouté un nouveau événement'%></span>
+                    <i class=" icon-event "></i>
+                </div> 
+            <%}%>
+
+            <% if(activity[i].type=='0'){ %>
+                <div>
+                    <a class="white_link" href="/event/<%=activity[i].event_id %>"><img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=activity[i].sender_id%>/<%=activity[i].avatar%>" alt="...">
+                    <span><%=activity[i].first_name+' '+activity[i].last_name+' a aimé l\'événement de '+activity[i].recipient_first_name+' '+activity[i].recipient_last_name%></span></a>
+                    <i class="icon-heart"></i>
+                </div> 
+            <% } %>
+
+            <% if(activity[i].type=='1'){ %>
+                <div>
+                    <a class="white_link" href="/event/<%=activity[i].event_id %>"><img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=activity[i].sender_id%>/<%=activity[i].avatar%>" alt="...">
+                    <span><%=activity[i].first_name+' '+activity[i].last_name+' a commenté l\'événement de '+activity[i].recipient_first_name+' '+activity[i].recipient_last_name%></span></a>
+                    <i class="icon-comment"></i>
+                </div> 
+            <% }} %>

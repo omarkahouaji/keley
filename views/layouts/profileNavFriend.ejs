@@ -1,0 +1,25 @@
+<div class=" col-md-offset-1 col-md-3 ">
+  <div class="informations" data-offset-top="0" >
+    <div class="edit-content">
+      <%if(friends_data.avatar=="no_avatar"){%>
+      <img src="/images/default.svg" class="profile_image">
+      <%  }else{%>
+      <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=friends_data.id_user%>/<%=friends_data.avatar%>" class="profile_image">
+      <%  }%>
+    </div>
+    <div>
+      <span class="img-title"><%=friends_data.first_name%> <%=friends_data.last_name%></span>
+      <%if(friends_data.age===friends_data.age){%>
+      <span class="profil-age"><%=friends_data.age%> ans </span>
+      <%}%>
+      <%if(friends_data.age===friends_data.age && friends_data.address!=''){%>-<%}%>
+      <span><%=friends_data.address%> </span>
+    </div>
+    <div class="items-friend items list-group">
+      <a href="/<%=friends_data.id_user%>/informations" class="list-group-item"><i class=" icon-profil x"></i><span>Informations</span></a>
+      <a href="/<%=friends_data.id_user%>/friends" class="list-group-item"><i class=" icon-friends x "></i><span>Amis</span></a>
+      <a href="/<%=friends_data.id_user%>/events" class="list-group-item"><i class=" icon-event x"></i><span>Evénements</span></a>
+      <a href="/<%=friends_data.id_user%>/charts" class="list-group-item"><i class=" icon-chart x "></i><span>Courbes</span></a>
+    </div>
+  </div>
+</div>
