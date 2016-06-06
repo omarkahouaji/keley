@@ -61,8 +61,8 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 //locals
-app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
-app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
+app.locals.path_avatar="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars";
+app.locals.base_url="http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/";
 
 
 app.use(Facebook.middleware({ appId: '1601778010137309', secret: 'ff7edb7bc2cf3d93dd21989ebf9db6fb'}));
@@ -145,7 +145,7 @@ app.get('/getActivity/:id', immortality.getActivity);
 
 //f
 
-var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
 
 
 app.locals.fb_image = '';
