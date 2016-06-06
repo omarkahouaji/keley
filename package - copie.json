@@ -1,0 +1,23 @@
+{
+  "name": "Immortality",
+  "version": "0.8.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "body-parser": "~1.10.1",
+    "connect-multiparty": "*",
+    "connect-redis": "2.0.0",
+    "cookie-session": "~1.1.0",
+    "ejs": "~2.1.4",
+    "express": "*",
+    "express-myconnection": "1.0.4",
+    "imagemagick": "*",
+    "method-override": "*",
+    "moment": "*",
+    "morgan": "*",
+    "passport-facebook": "^2.1.1",
+    "serve-favicon": "*"
+  }
+}

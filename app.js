@@ -49,8 +49,8 @@ app.use(methodOverride());
 app.use(multipart());
 app.use(session({
     store: new RedisStore({
-        host: 'localhost',
-        port: 6379,
+        host: 'immortality.redis.cache.windows.net',
+        port: 6380,
         db: 2,
         pass: ''
     }),
