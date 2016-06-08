@@ -88,7 +88,7 @@
 
                 <div ng-if="notif.notif_type=='0'">
                 <div class=" pull-left ">
-                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>'+notif.sender.id_user+'/'+notif.sender.avatar }}"></a>
+                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+notif.sender.id_user+'/'+notif.sender.avatar }}"></a>
                     <a ng-href="/{{notif.sender.id_user}}/informations">{{notif.sender.first_name+" "+notif.sender.last_name+" "}}</a><span>aime votre événement</span><a ng-href="/event/{{notif.event.id_event}}">{{" "+notif.event.title}}</a>
 
                     <span>{{formatDate(notif.creation_time )}}</span>
@@ -99,7 +99,7 @@
 
                 <div ng-if="notif.notif_type=='1'">
                 <div class=" pull-left">
-                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>'+notif.sender.id_user+'/'+notif.sender.avatar }}" ></a>
+                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+notif.sender.id_user+'/'+notif.sender.avatar }}" ></a>
                     <a ng-href="/{{notif.sender.id_user}}/informations">{{notif.sender.first_name+" "+notif.sender.last_name+" "}}</a><span>a commenté votre événement</span><a ng-href="/event/{{notif.event.id_event}}">{{" "+notif.event.title}}</a>
                     <span >{{formatDate(notif.creation_time )}}</span>
                 </div> 
@@ -107,7 +107,7 @@
 
                                 <div ng-if="notif.notif_type=='2'">
                 <div class=" pull-left">
-                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>'+notif.sender.id_user+'/'+notif.sender.avatar }}"></a>
+                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+notif.sender.id_user+'/'+notif.sender.avatar }}"></a>
                     <a a ng-href="/{{notif.sender.id_user}}/informations">{{notif.sender.first_name+" "+notif.sender.last_name+" "}}</a><span>vous a envoyé une demande d'ajout.</span>
                     <span>{{formatDate(notif.creation_time )}}</span>
                 </div> 
@@ -115,7 +115,7 @@
 
                                                 <div ng-if="notif.notif_type=='3'">
                 <div class=" pull-left">
-                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>'+notif.sender.id_user+'/'+notif.sender.avatar }}" ></a>
+                    <a a ng-href="/{{notif.sender.id_user}}/informations"><img ng-src="{{notif.sender.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+notif.sender.id_user+'/'+notif.sender.avatar }}" ></a>
                     <a a ng-href="/{{notif.sender.id_user}}/informations">{{notif.sender.first_name+" "+notif.sender.last_name+" "}}</a><span>a accepté votre demande d'ajout.</span>
                     <span>{{formatDate(notif.creation_time )}}</span>
                 </div> 
