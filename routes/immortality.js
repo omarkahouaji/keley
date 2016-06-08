@@ -31,6 +31,7 @@ function friendship(id1,id2){
 
 
 function updateUserInfo(req, res, stored) {
+    console.log(req.session)
     if(req.session.data.id_user==undefined){
         res.redirect('index');
     }

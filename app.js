@@ -47,11 +47,14 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(methodOverride());
 app.use(multipart());
+app.use(session({
+  secret: '1234567890QWERTY'
+}))
 /*app.use(session({
     store: new RedisStore({
         host: 'immortality.redis.cache.windows.net',
-        port: 6380,
-        db: 2,
+        port: 6379//,
+        /*db: 2,
         pass: ''
     }),
     secret: '1234567890QWERTY',
