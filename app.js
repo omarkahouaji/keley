@@ -48,7 +48,8 @@ app.use(cookieParser());
 app.use(methodOverride());
 app.use(multipart());
 app.use(session({
-  secret: '1234567890QWERTY'
+  secret: '1234567890QWERTY',
+  expires : new Date(Date.now() + (3600000*24))
 }))
 /*app.use(session({
     store: new RedisStore({
