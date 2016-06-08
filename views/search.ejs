@@ -234,7 +234,7 @@
         <div class="search_block_item">
 
             <!-- <div class=" pull-left search_block_user_info"> -->
-                <a ng-href="/{{user.id_user}}/events"><img ng-src="{{user.avatar == 'no_avatar' &&  '/images/default.svg' || 'http://localhost:85/api.immortality.life/application/uploads/avatars/'+user.id_user+'/'+user.avatar }}" class="search_block_user_img" ></a>
+                <a ng-href="/{{user.id_user}}/events"><img ng-src="{{user.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+user.id_user+'/'+user.avatar }}" class="search_block_user_img" ></a>
                 <a ng-href="/{{user.id_user}}/events">
                 <span class="search_block_user_name">{{user.first_name+' '+user.last_name}}</span></a>
        <!--      </div> -->
