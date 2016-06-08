@@ -47,7 +47,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(methodOverride());
 app.use(multipart());
-app.use(session({
+/*app.use(session({
     store: new RedisStore({
         host: 'immortality.redis.cache.windows.net',
         port: 6380,
@@ -57,7 +57,7 @@ app.use(session({
     secret: '1234567890QWERTY',
     saveUninitialized:true,
     resave:true,
-}));
+}));*/
 app.use(express.static(path.join(__dirname, 'public')));
 
 //locals
