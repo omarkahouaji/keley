@@ -452,6 +452,7 @@ textarea {
 }
 .social {
     margin-top: 125px;
+    text-align: center;
 }
 .social i {
     text-align: left;
@@ -1321,7 +1322,7 @@ background-color: rgba(0, 0, 0, 0.04);
         margin-right: 5px;
     }
 }
-@media (max-width: 768px) {
+@media (max-width: 991px) {
     .share {
         margin-top: 50px !important;
     }
@@ -1600,7 +1601,7 @@ legataire_block{
 }
 
 body{
-    font-family: NanamiProRegular6 !important;
+    font-family: Comic Sans MS !important;
 }
 
 .informations_btn:hover{

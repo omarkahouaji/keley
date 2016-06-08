@@ -3,8 +3,8 @@ request = require('request');
 var moment = require('moment'); //
 var fs = require('fs');
 var im = require('imagemagick');
-var base_url = 'http://localhost:85/api.immortality.life/index.php/';
-var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
+var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
+var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars';
 moment.locale('fr');
 var atob = require('atob');
 var nodemailer = require('nodemailer');
