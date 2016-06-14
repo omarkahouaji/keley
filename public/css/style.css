@@ -80,7 +80,7 @@ input:focus{
 
 .first_block_logo{
     width: 200px;
-    height: 75px;
+    height: 65px;
 }
 .first_block_title{
     font-family: NanamiHM;
@@ -1601,7 +1601,7 @@ legataire_block{
 }
 
 body{
-    font-family: Comic Sans MS !important;
+    font-family: NanamiProRegular6 !important;
 }
 
 .informations_btn:hover{

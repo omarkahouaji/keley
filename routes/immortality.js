@@ -2,13 +2,15 @@ request = require('request');
 //var Q = require('q');
 var moment = require('moment'); //
 var fs = require('fs');
-var im = require('imagemagick');
-var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
-var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars';
+//var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
+//var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars';
+var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
 moment.locale('fr');
 var atob = require('atob');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport('smtps://omar.kahouaji%40esprit.tn:esprit123@smtp.gmail.com');
+var lwip = require('lwip');
 
 //moment().format();
 
@@ -31,7 +33,6 @@ function friendship(id1,id2){
 
 
 function updateUserInfo(req, res, stored) {
-    console.log(req.session)
     if(req.session.data.id_user==undefined){
         res.redirect('index');
     }
@@ -851,7 +852,19 @@ exports.events_timeline = function(req, res) {
     function(error, response, body) {
         var json = JSON.parse(body);
         var uploadsFinal = [];
+
+            var courbes = {},data = [];
+            var y = [],x = [],title = [],id_event=[];
+            courbes.data = [];
+            for (var i = 0; i < json.data.length; i++) {
+                data.push = {};
+            }
+            yData = [], xData = [], name = [],id=[];
+
+
         for (var i = 0; i < json.data.length; i++) {
+            //console.log(json.data[i].type);
+            if(json.data[i].type=="1"){
             for (var j = 0; j < json.data[i].uploads.length; j++) {
                 var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                 if (fs.existsSync(path)) {
@@ -863,7 +876,62 @@ exports.events_timeline = function(req, res) {
                 json.data[i].uploads = uploadsFinal;
                 uploadsFinal = [];
             }
-             console.log(json);
+
+
+            else {
+
+
+                
+                if(json.data[i].events!=null){
+                var t = [];
+                for (var k = 0; k < json.data[i].events.length; k++) {
+
+                    t.push(json.data[i].events[k]);
+                }
+                t.sort(function(x, y) {
+                    return Date.parse(x.creation_date) - Date.parse(y.creation_date);
+                })
+                for (var j = 0; j < json.data[i].events.length; j++) {
+                    y.push(parseInt(t[j].note));
+                    x.push((moment(t[j].creation_date).format("D MMMM")));
+                    title.push(t[j].title);
+                    id_event.push(t[j].id_event);
+                }
+                var ress = {};
+                ress.yData = y, ress.xData = x,
+                ress.creation_date=moment(json.data[i].creation_date).format("D MMMM YYYY"),
+                ress.name = title,
+                ress.id=id_event;
+                ress.chartName = json.data[i].title,
+                ress.id_chart=json.data[i].id_chart;
+                    //console.log(json.data[i].id_chart);
+                    courbes.data.push(ress);
+                    y = [];
+                    x = [];
+                    title = [];
+                    id_event=[];
+                }
+
+            }
+
+            
+
+
+
+
+
+
+
+
+
+
+
+
+            }
+            console.log(courbes);
+            json.charts = JSON.stringify(courbes);
+             //console.log(json);
+             //JSON.stringify(courbes)
             res.json(json);
         });
 }
@@ -952,11 +1020,7 @@ exports.charts = function(req, res) {
                     id_event=[];
                 }
                 }
-                res.render('charts', {
-                    charts: JSON.stringify(courbes),
-                    informations: retour.data[0],
-                    pageTitle: 'Mes courbes'
-                });
+                res.render('charts', {charts: JSON.stringify(courbes),informations: retour.data[0],pageTitle: 'Mes courbes'});
             }
         });
     }
@@ -1235,88 +1299,76 @@ exports.updateEvent = function(req,res){
             chart_category_id: 0
         }
     },
-        function(error, response, body) {
-            var json = JSON.parse(body);
-//single
-var type = typeof(req.files.file.originalFilename);
-var size = req.files.file.size;
-console.log(type);
-//console.log(typeof(req.files.file));
-    if (type != 'undefined' && size !=0) {
-    var src = req.files.file.path;
-        im.crop({
-            srcPath: src,
-            dstPath:'small_'+req.files.file.originalFilename,
-            width: 150,
-            height: 150,
-            quality: 1,
-            gravity: "center"
-        }, 
-        function(err, stdout, stderr) {
-            if (err) throw err;
-            im.resize({
-                srcPath: src,
-                dstPath: req.files.file.originalFilename,
-                width: 1042,
-                height: 768
-            }, 
-            function(err, stdout, stderr) {
-                if (err) throw err;
-                request({
-                    url: base_url+'uploads/postImages',
-                    method: 'POST',
-                    formData: {
-                        file_big: fs.createReadStream(req.files.file.originalFilename),
-                        file_small: fs.createReadStream('small_'+req.files.file.originalFilename),
-                        event_id: parseInt(req.body.id_event),
-                        event_user_id: parseInt(req.session.data.id_user),
-                    }
-                },
-                function(error, response, body) {
+    function(error, response, body) {
+        var json = JSON.parse(body);
+        var type = typeof(req.files.file.originalFilename);
+        var size = req.files.file.size;
 
-                            console.log('ok');
-                            fs.unlinkSync(req.files.file.originalFilename);
-                            fs.unlinkSync('small_'+req.files.file.originalFilename);
-                });
+        if (type != 'undefined' && size !=0 ) {
+            var src = req.files.file.path;
+
+            lwip.open(src, function(err, image){
+                    image.cover(150, 150, function(err,image){
+                        image.writeFile('small_'+req.files.file.originalFilename,function(err){
+                            console.log("resized");
+                        })
+                    })
+            })
+
+            lwip.open(src, function(err, image){
+                image.contain(1024, 768, {r: 0, g: 0, b: 0, a: 0}, "linear", function(err,image){
+                    image.writeFile(req.files.file.originalFilename,function(err){
+                        console.log("done");
+                        request({
+                            url: base_url+'uploads/postImages',
+                            method: 'POST',
+                            formData: {
+                                //file_big: fs.createReadStream(req.files.file.originalFilename),
+                                file_big: fs.createReadStream(req.files.file.originalFilename),
+                                file_small: fs.createReadStream('small_'+req.files.file.originalFilename),
+                                event_id: parseInt(req.body.id_event),
+                                event_user_id: parseInt(req.session.data.id_user),
+                            }
+                        },
+                        function(error, response, body) {
+                                    console.log('ok');
+                                    fs.unlinkSync(req.files.file.originalFilename);
+                                    fs.unlinkSync('small_'+req.files.file.originalFilename);
+                        });
+                    })
+                })
             });
-        });
-}
+    }
 //end single
-
-else{
-
+else {
 
 
-
-            //multiple
-              var srcPath=[];
+//multiple
+        var srcPath=[];
         for(var i=0;i<req.files.file.length;i++){
          srcPath[i] = req.files.file[i].path;
     }
         function upload(i){
             if( i < srcPath.length ) {
-        im.crop({
-            srcPath: srcPath[i],
-            dstPath:'small_'+req.files.file[i].originalFilename,
-            width: 150,
-            height: 150,
-            quality: 1,
-            gravity: "center"
-        }, 
-        function(err, stdout, stderr) {
-            if (err) throw err;
-            im.resize({
-                srcPath: srcPath[i],
-                dstPath: req.files.file[i].originalFilename,
-                width: 1042,
-                height: 768
-            }, 
-            function(err, stdout, stderr) {
-                if (err) throw err;
+
+
+    lwip.open(srcPath[i], function(err, image){
+            image.cover(150, 150, function(err,image){
+                image.writeFile('small_'+req.files.file[i].originalFilename,function(err){
+                    console.log("resized");
+                })
+            })
+    })
+
+        lwip.open(srcPath[i], function(err, image){
+        image.contain(1024, 768, {r: 0, g: 0, b: 0, a: 0}, "linear", function(err,image){
+            image.writeFile(req.files.file[i].originalFilename,function(err){
+                console.log("done");
                 request({
                     url: base_url+'uploads/postImages',
                     method: 'POST',
                     formData: {
+                        //file_big: fs.createReadStream(req.files.file.originalFilename),
                         file_big: fs.createReadStream(req.files.file[i].originalFilename),
                         file_small: fs.createReadStream('small_'+req.files.file[i].originalFilename),
                         event_id: parseInt(req.body.id_event),
@@ -1324,19 +1376,19 @@ else{
                     }
                 },
                 function(error, response, body) {
-
                             console.log('ok');
                             upload(i+1);    
                             fs.unlinkSync(req.files.file[i].originalFilename);
                             fs.unlinkSync('small_'+req.files.file[i].originalFilename);
                 });
-            });
-        });
+            })
+        })
+    });
+
            };
            }
            upload(0);
-
-
+      
 }
 
 
@@ -1373,28 +1425,27 @@ console.log(type);
 //console.log(typeof(req.files.files));
     if (type != 'undefined' && size !=0 ) {
     var src = req.files.file.path;
-        im.crop({
-            srcPath: src,
-            dstPath:'small_'+req.files.file.originalFilename,
-            width: 150,
-            height: 150,
-            quality: 1,
-            gravity: "center"
-        }, 
-        function(err, stdout, stderr) {
-            if (err) throw err;
-            im.resize({
-                srcPath: src,
-                dstPath: req.files.file.originalFilename,
-                width: 1042,
-                height: 768
-            }, 
-            function(err, stdout, stderr) {
-                if (err) throw err;
+
+
+    lwip.open(src, function(err, image){
+            image.cover(150, 150, function(err,image){
+                image.writeFile('small_'+req.files.file.originalFilename,function(err){
+                    console.log("resized");
+                })
+            })
+    })
+
+    
+    
+    lwip.open(src, function(err, image){
+        image.contain(1024, 768, "linear", function(err,image){
+            image.writeFile(req.files.file.originalFilename,function(err){
+                console.log("done");
                 request({
                     url: base_url+'uploads/postImages',
                     method: 'POST',
                     formData: {
+                        //file_big: fs.createReadStream(req.files.file.originalFilename),
                         file_big: fs.createReadStream(req.files.file.originalFilename),
                         file_small: fs.createReadStream('small_'+req.files.file.originalFilename),
                         event_id: parseInt(json.data[0].id_event),
@@ -1402,13 +1453,14 @@ console.log(type);
                     }
                 },
                 function(error, response, body) {
-
                             console.log('ok');
                             fs.unlinkSync(req.files.file.originalFilename);
                             fs.unlinkSync('small_'+req.files.file.originalFilename);
                 });
-            });
-        });
+            })
+        })
+    });
+
 }
 //end single
 else {
@@ -1421,28 +1473,25 @@ else {
     }
         function upload(i){
             if( i < srcPath.length ) {
-        im.crop({
-            srcPath: srcPath[i],
-            dstPath:'small_'+req.files.file[i].originalFilename,
-            width: 150,
-            height: 150,
-            quality: 1,
-            gravity: "center"
-        }, 
-        function(err, stdout, stderr) {
-            if (err) throw err;
-            im.resize({
-                srcPath: srcPath[i],
-                dstPath: req.files.file[i].originalFilename,
-                width: 1042,
-                height: 768
-            }, 
-            function(err, stdout, stderr) {
-                if (err) throw err;
+
+
+    lwip.open(srcPath[i], function(err, image){
+            image.cover(150, 150, function(err,image){
+                image.writeFile('small_'+req.files.file[i].originalFilename,function(err){
+                    console.log("resized");
+                })
+            })
+    })
+
+        lwip.open(srcPath[i], function(err, image){
+        image.contain(1024, 768, "linear", function(err,image){
+            image.writeFile(req.files.file[i].originalFilename,function(err){
+                console.log("done");
                 request({
                     url: base_url+'uploads/postImages',
                     method: 'POST',
                     formData: {
+                        //file_big: fs.createReadStream(req.files.file.originalFilename),
                         file_big: fs.createReadStream(req.files.file[i].originalFilename),
                         file_small: fs.createReadStream('small_'+req.files.file[i].originalFilename),
                         event_id: parseInt(json.data[0].id_event),
@@ -1450,14 +1499,17 @@ else {
                     }
                 },
                 function(error, response, body) {
-
                             console.log('ok');
                             upload(i+1);    
                             fs.unlinkSync(req.files.file[i].originalFilename);
                             fs.unlinkSync('small_'+req.files.file[i].originalFilename);
                 });
-            });
-        });
+            })
+        })
+    });
+
+
+
            };
            }
            upload(0);

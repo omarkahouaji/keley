@@ -14,18 +14,19 @@
     "cookie-session": "~1.1.0",
     "ejs": "~2.1.4",
     "errorhandler": "^1.4.3",
-    "express": "*",
+    "express": "^4.13.4",
     "express-myconnection": "1.0.4",
     "express-session": "^1.13.0",
     "facebook-node-sdk": "^0.2.0",
-    "imagemagick": "*",
     "lodash": "^4.13.1",
+    "lwip": "0.0.9",
     "method-override": "*",
     "moment": "*",
     "morgan": "*",
     "nodemailer": "^2.4.2",
     "passport-facebook": "^2.1.1",
     "request": "^2.72.0",
-    "serve-favicon": "*"
+    "serve-favicon": "*",
+    "socket.io": "^1.4.6"
   }
 }

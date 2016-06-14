@@ -1,124 +1,106 @@
 <!doctype html>
 <html>
-<head>
-<%- include layouts/head.ejs %>
-<head>
-
-
-
-
-<body class="home">
-<%- include layouts/header.ejs %>
-     <main>
-        <div class="container">
-            <div class="row">
+    <head>
+        <%- include layouts/head.ejs %>
+        <%- include ../public/js/facebook.js %>
+    <head>
+    <body class="home">
+        <%- include layouts/header.ejs %>
+        <main>
+            <div class="container">
+                <div class="row">
                     <%- include layouts/profileNav.ejs %>
-            <div class="col-md-7">
-            <div class="profil" style="padding: 15px">
-
+                    <div class="col-md-7">
+                        <div class="profil" style="padding: 15px">
                            <form action="/create-chart">
-                  <button class="btn  btn-block" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
-               </form>      
+                                <button class="btn  btn-block informations_btn" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
+                            </form>      
+                            <div class="events row">
+                                <div style="text-align: left;padding: 10px 20px;">
+                                    <span style="color: #3dbfb7;display: inline-block;font-family: NanamiProRegular7;">Courbe :</span><span><a style="font-family: NanamiProRegular7;color: #000;text-decoration: none;" href="/chart/<%=data.id_chart%>"><%=data.title%></a></span>
+                                    <span id="date" style="display:block;"></span>
+                                </div>
+                                <div class="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                                <script type="text/javascript">
+                                    var xItems = <%-xItems%>;
+                                    var json = <%-json%>;
+                                    //console.log(json);
+                                    var processed_json = new Array();
+                                    $.map(json, function (obj, i) {
+                                        processed_json.push({name: obj.title,y: parseFloat(obj.note),x:obj.creation_date,id:parseInt(obj.id_event)});
+                                    });
+                                    //console.log(processed_json);
+                                    $('.chart').highcharts({
+                                        title:{
+                                            text:null
+                                        },
+                                        chart: {
+                                            type: 'spline',
+                                        },
+                                        exporting:{
+                                            enabled:false,
+                                        },
+                                        xAxis: {
+                                            gridLineWidth: 1,
+                                            gridLineColor:"#edeaea",
+                                            categories: xItems,
+                                                        plotLines: [{
+                                                    color: '#000000',
+                                                    value: xItems
+                                                }]
+                                        },
+                                        yAxis: {
+                                            gridLineColor:"#edeaea",
+                                            max:5,
+                                            title: {
+                                                text: null
+                                            }
+                                        },
+                                        plotOptions: {
+                                            spline: {
+                                                lineWidth:1,
 
-
-
-
-
-      <div class="events row">
-      <div style="text-align: left;padding: 10px 20px;">
-    <span style="color: #3dbfb7;display: inline-block;font-family: NanamiProRegular7;">Courbe :</span><span><a style="font-family: NanamiProRegular7;color: #000;text-decoration: none;" href="/chart/<%=data.id_chart%>"><%=data.title%></a></span>
-    <span id="date" style="display:block;"></span>
-</div>
-
-
-      <div class="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-<script type="text/javascript">
-        var xItems = <%-xItems%>;
-        var json = <%-json%>;
-        console.log(json);
-        var processed_json = new Array();
-        $.map(json, function (obj, i) {
-        processed_json.push({name: obj.title,y: parseFloat(obj.note),x:obj.creation_date,id:parseInt(obj.id_event)});
-        });
-        console.log(processed_json);
-        $('.chart').highcharts({
-    title:{
-        text:null
-    },
-    chart: {
-        type: 'spline',
-    },
-    exporting:{
-        enabled:false,
-    },
-    xAxis: {
-        gridLineWidth: 1,
-        gridLineColor:"#edeaea",
-        categories: xItems,
-                    plotLines: [{
-                color: '#000000',
-                value: xItems
-            }]
-    },
-    yAxis: {
-        gridLineColor:"#edeaea",
-        max:5,
-        title: {
-            text: null
-        }
-    },
-    plotOptions: {
-        spline: {
-            lineWidth:1,
-
-            marker:{
-                fillColor:'#eb0c4b',
-                width:15,
-                height:15
-            },
-            dataLabels: {
-                useHTML:true,
-                                    style: {
-                        fontFamily:'NanamiProRegular6',fontSize:"15px",color:"#eb0c4b"
-                    },
-                enabled: true,
-                formatter: function () {
-                    return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>"; 
-                }
-            },
-            enableMouseTracking: false,
-        },
-        series: {
-            color: '#000000'
-        }
-    },
-    credits: {
-      enabled: false
-  },
-  series: [{
-      showInLegend: false,  
-      data: processed_json
-
-  }]
-        });
-</script>
-    </div>
-
-</div>
-
- </div>
-</div>
-</div>
-</main>
-
-
-<script type="text/javascript" src="/js/crop_avatar.js"></script>
-<script type="text/javascript">
-    var navigation = $('#nav-main').okayNav();
-    
-    var date = moment("<%-data.creation_date%>").locale('fr').format("D MMMM YYYY");
-$('<p>Le '+date+'</p>').appendTo('#date');
-
-</script>
-</body>
+                                                marker:{
+                                                    fillColor:'#eb0c4b',
+                                                    width:15,
+                                                    height:15
+                                                },
+                                                dataLabels: {
+                                                    useHTML:true,
+                                                    style: {
+                                                        fontFamily:'NanamiProRegular6',color:"#eb0c4b"
+                                                    },
+                                                    enabled: true,
+                                                    formatter: function () {
+                                                        return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>"; 
+                                                    }
+                                                },
+                                                enableMouseTracking: false,
+                                            },
+                                            series: {
+                                                color: '#000000'
+                                            }
+                                        },
+                                        credits: {
+                                          enabled: false
+                                        },
+                                        series: [{
+                                          showInLegend: false,  
+                                          data: processed_json
+                                        }]
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <script type="text/javascript" src="/js/crop_avatar.js"></script>
+        <script type="text/javascript">
+            var navigation = $('#nav-main').okayNav();
+            var date = moment("<%-data.creation_date%>").locale('fr').format("D MMMM YYYY");
+            $('<p>Le '+date+'</p>').appendTo('#date');
+        </script>
+    </body>
 </html>

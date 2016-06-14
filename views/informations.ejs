@@ -30,18 +30,8 @@
     <script src="/js/croppie.js"></script>
     <script src="/js/jquery.flagstrap.js"></script>
     <script src="/js/fileinput.js"></script>
+    <%- include ../public/js/facebook.js %>
 
-<script type="text/javascript">
-    var current_img = '<%=informations.avatar %>' ;
-    if( '<%- facebook %>' == 'new user' && current_img == 'no_avatar'){
-      $(window).load(function(){
-          $('#myModal').modal('show');
-      });
-    }
-
-    var fb_img = '<%-fb_image%>';
-    var user_status = '<%- facebook %>';
-</script>
   </head>
   <body class="home">
 
@@ -143,13 +133,34 @@
               </div>
             </form>
             <% } else { %>
-            <span>Nom :</span>
-            <span><%= notaire.data[0].last_name %></span>
+            <div class="form-group">
+            <label  class="col-md-offset-1 col-sm-2 control-label">Notaire</label>
+            
+            <table>
+            <tr>
+              <td>
+             <span>Nom :</span>
+            <span><%= notaire.data[0].last_name %></span></br>
+              </td>
+              </tr>
+              <tr>
+              <td>
             <span>Prénom :</span>
             <span><%= notaire.data[0].first_name %></span>
+              </td>
+              </tr>
+              <tr>
+              <td>
             <span>Email :</span>
             <span><%= notaire.data[0].email %></span>
+              </td>
+              </tr>
+            </table>
+          
+             
             <% } %>
+            </div>
+           
             <div class="informations-line"></div>
             <div class="form-group leg">
               <label  class="col-md-offset-1 col-sm-2 control-label">Légataire</label>
@@ -163,170 +174,7 @@
     </div>
     </main>
 
-
 <script type="text/javascript" src="/js/crop_avatar.js"></script>
-<script type="text/javascript">
-    $(".file").fileinput({
-    showUpload:false,
-    showRemove:false,
-    showPreview:false,
-    showCaption:false
-  });
-
-
-
-
-
- $('.flagstrap').flagStrap({
-   onSelect: function (value, element) {
-     value = $(element).children("option[selected=selected]").val(); //This is the correct value
-     //Now you can use it
-     console.log("This is the selected country code: " + value);
-   }
-});
-
-
-
-
-//start pick a date
-    var $input = $('.datepicker').pickadate({
-        monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-        format: 'd mmmm yyyy',
-          formatSubmit:'yyyy/mm/dd',
-        selectMonths: true,
-        hiddenName: true,
-        selectYears: 100,
-        onSet:function(){
-              document.getElementById('date').value=this.get();
-        }
-    });
-    //end pick a date
-
-
-
-var data = <%-friends%>;
-var immortals = JSON.parse('<%-immortals%>');
-
-    var cities = [{"value":1,"text":"Amsterdam","continent":"Europe"},{"value":4,"text":"Washington","continent":"America"},{"value":7,"text":"Sydney","continent":"Australia"},{"value":10,"text":"Beijing","continent":"Asia"},{"value":13,"text":"Cairo","continent":"Africa"}];
-    var amis = data;
-
-    /*var d = immortals;
-    var immortalsFriends = JSON.stringify(d.data);
-    console.log(JSON.parse(immortalsFriends));
-    //console.log(JSON.stringify(d.data));*/
-
-        for (var i = 0; i < immortals.length; i++) {
-      var a = JSON.stringify(immortals[i]);
-      console.log(a);
-    }
-
-
-
-  $('#tag').tagsinput({
-
-      itemValue: 'id_friend',
- itemText: function(item) {
-    //return item.value+' - '+item.text
-    return item.first_name+'  '+item.last_name
-  },
-
-  typeahead: {
-         displayText: function(item) {
-    return item
-  },
-    afterSelect: function(val) { this.$element.val(""); },
-    
-    source: amis.data
-  },
-  freeInput: false
-});
-
-
-
-
-  for (var i = 0; i < immortals.length; i++) {
-      $('#tag').tagsinput('add', immortals[i]);
-  }  
-
-
-
-        
-
-
-$('#tag').on('itemAdded', function(event) {
- //start
-console.log("start");
-        $.ajax({
-        url:'/addImmortal',
-        type: 'POST',
-        data:{
-            user_id:<%-informations.id_user%>,
-            immortal_id:event.item.id_friend
-        },
-            dataType: 'json',
-            success:function(data){
-            console.log("Added !");
-}
-})  
- //end
- });
-
-
-
-
-
-$('#tag').on('itemRemoved', function(event) {
- //start
-console.log("start");
-        $.ajax({
-        url:'/deleteImmortal',
-        type: 'POST',
-        data:{
-            user_id:<%-informations.id_user%>,
-            immortal_id:event.item.id_friend
-        },
-            dataType: 'json',
-            success:function(data){
-                console.log("Removed !");
-}
-})  
- //end
- });
-
-
-$('#notaire').click(function(event) {
- //start
-        event.preventDefault();
-        $.ajax({
-          url:'/addNotaire',
-          type: 'POST',
-          data:{
-            user_id:<%-informations.id_user%>,
-            first_name:$('#first_name').val(),
-            last_name:$('#last_name').val(),
-            email:$('#email').val()
-          },
-          dataType: 'json',
-          success:function(data){
-            console.log("added !");
-            window.location.href = "/informations";
-          }
-        })  
- //end
- });
-
-
-
-
-
-    if(<%-informations.sex%>==male){
-        $('#male').prop("checked", true);
-    }
-    else{
-        $('#female').prop("checked", true);
-    }
-
-    var navigation = $('#nav-main').okayNav();
-</script>
+<%- include ../public/js/profile.js %>
 </body>
 </html>

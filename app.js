@@ -47,27 +47,33 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(methodOverride());
 app.use(multipart());
-app.use(session({
-  secret: '1234567890QWERTY',
-  expires : new Date(Date.now() + (3600000*24))
-}))
 /*app.use(session({
+  secret: '1234567890QWERTY',
+  maxAge: 200000,
+  expires : new Date(Date.now() + (3600000*24)),
+      saveUninitialized:true,
+    resave:true,
+  cookie: {expires: new Date(253402300000000)}
+}))*/
+app.use(session({
     store: new RedisStore({
-        host: 'immortality.redis.cache.windows.net',
-        port: 6379//,
-        /*db: 2,
+        //host: 'immortality.redis.cache.windows.net',
+        host: 'localhost',
+        port: 6379,
+        db: 2,
         pass: ''
     }),
     secret: '1234567890QWERTY',
     saveUninitialized:true,
     resave:true,
-}));*/
+}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 //locals
-app.locals.path_avatar="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars";
-app.locals.base_url="http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/";
-
+//app.locals.path_avatar="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars";
+//app.locals.base_url="http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/";
+app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
+app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
 
 app.use(Facebook.middleware({ appId: '1601778010137309', secret: 'ff7edb7bc2cf3d93dd21989ebf9db6fb'}));
 

@@ -132,22 +132,26 @@
     var thumb='';
     var img='';
     for (var i = 0; i < events.length; i++) {
-    for (var j=0;j<events[i].uploads.length;j++){
-    
-    ress.thumb='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
-    ress.img='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
-    ress.id=events[i].uploads[j].id_upload;
-    ress.event_id=events[i].id_event;
-    images.push(ress);
-    
-    ress={};
-    thumb='';
-    img='';
-    }
-    events[i].images =images;
-    images=[];
-    //console.log(events[i].images);
-    this.events.push(events[i]);
+      console.log(events[i].type);
+      if(events[i].type =="1"){
+          for (var j=0;j<events[i].uploads.length;j++){
+          
+          ress.thumb='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
+          ress.img='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
+          ress.id=events[i].uploads[j].id_upload;
+          ress.event_id=events[i].id_event;
+          images.push(ress);
+          
+          ress={};
+          thumb='';
+          img='';
+          }
+          events[i].images =images;
+          images=[];
+          //console.log(events[i].images);
+          
+     }
+     this.events.push(events[i]);
     }
     this.after = this.events.length;
     this.busy = false;

@@ -46,7 +46,7 @@
             '  <a class="nav-left" ng-click="prevImage()"><i class="icon-arrow-left fs-30"></i></a>' +
             '  <img ondragstart="return false;" draggable="false" ng-src="{{ img }}" ng-click="nextImage()" ng-show="!loading" class="effect" />' +
             '  <a class="nav-right" ng-click="nextImage()"><i class="icon-arrow-right fs-30"></i></a>' +
-            '  <span class="info-text">{{ index + 1 }}/{{ images.length }} - {{ description }}</span>' +
+            '  <span class="info-text">{{ index + 1 }}/{{ images.length }}</span>' +
             '  <div class="ng-thumbnails-wrapper">' +
             '    <div class="ng-thumbnails slide-left">' +
             '      <div ng-repeat="i in images">' +
