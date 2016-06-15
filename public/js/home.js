@@ -46,7 +46,7 @@
               var html = $(
                 '<div class="comments-item"'+
                 '<div class="comments-container">'+
-                '<img class="comments-img " src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%-informations.id_user%>/<%-informations.avatar%>" >'+
+                '<img class="comments-img " src="<%-path_avatar%>/<%-informations.id_user%>/<%-informations.avatar%>" >'+
                 '<h5 class="comments-user-name"><%-informations.first_name%></h5>'+
                 '<span class="comments-date">'+json.data.creation_date+'</span>'+
                 '<p>'+content+'</p>'+
@@ -136,8 +136,8 @@
       if(events[i].type =="1"){
           for (var j=0;j<events[i].uploads.length;j++){
           
-          ress.thumb='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
-          ress.img='http://localhost:85/api.immortality.life/application/uploads/'+events[i].id_user+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
+          ress.thumb='<%-upload_path%>'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
+          ress.img='<%-upload_path%>'+events[i].id_user+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
           ress.id=events[i].uploads[j].id_upload;
           ress.event_id=events[i].id_event;
           images.push(ress);

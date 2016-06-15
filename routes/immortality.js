@@ -2,7 +2,7 @@ request = require('request');
 var moment = require('moment'); //
 var fs = require('fs');
 var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
-var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars';
+var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/';
 //var base_url = 'http://localhost:85/api.immortality.life/index.php/';
 //var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
 moment.locale('fr');
