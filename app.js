@@ -47,14 +47,14 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(methodOverride());
 app.use(multipart());
-/*app.use(session({
+app.use(session({
   secret: '1234567890QWERTY',
   maxAge: 200000,
   expires : new Date(Date.now() + (3600000*24)),
       saveUninitialized:true,
     resave:true,
   cookie: {expires: new Date(253402300000000)}
-}))*/
+}))
 /*app.use(session({
     store: new RedisStore({
         //host: 'immortality.redis.cache.windows.net',

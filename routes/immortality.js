@@ -129,8 +129,6 @@ exports.informationsFriend = function (req, res) {
                 var json2 = JSON.parse(body2);
                 var isFriend = json2.isFriend;
                 var notif = json2.notif;
-
-
                 request({
                     url: base_url + 'users/one/' + parseInt(req.params.id),
                     method: 'GET'
@@ -151,16 +149,11 @@ exports.informationsFriend = function (req, res) {
     }
     updateUserInfo(req, res, stored);
 }
-
-
-
+//landing page
 exports.landingPage = function (req, res) {
     res.render('landing_page');
 }
-
-
-
-
+//function add comment
 exports.postComment = function (req, res) {
     request({
         url: base_url + 'comments/create',
@@ -176,7 +169,7 @@ exports.postComment = function (req, res) {
             res.json(body);
         });
 }
-
+//function add like
 exports.postLike = function (req, res) {
     request({
         url: base_url + 'likes/create',
