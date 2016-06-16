@@ -141,8 +141,8 @@
     for (var i = 0; i < events.length; i++) {
     for (var j=0;j<events[i].uploads.length;j++){
     
-    ress.thumb='http://localhost:85/api.immortality.life/application/uploads/'+events[i].user_id+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
-    ress.img='http://localhost:85/api.immortality.life/application/uploads/'+events[i].user_id+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
+    ress.thumb='<%-upload_path%>'+events[i].user_id+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
+    ress.img='<%-upload_path%>'+events[i].user_id+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
     images.push(ress);
     
     ress={};
@@ -152,7 +152,7 @@
     events[i].images =images;
     images=[];
     //console.log(events[i].images);
-    if( events[i].chart_privacy != "0" && events[i].chart_privacy != "1" )
+    if( events[i].chart_privacy != "0" || events[i].chart_privacy != "1" )
     this.events.push(events[i]);
     }
     if(this.events.length==0){

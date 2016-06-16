@@ -19,45 +19,27 @@
       <script src="/js/jquery.okayNav.js"></script>
       <script src="/js/highcharts.js"></script>
       <script src="/js/exporting.js"></script>
-          <script src="/js/bootstrap.js"></script>
-          <script src="/js/croppie.js"></script>
+      <script src="/js/bootstrap.js"></script>
+      <script src="/js/croppie.js"></script>
       <script type="text/javascript">
-
-
-
         var charts = <%-charts%>;
-        console.log(charts);
-
-
      if(charts.data.length!=0){
       $(function () {
       $.each(charts.data, function (i, dataset) {
           var pro = [];
           var a={};
-            if(dataset.privacy!="0" && dataset.privacy!="1"){
-            console.log(dataset);
-
+            if(dataset.privacy!="0" || dataset.privacy!="1"){
       for (var i = 0; i < dataset.name.length; i++) {
-
           a={};
           a.x=dataset.xData[i];
           a.y=dataset.yData[i];
           a.name=dataset.name[i];
           a.id=dataset.id[i];
           pro.push(a);
-
       }
-
-console.log(pro.length);
-
-
-   
       $('<div class="chart-spacing '+dataset.id_chart+'" ></div><div class="chart '+dataset.id_chart+'"><span>Courbe : </span><span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span><span>Le '+dataset.creation_date+'</span>'+
         '</div>')
       .appendTo('#container');
-
-
-      
       $('<div class="'+dataset.id_chart+'" width="600px"></div>')
       .appendTo('#container')
       .highcharts({
@@ -121,8 +103,6 @@ console.log(pro.length);
     $('</div>')
     .appendTo('#container');
   }
-  
-
   if(pro.length==0){
     $('<span>Pas de courbes publiques</span>').appendTo('#container');
   }
@@ -177,13 +157,10 @@ console.log(pro.length);
 
 
 <script type="text/javascript">
-
         if(charts.data.length==0){
           console.log("aaaa");
           $('<span>Pas de courbes publiques</span>').appendTo('#container');
         }
-
-
   var navigation = $('#nav-main').okayNav();
   </script>
 </body>

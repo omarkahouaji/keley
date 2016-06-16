@@ -10,8 +10,6 @@
             console.log(json);
             if(json.msg=='success'){   
                 console.log('deleted yesssss !!!');
-
-
             }
           }
         });
@@ -67,7 +65,6 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            console.log("omar"+json);
             if(json.msg=='success'){   
               console.log("tawwa");
               var html = $(
@@ -147,12 +144,15 @@
     if (this.busy) return;
     this.busy = true;
     var url = "/eventsAngular/"+<%-informations.id_user%>+"/" + this.after;
+
     $http.get(url).success(function(data) {
+      console.log(data);
     var events =data.data;
     var images = [];
     var ress={};
     var thumb='';
     var img='';
+
     for (var i = 0; i < events.length; i++) {
     for (var j=0;j<events[i].uploads.length;j++){
     

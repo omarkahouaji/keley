@@ -185,7 +185,6 @@
 
       $('#aaa').on('show.bs.modal', function (e) {
         var yourparameter = e.relatedTarget.dataset.yourparameter;
-        console.log("omar");
         console.log(yourparameter);
         $('<a data-dismiss="modal"  class="tmp_modal btn btn-default" onclick="mdelete('+yourparameter+')">Oui'+
           '</a>').appendTo('.bbb');

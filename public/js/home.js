@@ -132,8 +132,8 @@
     var thumb='';
     var img='';
     for (var i = 0; i < events.length; i++) {
-      console.log(events[i].type);
-      if(events[i].type =="1"){
+      //console.log(events[i].type);
+      //if(events[i].type =="1"){
           for (var j=0;j<events[i].uploads.length;j++){
           
           ress.thumb='<%-upload_path%>'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
@@ -150,7 +150,7 @@
           images=[];
           //console.log(events[i].images);
           
-     }
+     //}
      this.events.push(events[i]);
     }
     this.after = this.events.length;

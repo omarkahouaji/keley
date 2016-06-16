@@ -26,7 +26,8 @@ moment.locale('fr');
 var _ = require('lodash');
 
 
-
+//var MemoryStore = express.session.MemoryStore;
+//var sessionStore = new MemoryStore();
 
 
 
@@ -44,7 +45,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(cookieParser());
+/*
+app.use(cookieParser('S3CRE7'));
+app.use(express.cookieSession());
+*/
 app.use(methodOverride());
 app.use(multipart());
 app.use(session({
@@ -55,6 +61,9 @@ app.use(session({
     resave:true,
   cookie: {expires: new Date(253402300000000)}
 }))
+/*app.use(session(
+    { secret: "secret", store: sessionStore, maxAge: Date.now() + (30 * 86400 * 1000) 
+    }));*/
 /*app.use(session({
     store: new RedisStore({
         //host: 'immortality.redis.cache.windows.net',

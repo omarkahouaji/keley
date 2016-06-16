@@ -675,16 +675,19 @@ exports.event = function (req, res) {
                 var uploadsFinal = [];
                 for (var j = 0; j < json.data[0].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
-                    //request(path, function (err, resp) {
-                        //if (resp.statusCode === 200) {
+                    request(path, function (err, resp) {
+                        if (resp.statusCode === 200) {
                             uploadsFinal.push(json.data[0].uploads[j]);
-                            json.data[0].uploads = [];
-                            json.data[0].uploads = uploadsFinal;
-                            uploadsFinal = [];
-                       //}
-                    //});
+                       }
+                    });
                 }
-                res.render('event.ejs', {event: JSON.stringify(json.data[0]),informations: retour.data[0]})
+                json.data[0].uploads = [];
+                json.data[0].uploads = uploadsFinal;
+                uploadsFinal = [];
+                res.render('event.ejs', {
+                    event: JSON.stringify(json.data[0]),
+                    informations: retour.data[0]
+                })
             });
     }
     updateUserInfo(req, res, stored);
@@ -744,12 +747,12 @@ exports.editEvent = function (req, res) {
                                         request(path, function (err, resp) {
                                             if (resp.statusCode === 200) {
                                                 uploadsFinal.push(json.data[0].uploads[j]);
-                                                json.data[0].uploads = [];
-                                                json.data[0].uploads = uploadsFinal;
-                                                uploadsFinal = [];                                      
                                            }
                                         });
                                     }
+                                    json.data[0].uploads = [];
+                                    json.data[0].uploads = uploadsFinal;
+                                    uploadsFinal = [];
                                     res.render('edit-event', { event: json.data[0], informations: retour.data[0], type: "1", charts: tab, iconTab: iconTab })
                                 });
                         });
@@ -775,15 +778,15 @@ exports.eventsAngular = function (req, res) {
                 for (var j = 0; j < json.data[i].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                     //throw new Error(path);
-                    //request(path, function (err, resp) {
-                        //if (resp.statusCode === 200) {
+                    request(path, function (err, resp) {
+                        if (resp.statusCode === 200) {
                             uploadsFinal.push(json.data[i].uploads[j]);
-                            json.data[i].uploads = [];
-                            json.data[i].uploads = uploadsFinal;
-                            uploadsFinal = [];
-                       //}
-                    //});
+                       }
+                    });
                 }
+                json.data[i].uploads = [];
+                json.data[i].uploads = uploadsFinal;
+                uploadsFinal = [];
             }
             res.json(json);
         });
@@ -803,19 +806,20 @@ exports.events_timeline = function (req, res) {
         function (error, response, body) {
             var json = JSON.parse(body);
             var uploadsFinal = [];
+          
             for (var i = 0; i < json.data.length; i++) {
+                //if (json.data[i].type == "1") {
                     for (var j = 0; j < json.data[i].uploads.length; j++) {
                         var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
-                        //request(path, function (err, resp) {
-                            //throw new Error(resp.statusCode);
-                            //if (resp.statusCode === 200) {
+                        request(path, function (err, resp) {
+                            if (resp.statusCode === 200) {
                                 uploadsFinal.push(json.data[i].uploads[j]);
-                                json.data[i].uploads = [];
-                                json.data[i].uploads = uploadsFinal;
-                                uploadsFinal = [];
-                           //}
-                        //});
+                           }
+                        });
                     }
+                    json.data[i].uploads = [];
+                    json.data[i].uploads = uploadsFinal;
+                    uploadsFinal = [];
             }
             res.json(json);
         });
@@ -1290,7 +1294,7 @@ exports.save = function (req, res) {
                             },
                                 function (err, response, body) {
                                     if (err) throw err;
-                                    console.log('yes');
+                                    console.log('ok');
                                     fs.unlinkSync(req.files.file.originalFilename);
                                     fs.unlinkSync('small_' + req.files.file.originalFilename);
                                 });

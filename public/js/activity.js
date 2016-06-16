@@ -1,6 +1,5 @@
 <script type="text/javascript">
 function get() {
-  console.log("omar");
   $.ajax({
     url:'/getActivity/<%-informations.id_user%>',
     type: 'GET',

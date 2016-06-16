@@ -107,7 +107,7 @@ return Reddit;
           <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
                 <div class="friends_block" ng-repeat="friend in reddit.friends" >
                 <a ng-href="/{{friend.id_friend}}/informations">
-                <img ng-src="{{friend.avatar =='no_avatar' && '/images/default.svg' || 'http://localhost:85/api.immortality.life/application/uploads/avatars/'+friend.id_friend+'/'+friend.avatar }}"></a>
+                <img ng-src="{{friend.avatar =='no_avatar' && '/images/default.svg' || '<%=path_avatar%>/'+friend.id_friend+'/'+friend.avatar }}"></a>
                 <a ng-href="/{{friend.id_friend}}/informations">
                 <span class="friend_block_user">{{friend.first_name+' '+friend.last_name}}</span></a>
                 <div class="friends_block_chart">

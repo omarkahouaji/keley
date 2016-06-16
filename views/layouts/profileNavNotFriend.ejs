@@ -4,7 +4,7 @@
       <%if(friends_data.avatar=="no_avatar"){%>
       <img src="/images/default.svg" class="edit-img">
       <%  }else{%>
-      <img src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=friends_data.id_user%>/<%=friends_data.avatar%>" class="edit-img">
+      <img src="<%=path_avatar%>/<%=friends_data.id_user%>/<%=friends_data.avatar%>" class="edit-img">
       <%  }%>
     </div>
     <div>
