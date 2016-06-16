@@ -47,10 +47,10 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(cookieParser());
-/*
+
 app.use(cookieParser('S3CRE7'));
 app.use(express.cookieSession());
-*/
+
 app.use(methodOverride());
 app.use(multipart());
 app.use(session({

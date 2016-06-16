@@ -988,8 +988,9 @@ li.next div {
 
 .events_img{
     padding:0px;
-        position: relative;
+    position: relative;
     max-width: 150px;
+    cursor: pointer;
 }
 
 .events_img img{
@@ -1006,6 +1007,7 @@ li.next div {
     padding: 15px;
     text-align: center;
 }
+
 
 .nav-tabs a{
     color: #fff;
@@ -1407,6 +1409,9 @@ background-color: rgba(0, 0, 0, 0.04);
     color: #fff;
     display: inline-block;
     text-align: left;
+}
+.activity.affix{
+    width: 390px;
 }
 .activity:before {
     top: 30px;

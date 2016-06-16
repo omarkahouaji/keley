@@ -27,11 +27,11 @@
         <script src="/js/moment-with-locales.js"></script>
         <script src="/js/jquery.validate.js"></script>
         <%- include ../public/js/home.js %>
-
-
-
-
-        
+        <script type="text/javascript">
+          $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+          })
+        </script>
     </head>
     <body class="home" data-ng-controller="DemoController as ctrl">
         <%- include layouts/header.ejs %>
@@ -81,7 +81,7 @@
                                 </div>
                                 <div class="event-header">
                                   <div class="event-left">
-                                    <span class="event-title">{{event.title}}</span>
+                                    <a ng-href="/event/{{event.id_event}}" class="event-title">{{event.title}}</a>
                                     <span class="event-date">{{'Le '+dateEvent(event.start_date)}}</span>
                                   </div>
                                   <div class="event-right">
@@ -162,7 +162,20 @@
       </main>
       <script src="js/jquery.okayNav.js"></script>
       <script type="text/javascript">
-      var navigation = $('#nav-main').okayNav();
+        var navigation = $('#nav-main').okayNav();
+          
+     /*     $(".activity").affix({
+   offset: { 
+    top: 54,
+    bottom: function () {
+     return (this.bottom = $('footer').outerHeight(true)+ 100 )
+    }
+   }
+  });*/
+
+
+
+
       </script>
       <%- include ../public/js/activity.js %>
    </body>
