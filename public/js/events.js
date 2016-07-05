@@ -10,21 +10,11 @@
             console.log(json);
             if(json.msg=='success'){   
                 console.log('deleted yesssss !!!');
-
-
             }
           }
         });
         $('#'+id).remove();
       }
-
-
-
-
-
-
-
-
 
     var iApp = angular.module("App", ['infinite-scroll','ngAnimate','ui.bootstrap','jkuri.gallery']);
     iApp.filter('trusted', ['$sce', function ($sce) {
@@ -45,12 +35,17 @@
       }
 
 
-//increment  likes length
       $scope.increment=function(event){
-        event.likes.length +=1;
-        event.isLiked=true;
+        if(event.isLiked){
+          event.likes.length -= 1;
+          event.isLiked = false;
+        }
+        else{
+          event.likes.length +=1;
+          event.isLiked=true;       
+        }
       }
-//end increment  likes length
+
 
       //ajouter commentaire
       $scope.addComment = function (event,e,content) {
@@ -67,7 +62,6 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            console.log("omar"+json);
             if(json.msg=='success'){   
               console.log("tawwa");
               var html = $(
@@ -92,28 +86,49 @@
       //ajouter like
       $scope.addLike = function (event,e) {
         event.preventDefault();
-        console.log(e);  
+        if(e.isLiked == false){
+          $.ajax({
+            url:'/postLike',
+            type: 'POST',
+            data:{
+              event_id:e.id_event,
+              event_user_id:e.user_id
+            },
+            dataType: 'json',
+            success:function(data){
+              var json = JSON.parse(data);
+              console.log(json);
+              if(json.msg=='success'){   
+                console.log('Liked !')
+              }else{
+                console.log('Error posting like')
+              }
+            }
+          });
+        }else{
         $.ajax({
-          url:'/postLike',
+          url:'/deleteLike',
           type: 'POST',
           data:{
-            event_id:e.id_event,
-            event_user_id:e.user_id
+            event_id:e.id_event
           },
           dataType: 'json',
           success:function(data){
+            console.log(data);
             var json = JSON.parse(data);
             console.log(json);
             if(json.msg=='success'){   
-              console.log('Liked !')
-
+              console.log('removed !')
             }else{
-              console.log('Error posting like')
+              console.log('Error removing like')
             }
           }
         });
-      }
+        }
+    }
 //end ajouter like
+
+//end delete like
 
         $scope.delete = function (e,id) {
         e.preventDefault();
@@ -147,12 +162,15 @@
     if (this.busy) return;
     this.busy = true;
     var url = "/eventsAngular/"+<%-informations.id_user%>+"/" + this.after;
+
     $http.get(url).success(function(data) {
+      console.log(data);
     var events =data.data;
     var images = [];
     var ress={};
     var thumb='';
     var img='';
+
     for (var i = 0; i < events.length; i++) {
     for (var j=0;j<events[i].uploads.length;j++){
     

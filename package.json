@@ -18,6 +18,8 @@
     "express-myconnection": "1.0.4",
     "express-session": "^1.13.0",
     "facebook-node-sdk": "^0.2.0",
+    "file-exists": "^1.0.0",
+    "jimp": "^0.2.24",
     "lodash": "^4.13.1",
     "method-override": "*",
     "moment": "*",

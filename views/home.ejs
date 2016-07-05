@@ -1,22 +1,15 @@
 <!doctype html>
 <html data-ng-app="App">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Accueil</title>
-        <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/style.css"> 
-        <!--  <link rel="stylesheet" href="/css/color2.css">-->
+        <%- include layouts/site.ejs %>
+
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/basic-styles.css">
         <link rel="stylesheet" href="/css/header.css">
-        <link rel="stylesheet" href="/css/okayNav.css">
         <link rel="stylesheet" href="/css/ngGallery.css">
-        <script src="/js/jquery.js"></script>
-        <script src="/js/bootstrap.js"></script>
-        <script src="/js/jquery.okayNav.js"></script>
-        <script src="/js/highcharts.js"></script>
-        <script src="/js/exporting.js"></script>
+
+
         <script src="/js/angular.min.js"></script>
         <script src="/js/ng-infinite-scroll.js"></script>
         <script src="/js/angular-animate.js"></script>
@@ -25,20 +18,171 @@
         <script src="/js/moment.js"></script>
         <script src="/js/croppie.js"></script>
         <script src="/js/moment-with-locales.js"></script>
-        <script src="/js/jquery.validate.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
         <%- include ../public/js/home.js %>
 
+        <script type="text/javascript">
+        $(function() {
+          var is_open = 0; // chat nav not opened
+          var unreadTab = [];
+
+          //open or close chat nav
+          $('.chat__users').click(function(){
+            if(is_open == 0){
+              $('.chat').css({"bottom":"0px"});
+              is_open = 1;
+            }else{
+              $('.chat').css({"bottom":"-350px"});
+              is_open = 0;
+            }
+          })
+
+          var socket = io();
+          var nb = 0;
+          var users = [];
+          var messages = [];
+          var opend_id;
+          socket.emit('join', {id: '<%=informations.id_user%>'});
+
+          socket.emit('connected', {
+            id:'<%=informations.id_user%>',
+            first_name:'<%=informations.first_name%>',
+            last_name:'<%=informations.last_name%>',
+          });
+
+          socket.on("connected_users", function(data) {
+            //$('#users').append($('<li id="'+data.id+'">').text(data.first_name+' '+data.last_name));
+            $('#users').append('<li id="'+data.id+'"></li>');
+            $("#"+data.id).text(data.first_name+' '+data.last_name);
+            users[data.id] = {"first_name" : data.first_name, "last_name" : data.last_name, "id" : data.id };
+            //console.log(users);
+            nb++; // number of connected users
+            //console.log(data); // log the data of the new connected user
+            $('.chat__users').html('Amis en ligne: '+nb)
+          });
+
+          var current_user;
+
+          $('body').on('click', 'li', function (event) {
+            current_user = event.target.id;
+            $('#messages').empty();
+
+                          $.ajax({
+    url:'/messages/'+<%=informations.id_user%>+'/'+event.target.id,
+    type: 'GET',
+    dataType: 'json',
+    success:function(data){
+      for(var k=0;k<data.data.length;k++){
+        if(data.data[k].sender_id == <%=informations.id_user%>){
+          $('#messages').append($('<li style="text-align:right">').addClass("chat_me").text(data.data[k].text));
+        }else{
+            $('#messages').append($('<li style="text-align:left">').text(data.data[k].text));
+        }
+      }
+
+    //console.log("tawwa");
+      }
+      });
+                //
+                //console.log(users);
+                opend_id = event.target.id;
+
+                $('.chat_box').show();
+                $('.chat_box_name').text(users[event.target.id].first_name+' '+users[event.target.id].last_name)
+                $('.chat_box').css({"bottom":"0px"});
+
+                
+                  $('form').submit(function(){
+                    console.log(current_user);
+                    if($('#m').val() != ''){
+
+                          $.ajax({
+    url:'/addMessage',
+    type: 'POST',
+    data:{
+    recipient_id:current_user,
+    text:$('#m').val()
+    },
+    dataType: 'json',
+    success:function(data){
+    console.log("success");
+    if(json.msg=='success'){
+    console.log("tawwa");
+      }}
+      });
+
+                    socket.emit('chat message', {from_id:'<%=informations.id_user%>', to_id : event.target.id, msg:$('#m').val()});
+                    $('#messages').append('<li><span class="chat_me">'+$('#m').val()+'</span><li>');
+                    //messages.push({msg : $('#m').val(), type : "me", id : event.target.id});
+                    }
+                    //$('#messages').append($('<li style="text-align:right">').append(("<span>").text($('#m').val())));
+                    $('#m').val('');
+                    return false;
+                  });
+                
+
+          });
+
+          socket.on("new_msg", function(data) {
+            //messages.push({"msg" : data.msg, "type" : "friend", "id" : data.from_id});
+            //console.log(messages);
+            if( opend_id == data.from_id){
+              $('#messages').append('<li><span class="chat_friend">'+data.msg+'</span><li>')
+            }
+            //else{
+            //  $('#'+data.from_id).text(' NEW ')
+            //}
+          });
 
 
 
-        
+          //when a user disconnect
+          socket.on("dis",function(data){
+            $('#'+data.id).remove();
+            nb--;
+          })
+
+
+
+        });
+
+
+
+
+
+
+
+
+        </script>
+
+
     </head>
     <body class="home" data-ng-controller="DemoController as ctrl">
         <%- include layouts/header.ejs %>
+
+<!--
+<nav class="chat">
+    <h2 class="chat__users"></h2>
+    <ul id="users">
+    </ul>
+</nav>
+
+<nav class="chat_box">
+  <h6 class="chat_box_name"></h6>
+  <ul id="messages"></ul>
+  <form action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+</nav>
+
+-->
+
         <main>
             <div class="container">
                 <div class=" row">
                     <div class="col-md-7">
+
+
                         <!--row-->
                         <div class="row">
                             <div class="col-xs-2">
@@ -81,12 +225,12 @@
                                 </div>
                                 <div class="event-header">
                                   <div class="event-left">
-                                    <span class="event-title">{{event.title}}</span>
+                                    <a ng-href="/event/{{event.id_event}}" class="event-title">{{event.title}}</a>
                                     <span class="event-date">{{'Le '+dateEvent(event.start_date)}}</span>
                                   </div>
                                   <div class="event-right">
                                     <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
-                                    <i class=" icon-friends "></i>
+                                    <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
                                     <div ng-init="x = event.note">
                                       <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
                                     </div>
@@ -143,13 +287,9 @@
                           </div>
                         </div>
 
-                    <!--
-                      <div ng-if=" event.type=='0' " class="col-xs-10">
-                        <div id="aaa" class="container1">{{$index}}</div>
+
                       </div>
-                      -->
-                      </div>
-                      <div ng-show='reddit.busy'>Loading data...</div>
+                      <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
                     </div>
                     <!--endrow-->
 
@@ -160,15 +300,11 @@
       
       
       </main>
-      <script src="js/jquery.okayNav.js"></script>
-      <script type="text/javascript">
-      var navigation = $('#nav-main').okayNav();
-      </script>
-      <%- include ../public/js/activity.js %>
+
+
+      <script src="/js/site.js"></script>
+      <%- include ../public/js/activity.js %> 
+    
    </body>
   
-
-
-
-
 </html>

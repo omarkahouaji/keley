@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include layouts/head.ejs %>
+    <%- include layouts/site.ejs %>
+    <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/js/jquery.validate.js"></script>
   </head>
-
   <body class="registration-body">
     <div class="container">
       <div class="row">
@@ -23,56 +24,11 @@
           </form>
         </div>
       </div>
-                        <div class="download_box center-block ">
-                        <a href="https://play.google.com/store/apps/details?id=com.satoripop.immortality&hl=en" class="download btn btn-default" type="button"><i class="android fa fa-android fa-2x"></i><span>Télecharger<br>pour Android</span>
-                        </a>
-                        <a class="download btn btn-default disabled" type="button"><span>Télecharger<br>pour iOS</span><i class="ios fa fa-apple fa-2x"></i></a>
-                        </div>
-
-      <!--
-      <footer>
-        <div class="row">
-          <div class="col-md-3">
-            <a href="#">Mentions générales</a>
-          </div>
-          <div class="col-md-5">
-            <a href="">Conditions générales d'utilisation</a>
-          </div>
-          <div class="col-md-4">
-            <span class="pull-right">©immortality 2016</span>
-          </div>
-        </div>
-      </footer>
-      -->
-
-<script type="text/javascript">
- $("#register").click(function(event){
-        /*var validator = $( "#f" ).validate({
-          errorClass: "invalid"
-        }
-        );*/
-        
-        event.preventDefault();
-        //validator.element( "#last_name" )
-          if($('#f').validate({
-              rules : {
-                password : {
-                    minlength : 5
-                },
-                password_confirm : {
-                    minlength : 5,
-                    equalTo : "#password"
-                }
-              }
-
-          })){
-            $('#f').submit();    
-          }
-
-  });
-</script>
-
-
-
-    </body>
-  </html>
+      <div class="download_box center-block ">
+        <a href="https://play.google.com/store/apps/details?id=com.satoripop.immortality&hl=en" class="download btn btn-default" type="button"><i class="android fa fa-android fa-2x"></i><span>Télecharger<br>pour Android</span>
+      </a>
+      <a class="download btn btn-default disabled" type="button"><span>Télecharger<br>pour iOS</span><i class="ios fa fa-apple fa-2x"></i></a>
+    </div>
+    <script src="/js/registration.js"></script>
+  </body>
+</html>

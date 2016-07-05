@@ -1,220 +1,16 @@
 <!doctype html>
 <html data-ng-app="App">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Recherche</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/ion.rangeSlider.css">
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
-    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/basic-styles.css" media="screen">
-    <link rel="stylesheet" href="/css/header.css" media="screen">
-    <link rel="stylesheet" href="/css/okayNav.css" media="screen">
-    <link rel="stylesheet" href="/css/default.date.css" media="screen">
-    <link rel="stylesheet" href="/css/default.css" media="screen">
-    <script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/ion.rangeSlider.js"></script>
-    <script src="/js/bootstrap-select.js"></script>
-    <script src="/js/picker.js"></script>
-    <script src="/js/legacy.js"></script>
-    <script src="/js/picker.date.js"></script>
-    <script src="/js/canvas-to-blob.min.js"></script>
-    <script src="/js/angular.min.js"></script>
-    <script src="/js/ng-infinite-scroll.js"></script>
-    <script src="/js/jquery.okayNav.js"></script>
-    <%- include ../public/js/activity.js %>
-    <script type="text/javascript">
-        var iApp = angular.module("App", ['infinite-scroll']);
-        iApp.controller('DemoController', function ($scope, Reddit,RedditEvents,RedditUsers) {
-        $scope.reddit = new Reddit();
-        $scope.redditEvents = new RedditEvents();
-        $scope.RedditUsers = new RedditUsers();
-        $scope.formatDate = function (date) {
-            return moment(date).fromNow();
-        }
-
-
-        //send Friend Request
-        $scope.sendFriendRequest = function (event,user) {
-        event.preventDefault();
-        $.ajax({
-          url:'/sendFriendRequest',
-          type: 'POST',
-          data:{
-            sender_id:<%-informations.id_user%>,
-            recipient_id:user.id_user
-          },
-          dataType: 'json',
-          success:function(data){
-            var json = JSON.parse(data);
-            if(json.msg=='success'){   
-                    console.log('yes');
-            }else{
-              console.log('no :(')
-            }
-          }
-        });
-      }
-      //end
-
-      //addFriend
-        $scope.addFriend = function (event,user) {
-            event.preventDefault();
-            $.ajax({
-              url:'/addFriend',
-              type: 'POST',
-              data:{
-                user_id:<%-informations.id_user%>,
-                id:user.id_user,
-              },
-              dataType: 'json',
-              success:function(data){
-                var json = JSON.parse(data);
-                if(json.msg=='success'){   
-                    console.log('yes');
-                }else{
-                    console.log('no :(')
-                }
-              }
-            });
-      }
-      //end
-
-        //deleteFriend
-        $scope.deleteFriend = function (event,user) {
-            event.preventDefault();
-            $.ajax({
-              url:'/deleteFriend',
-              type: 'POST',
-              data:{
-                user_id:<%-informations.id_user%>,
-                id:user.id_user,
-              },
-              dataType: 'json',
-              success:function(data){
-                var json = JSON.parse(data);
-                if(json.msg=='success'){   
-                    console.log('yes');
-                }else{
-                  console.log('no :(')
-                }
-              }
-            });
-         }
-         //end
-        });
-
-
-        iApp.factory('RedditEvents', function ($http) {
-        var RedditEvents = function () {
-        this.events = [];
-        this.busy = false;
-        this.after = 0;
-        };
-
-        RedditEvents.prototype.nextPage = function () {
-        if (this.busy) return;
-        this.busy = true;
-        var req = {
-        method: 'POST',
-        url: '/getEvents/',
-        data: {
-        id_user: <%-informations.id_user%>,
-        offset: this.after,
-        limit: 10,
-        term: '<%-term%>'
-        }
-        }
-        $http(req).success(function (data) {
-        var events = data.data;
-        for (var i = 0; i < events.length; i++) {
-        this.events.push(events[i]);
-        }
-        this.after = this.events.length;
-        this.busy = false;
-        }.bind(this));
-        };
-        return RedditEvents;
-        });
-
-        iApp.factory('RedditUsers', function ($http) {
-        var RedditUsers = function () {
-        this.users = [];
-        this.busy = false;
-        this.after = 0;
-        };
-
-
-
-        RedditUsers.prototype.nextPage = function () {
-        if (this.busy) return;
-        this.busy = true;
-        var req = {
-        method: 'POST',
-        url: '/searchUsers/',
-        data: {
-        id_user: <%-informations.id_user%>,
-        offset: this.after,
-        limit: 10,
-        term: '<%-term%>'
-        }
-        }
-        $http(req).success(function (data) {
-        var users = data.data;
-        for (var i = 0; i < users.length; i++) {
-        this.users.push(users[i]);
-        }
-        this.after = this.users.length - 1 + 10;
-        this.busy = false;
-        }.bind(this));
-        };
-        return RedditUsers;
-        });
-
-
-        iApp.factory('Reddit', function ($http) {
-        var Reddit = function () {
-        this.charts = [];
-        this.busy = false;
-        this.after = 0;
-        };
-        Reddit.prototype.nextPage = function () {
-        if (this.busy) return;
-        this.busy = true;
-        var req = {
-        method: 'POST',
-        url: '/getCharts/',
-        data: {
-        id_user: <%-informations.id_user%>,
-        offset: this.after,
-        limit: 10,
-        term: '<%-term%>'
-        }
-        }
-        $http(req).success(function (data) {
-        var charts = data.data;
-        for (var i = 0; i < charts.length; i++) {
-        this.charts.push(charts[i]);
-        }
-        this.after = this.charts.length - 1 + 10;
-        this.busy = false;
-        }.bind(this));
-        };
-        return Reddit;
-        });
-        </script>
+    <head>
+        <%- include layouts/site.ejs %>
+        <title>Recherche</title>
+        <script src="/js/angular.min.js"></script>
+        <script src="/js/ng-infinite-scroll.js"></script>
+        <%- include ../public/js/activity.js %>
+        <%- include ../public/js/search.js %>
     </head>
     <body class="search" data-ng-controller="DemoController">
         <%- include layouts/header.ejs %>
         <main>
-
-
-
         <div class="container">
             <div class="row">
                 <div class="box-search col-md-7 col-md-offset-1">
@@ -227,96 +23,76 @@
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
-
-<div role="tabpanel" class="tab-pane active" id="personnes">
-    <div infinite-scroll='RedditUsers.nextPage()' infinite-scroll-disabled='RedditUsers.busy' infinite-scroll-distance='3'>
-        <div class="search_block " ng-init="sent=false;accepted=false;refused==false"  ng-repeat="user in RedditUsers.users" >
-        <div class="search_block_item">
-
-            <!-- <div class=" pull-left search_block_user_info"> -->
-                <a ng-href="/{{user.id_user}}/events"><img ng-src="{{user.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+user.id_user+'/'+user.avatar }}" class="search_block_user_img" ></a>
-                <a ng-href="/{{user.id_user}}/events">
-                <span class="search_block_user_name">{{user.first_name+' '+user.last_name}}</span></a>
-       <!--      </div> -->
-
-           <!--  <div class="pull-right search_block_user_status"> -->
-
-                <span ng-show="(user.friend != null && user.is_immortal!=1) || accepted==true " class="search_block_friend btn"><i class=" icon-friends s" ></i><span>Amis</span></span>
-                <img src="/images/green-logo.png" ng-show="user.is_immortal == 1" width="15" height="15">
-
-                <button ng-show="(user.friend == null && sent == false && user.user_id!=user.id_user && user.notif_type!=2) || refused==true"  ng-click="sendFriendRequest($event,user);sent=true" class="search_block_add_friend btn"><i class=" icon-friends s" ></i><span>Ajouter</span></button>
-
-                 <span  ng-show="sent || (user.notif_type==2 && user.sender_id==<%-informations.id_user%> && user.friend == null)" class="search_block_friend_request add-btn btn"><i class=" icon-friends s"></i><span>Demande envoyée</span></span>
-
-                 <div ng-hide="refused || accepted" style="position: absolute;top: 72px;right: 0px;">
-                 <form action="/addFriend" method="post" style="display:inline-block;">
-                 <button style="margin-right: -20px;" class="add-btn search_block_friend btn" ng-show="user.notif_type==2&& user.recipient_id==<%-informations.id_user%> && user.friend == null"  ng-click="addFriend($event,user);accepted=true" type="submit"><i class=" icon-check s"></i></button>
-                 </form>
-
-
-                 <form action="/deleteFriend" method="post" style="display:inline-block;">
-                 <button class=" search-follow search_block_friend  btn" ng-show="user.notif_type==2 && user.recipient_id==<%-informations.id_user%> && user.friend == null"  type="submit" ng-click="deleteFriend($event,user);refused=true"><i class=" icon-close s"></i></button>
-                 </form>
-                 </div>
-
-          <!--   </div> -->
-            </div>
-        </div>
-        <div ng-show='RedditUsers.busy'>Loading data...</div>
-    </div>
-
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-
-
-                            <div role="tabpanel" class="tab-pane" id="courbes">
-                                <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
-                                    <div class="search-item row" ng-repeat="chart in reddit.charts">
-                                        <div class=" pull-left">
-                                            <div class="search-item-position">
-                                                <a ng-href="/chart/{{chart.id_chart}}">{{chart.title}}</a>
-                                                <span class="item-icon"><i class=" icon-chart "></i>Courbe</span>
+                            <div role="tabpanel" class="tab-pane active" id="personnes">
+                                <div infinite-scroll='RedditUsers.nextPage()' infinite-scroll-disabled='RedditUsers.busy' infinite-scroll-distance='3'>
+                                    <div class="search_block " ng-init="sent=false;accepted=false;refused==false"  ng-repeat="user in RedditUsers.users" >
+                                        <div class="search_block_item">
+                                            <!-- <div class=" pull-left search_block_user_info"> -->
+                                            <a ng-href="/{{user.id_user}}/events"><img ng-src="{{user.avatar == 'no_avatar' &&  '/images/default.svg' || '<%=path_avatar%>/'+user.id_user+'/'+user.avatar }}" class="search_block_user_img" ></a>
+                                            <a ng-href="/{{user.id_user}}/events">
+                                                <span class="search_block_user_name">{{user.first_name+' '+user.last_name}}</span></a>
+                                                <!--      </div> -->
+                                                <!--  <div class="pull-right search_block_user_status"> -->
+                                                <span ng-show="(user.friend != null && user.is_immortal!=1) || accepted==true " class="search_block_friend btn"><i class=" icon-friends s" ></i><span>Amis</span></span>
+                                                <img src="/images/green-logo.png" ng-show="user.is_immortal == 1" width="15" height="15">
+                                                <button ng-show="(user.friend == null && sent == false && user.user_id!=user.id_user && user.notif_type!=2) || refused==true"  ng-click="sendFriendRequest($event,user);sent=true" class="search_block_add_friend btn"><i class=" icon-friends s" ></i><span>Ajouter</span></button>
+                                                <span  ng-show="sent || (user.notif_type==2 && user.sender_id==<%-informations.id_user%> && user.friend == null)" class="search_block_friend_request add-btn btn"><i class=" icon-friends s"></i><span>Demande envoyée</span></span>
+                                                <div ng-hide="refused || accepted" style="position: absolute;top: 72px;right: 0px;">
+                                                    <form action="/addFriend" method="post" style="display:inline-block;">
+                                                        <button style="margin-right: -20px;" class="add-btn search_block_friend btn" ng-show="user.notif_type==2&& user.recipient_id==<%-informations.id_user%> && user.friend == null"  ng-click="addFriend($event,user);accepted=true" type="submit"><i class=" icon-check s"></i></button>
+                                                    </form>
+                                                    <form action="/deleteFriend" method="post" style="display:inline-block;">
+                                                        <button class=" search-follow search_block_friend  btn" ng-show="user.notif_type==2 && user.recipient_id==<%-informations.id_user%> && user.friend == null"  type="submit" ng-click="deleteFriend($event,user);refused=true"><i class=" icon-close s"></i></button>
+                                                    </form>
+                                                </div>
+                                                <!--   </div> -->
                                             </div>
                                         </div>
-                                        <!--
-                                        <div class="pull-right">
-                                            <button class="search-follow btn"><i class=" icon-public s"></i>Suivre</button>
-                                        </div>
-                                        -->
+                                        <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
                                     </div>
-                                    <div ng-show='reddit.busy'>Loading data...</div>
                                 </div>
-                            </div>
+                                <div role="tabpanel" class="tab-pane" id="courbes">
+                                    <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
+                                        <div class="search-item row" ng-repeat="chart in reddit.charts">
+                                            <div class=" pull-left">
+                                                <div class="search-item-position">
+                                                    <a ng-href="/chart/{{chart.id_chart}}">{{chart.title}}</a>
+                                                    <span class="item-icon"><i class=" icon-chart "></i>{{chart.first_name+' '+chart.last_name}}</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription==null)" class="pull-right">
+                                                <button class="search-follow btn" ng-click="followChart($event,chart)"><i class=" icon-public s"></i>Suivre</button>
+                                            </div>
 
-<!--evenements-->
-
-                            <div role="tabpanel" class="tab-pane" id="evenements">
-                                
+                                             <div ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription !=null)" class="pull-right">
+                                               <button class="search-follow btn" ><i class=" icon-public s"></i>Abonné</button>
+                                            </div>
+                                            
+                                        </div>
+                                        <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
+                                    </div>
+                                </div>
+                                <!--evenements-->
+                                <div role="tabpanel" class="tab-pane" id="evenements">
+                                    
                                     <div infinite-scroll='redditEvents.nextPage()' infinite-scroll-disabled='redditEvents.busy' infinite-scroll-distance='20'  >
                                         <div class="search-item row" ng-repeat="event in redditEvents.events">
                                             <div class=" pull-left search-item-position">
                                                 <a ng-href="/event/{{event.id_event}}">{{event.title}}</a>
                                                 <span class="item-icon"><i class=" icon-event "></i>Evenement</span>
                                             </div>
+                                            <!--
                                             <div class="pull-right search-item-position">
-                                                <button class="search-follow btn"><i class=" icon-public s"></i><span>Suivre</span></button>
+
+                                                <button class="search-follow btn" ><i class=" icon-public s"></i><span>Suivre</span></button>
+                                           
                                             </div>
+                                            -->
                                         </div>
-                                        <div ng-show='redditEvents.busy'>Loading data...</div>
+                                        <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
                                     </div>
                                 </div>
-
                                 <!--fin evenements-->
                             </div>
                         </div>
@@ -326,12 +102,7 @@
                 </div>
             </div>
             </main>
-            <script src="js/jquery.js"></script>
-            <!--build:js js/jquery.okayNav-min.js -->
-            <script src="js/jquery.okayNav.js"></script>
-            <!-- endbuild -->
-            <script type="text/javascript">
-            var navigation = $('#nav-main').okayNav();
-            </script>
+            <script src="/js/site.js"></script>
+
         </body>
     </html>

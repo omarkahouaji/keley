@@ -5,7 +5,7 @@
    <link rel="stylesheet" href="/css/croppie.css" />
    <script src="/js/croppie.js"></script>
 </head>
-<body class="home">
+<body class="home create-event-body">
 <div class="loading hidden " id="loading">
     <img src="/images/reload.svg">
   <span> la création de votre événement est en cours ...</span>
@@ -21,34 +21,35 @@
           
            <form class="form-horizontal" action="/save" method="post" enctype="multipart/form-data" id="cf">
             <div class="form-group">
-              <label  class="col-sm-2 control-label">Title</label>
-              <div class="col-sm-10">
+              <label  class="col-sm-offset-1 col-sm-offset-1 col-sm-2 control-label">Title</label>
+              <div class="col-sm-8">
                 <input type="text" class="form-control" name="title" id="title" autocomplete="off" required>
               </div>
             </div>
             <div class="form-group">
-              <label  class="col-sm-2 control-label">Description</label>
-              <div class="col-sm-10">
+              <label  class="col-sm-offset-1 col-sm-2 control-label">Description</label>
+              <div class="col-sm-8">
                <textarea class="form-control" rows="4" name="description" required></textarea>
              </div>
            </div>
 
            <div class="form-group">
-            <label  class="col-sm-2 control-label">Date</label>
-            <div class="col-sm-10">
+            <label  class="col-sm-offset-1 col-sm-2 control-label">Date</label>
+            <div class="input-group col-sm-8" style="padding: 0px 15px">
              <input type="date" id="date" class="form-control datepicker date-style" name="date" required>
+             <div class="input-group-addon input-group-addon-create-event"><i class="icon-event"></i></div>
            </div>
          </div>
 
          <div class="form-group">
-          <label  class="col-sm-2 control-label">Je note</label>
-          <div class="col-sm-10">
+          <label  class="col-sm-offset-1 col-sm-2 control-label">Je note</label>
+          <div class="col-sm-8">
             <input type="text" id="event-slider" name="note" value="" />
           </div>
         </div>
         <div class="form-group">
-          <label  class="col-sm-2 control-label">Courbe</label>
-          <div class="col-sm-10">
+          <label  class="col-sm-offset-1 col-sm-2 control-label">Courbe</label>
+          <div class="col-sm-8">
             <select class="selectpicker" name="courbe">
               <%  if(type!="0"){
               for(var i=0;i < charts.length;i++) { 
@@ -63,23 +64,25 @@
           </div>
         </div>
         <div class="form-group">
-          <label  class="col-sm-2 control-label">Photos</label>
-          <div class="col-sm-10">
+          <label  class="col-sm-offset-1 col-sm-2 control-label">Photos</label>
+          <div class="col-sm-8">
           <input id="input-id" class="file" name="file" type="file" multiple></input>
         </div>
         </div>
         <div class="form-group">
-              <label  class="col-sm-2 control-label"></label>
-              <div class="col-sm-10">
+              <label  class="col-sm-offset-1 col-sm-2 control-label"></label>
+              <div class="col-sm-8">
                 <button type="submit" id="btn" name="submit" value="Valider" class="box-button btn btn-default">Ajouter</button>
               </div>
             </div>
-                    <div class="form-group">
-        <div class="share social col-sm-offset-2 col-sm-10">
+            <!--
+        <div class="form-group">
+        <div class="share social col-sm-offset-2 col-sm-8">
           <button type="submit" class="btn share-fb"><i class="fa fa-facebook"></i><span>Partager</span></button>
           <button type="submit" class="btn share-gp"><i class="fa fa-google-plus"></i><span>Partager</span></button>
         </div>
         </div>
+      -->
       </form>
     </div>
   </div>

@@ -1,6 +1,5 @@
 <script type="text/javascript">
 function get() {
-  console.log("omar");
   $.ajax({
     url:'/getActivity/<%-informations.id_user%>',
     type: 'GET',
@@ -33,7 +32,7 @@ function get() {
         if(json.data[i].type=='0'){
           $('.activity_content').append(
             '<div>'+
-            '<img src='+srcR+' alt="...">'+
+            '<a class="white_link" href="/'+json.data[i].sender_id+'/events"><img src='+srcR+' alt="..."></a>'+
             '<a class="white_link" href="/event/'+json.data[i].event_id+'"><span>'+json.data[i].first_name+' '+json.data[i].last_name+' a aimé l\'événement de '+json.data[i].recipient_first_name+' '+json.data[i].recipient_last_name+'</span></a>'+
             '<i class=" icon-heart "></i>'+
             '</div>'

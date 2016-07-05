@@ -1,194 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>Se connecter</title>
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/css/style.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/css/ion.rangeSlider.css">
-<link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
-<link rel="stylesheet" type="text/css" href="/css/normalize.css">
-<link rel="stylesheet" href="/css/basic-styles.css" media="screen">
-<link rel="stylesheet" href="/css/header.css" media="screen">
-<link rel="stylesheet" href="/css/okayNav.css" media="screen">
-<link rel="stylesheet" href="/css/default.date.css" media="screen">
-<link rel="stylesheet" href="/css/default.css" media="screen">
-<link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
-<link rel="stylesheet" href="/css/bootstrap-tagsinput.css" media="screen">
-<script src="/js/jquery.js"></script>
-<script src="/js/jquery.validate.js"></script>
-<script src="/js/bootstrap.js"></script>
-<script src="/js/ion.rangeSlider.js"></script>
-<script src="/js/bootstrap-select.js"></script>
-<script src="/js/picker.js"></script>
-<script src="/js/legacy.js"></script>
-<script src="/js/picker.date.js"></script>
-<script src="/js/canvas-to-blob.min.js"></script>
-<script src="/js/fileinput.js"></script>
-<script src="/js/bootstrap-tagsinput.js"></script>
-<script src="/js/angular.min.js"></script>
-
-<script src="/js/highcharts.js"></script>
-<script src="/js/ng-infinite-scroll.js"></script>
-<script src="/js/exporting.js"></script>
-<script src="/js/jquery.okayNav.js"></script>
-</head>
-
-<body class="index">
-  <!--
-  <header>
+  <head>
+    <%- include layouts/site.ejs %>
+    <title>Se connecter</title>
+    <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+    <script src="/js/jquery.validate.js"></script>
+  </head>
+  <body class="index">
     <div class="container">
       <div class="row">
-        <div class="col-md-6" style="margin-top: 7px">
-          <img class="logo" src="images/logo.svg">
-          <div class="search form-group has-feedback">
-            <input type="text" class="form-control" placeholder="chercher sur immortality" />
-            <i class="icon-search x form-control-feedback"></i>
+        <h1 class="index_title">Immortality</h1>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div style="text-align:center">
+            <form action="/auth" method="post" autocomplete="off" style="text-align:center;display: inline-table;" id="f">
+              <span id="error" class="hidden">Faux!</span>
+              <span style="height: 20px;display: inline-block;"></span>
+              <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
+              <input type="password" name="password" autocomplete="false" class="form-control hidden" placeholder="password" id="password" required>  
+              <button type="submit" class="index_button text-uppercase btn btn-default" id="continuer">continuer</button>
+              <button type="submit" class="index_button text-uppercase btn btn-default hidden" id="connexion">connexion</button>
+            </form>
           </div>
+          <div class="download_box center-block ">
+            <a href="https://play.google.com/store/apps/details?id=com.satoripop.immortality&hl=en" class="download btn btn-default" type="button"><i class="index_i android fa fa-android fa-2x"></i><span>Télecharger<br>pour Android</span>
+          </a>
+          <a class="download btn btn-default disabled" type="button"><span>Télecharger<br>pour iOS</span><i class="index_i ios fa fa-apple fa-2x"></i></a>
         </div>
       </div>
-    </div>
-  </header>
-  -->
-  <div class="container">
-    <div class="row">
-      <h1 class="index_title">Immortality</h1>
-    </div>
-    <div class="row">
       <div class="col-md-4">
-        
-        <div style="text-align:center">
-          <form action="/auth" method="post" autocomplete="off" style="text-align:center;display: inline-table;" id="f">
-            <span id="error" class="hidden">Faux!</span>
-            <span style="height: 20px;display: inline-block;"></span>
-            <input type="email" name="email" class="form-control" id="email" placeholder="Email" required>
-            <input type="password" name="password" autocomplete="false" class="form-control hidden" placeholder="password" id="password" required>
-            
-            <button type="submit" class="index_button text-uppercase btn btn-default" id="continuer">continuer</button>
-            <button type="submit" class="index_button text-uppercase btn btn-default hidden" id="connexion">connexion</button>
-          </form>
+        <div class="separation">
+          <div class="line"></div>
+          <div class="cercle">ou</div>
         </div>
-        <div class="download_box center-block ">
-          <a href="https://play.google.com/store/apps/details?id=com.satoripop.immortality&hl=en" class="download btn btn-default" type="button"><i class="index_i android fa fa-android fa-2x"></i><span>Télecharger<br>pour Android</span>
-        </a>
-        <a class="download btn btn-default disabled" type="button"><span>Télecharger<br>pour iOS</span><i class="index_i ios fa fa-apple fa-2x"></i></a>
       </div>
-    </div>
-    <div class="col-md-4">
-      <div class="separation">
-        <div class="line"></div>
-        <div class="cercle">ou</div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="social">
-        <a href="/facebook" type="button" class="btn btn-fb"><i class="fa fa-facebook"></i><span>se connecter avec facebook</span></a>
-        <!--
-        <button type="submit" class="btn btn-gp"><i class="fa fa-google-plus"></i><span>se connecter avec google+</span></button>
-        -->
+      <div class="col-md-4">
+        <div class="social">
+          <a href="/facebook" type="button" class="btn btn-fb"><i class="fa fa-facebook"></i><span>se connecter avec facebook</span></a>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!--
-<footer>
-  <div class="container text-center">
-    <a href="#">Mentions générales</a>
-    <a  href="">Conditions générales d'utilisation</a>
-    <span >©immortality 2016</span>
-  </div>
-</footer>
--->
-
-<script>
-
-if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
-    $(window).load(function(){
-        $('input:-webkit-autofill').each(function(){
-            var text = $(this).val();
-            var name = $(this).attr('name');
-            $(this).after(this.outerHTML).remove();
-            $('input[name=' + name + ']').val(text);
-        });
-    });
-}
-
-
-
-     $("#continuer").click(function(event){
-        var validator = $( "#f" ).validate({
-          errorClass: "invalid"
-        }
-        );
-        
-        event.preventDefault();
-        $.ajax({
-        url:'/searchMail',
-        type: 'POST',
-        data:{
-            email:$('#email').val()
-        },
-            dataType: 'json',
-            success:function(data){
-            var json = JSON.parse(data);
-            console.log(json);
-            if(json.msg=='success'){
-                $('#password').removeClass('hidden');
-                $('#connexion').removeClass('hidden');
-                $('#continuer').addClass('hidden');
-                //$('#continuer').html('connexion');
-            }else{   
-          var url = '/registration';
-          var form = $('<form action="' + url + '" method="post">' +
-            '<input type="text" name="mail" value="'+$('#email').val()+'" />' +
-            '</form>');
-          //$('body').append(form);
-          
-          if(validator.element( "#email" )){
-            form.submit();    
-          }
-}
-}
-})  
-  });
-//connexion
-     $("#connexion").click(function(event){
-
-        event.preventDefault();
-        $.ajax({
-        url:'/auth',
-        type: 'POST',
-        data:{
-            email:$('#email').val(),
-            password:$('#password').val()
-        },
-            dataType: 'json',
-            success:function(data){
-            var json = JSON.parse(data);
-            if(json.msg=='success' && $('#password').val() != 'fb'){
-                window.location.href = "/home";
-            }else{   
-                $('#error').removeClass('hidden');
-            }
-}
-})  
-  })
-     //end connexion
-
-
-
-</script>
-
-
-    </body>
-
-
-
-
-
-
-
-    </html>
+  <%- include ../public/js/index.js %>
+</body>
+</html>

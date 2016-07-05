@@ -1,25 +1,17 @@
 <!doctype html>
 <html data-ng-app="App">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mes événements</title>
-    <!-- <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css"> -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <%- include layouts/site.ejs %>
     <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/css/style.css"> 
-    <!--  <link rel="stylesheet" href="/css/color2.css">-->
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/basic-styles.css">
     <link rel="stylesheet" href="/css/header.css">
-    <link rel="stylesheet" href="/css/okayNav.css">
+    
     <link rel="stylesheet" href="/css/ngGallery.css">
     <link rel="stylesheet" href="/css/screen.css">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
-    <script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/jquery.okayNav.js"></script>
     <script src="/js/angular.min.js"></script>
     <script src="/js/ng-infinite-scroll.js"></script>
     <script src="/js/angular-animate.js"></script>
@@ -31,10 +23,8 @@
     <%- include ../public/js/facebook.js %>
     <%- include ../public/js/events.js %>
 
-
-
-
   </head>
+
   <body class="home"  data-ng-controller="DemoController as ctrl" >
     <%- include layouts/header.ejs %>
 <main>
@@ -76,7 +66,7 @@
                   </div>
                   <div class="event-right">
                     <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
-                    <i class=" icon-friends "></i>
+                    <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
                     <div class="dropdown dropdown-event">
                       <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                       <span><i class="icon-arrow" style="font-size:8px"></i></span>
@@ -153,8 +143,9 @@
               </form>
             </div>
           </div>
-          <div ng-show='reddit.busy'>Loading data...</div>
+          
         </div>
+        <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
       </div>
     </div>
   </div>
@@ -181,11 +172,11 @@
 
 
 <script type="text/javascript" src="/js/crop_avatar.js"></script>
+<script src="/js/site.js"></script>
     <script type="text/javascript">
 
       $('#aaa').on('show.bs.modal', function (e) {
         var yourparameter = e.relatedTarget.dataset.yourparameter;
-        console.log("omar");
         console.log(yourparameter);
         $('<a data-dismiss="modal"  class="tmp_modal btn btn-default" onclick="mdelete('+yourparameter+')">Oui'+
           '</a>').appendTo('.bbb');
@@ -194,12 +185,6 @@
       $('#aaa').on('hidden.bs.modal', function (e) {
         $('.tmp_modal').remove();
       });
-
-
-
-
-
-    var navigation = $('#nav-main').okayNav(); //navbar
     </script>
   </body>
 </html>

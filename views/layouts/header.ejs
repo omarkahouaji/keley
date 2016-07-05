@@ -12,16 +12,16 @@
                     </div>
         <nav role="navigation" id="nav-main" class="nav-prop okayNav">
         <ul>
-            <li><a href="/home"><i class=" icon-home x active"></i></a></li>
-            <li><a href="/informations"><i class=" icon-profil x"></i></a></li>
-            <li><a href="/charts"><i class=" icon-chart x"></i></a></li>
-            <li><a href="/events"><i class=" icon-event x"></i></a></li>
+            <li><a href="/home" data-toggle="tooltip" data-placement="bottom" title="Accueil"><i class=" icon-home x active"></i></a></li>
+            <li><a href="/informations" data-toggle="tooltip" data-placement="bottom" title="Profil"><i class=" icon-profil x"></i></a></li>
+            <li><a href="/charts" data-toggle="tooltip" data-placement="bottom" title="Courbes"><i class=" icon-chart x"></i></a></li>
+            <li><a href="/events" data-toggle="tooltip" data-placement="bottom" title="Evénements"><i class=" icon-event x"></i></a></li>
             <%if(informations.nbNotifs!=0 && typeof notif_badge == 'undefined'){%>
-            <li><a href="/notifications"><i class=" icon-notifs x"></i><span class="notif"><%=informations.nbNotifs%></span></a></li>
+            <li><a href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class=" icon-notifs x"></i><span class="notif"><%=informations.nbNotifs%></span></a></li>
             <%}else{%>
-            <li><a href="/notifications"><i class=" icon-notifs x"></i></a></li>
+            <li><a href="/notifications" data-toggle="tooltip" data-placement="bottom" title="Notifications"><i class=" icon-notifs x"></i></a></li>
             <%}%>
-            <li><a href="/logout"><i class=" icon-logout x"></i></a></li>
+            <li><a href="/logout" data-toggle="tooltip" data-placement="bottom" title="Se déconnecter"><i class=" icon-logout x"></i></a></li>
         </ul>
     </nav>
         </div>

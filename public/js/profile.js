@@ -117,5 +117,4 @@ else{
 }
 //end gender
 
-var navigation = $('#nav-main').okayNav();
 </script>

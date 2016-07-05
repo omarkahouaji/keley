@@ -1,6 +1,5 @@
 var express = require('express');
 var Facebook = require('facebook-node-sdk');
-var passport = require('passport-facebook');
 var request = require('request');
 var http = require('http');
 var path = require('path');
@@ -11,29 +10,18 @@ var errorHandler = require('errorhandler');
 //var rewrite = require('express-urlrewrite');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-
 var morgan = require('morgan');
 var favicon = require('serve-favicon');
 var methodOverride = require('method-override');
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 var multipart = require('connect-multiparty');
-var im = require('imagemagick');
+//var im = require('imagemagick');
 var fs = require('fs');
 var moment = require('moment');
 moment.locale('fr');
-
 var _ = require('lodash');
-
-
-
-
-
-
-
-
-
-
+var cookieSession = require('cookie-session');
 app.set('port', process.env.PORT || 4300);
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/favicon.png'));
@@ -44,17 +32,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(cookieParser());
+app.use(cookieParser('S3CRE7'));
 app.use(methodOverride());
 app.use(multipart());
-app.use(session({
-  secret: '1234567890QWERTY',
-  maxAge: 200000,
-  expires : new Date(Date.now() + (3600000*24)),
-      saveUninitialized:true,
-    resave:true,
-  cookie: {expires: new Date(253402300000000)}
-}))
+app.use(cookieSession({
+  key: 'app.sess',
+  secret: 'SUPERsekret'
+}));
 /*app.use(session({
     store: new RedisStore({
         //host: 'immortality.redis.cache.windows.net',
@@ -73,26 +57,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.upload_path="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/";
 app.locals.path_avatar="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars";
 app.locals.base_url="http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/";
+var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
 //app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
 //app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
 //app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
-
+//var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+app.locals.fb_image = '';
+app.locals.facebook = '';
+//facebook
 app.use(Facebook.middleware({ appId: '1601778010137309', secret: 'ff7edb7bc2cf3d93dd21989ebf9db6fb'}));
-
-/*
-passport.use(new FacebookStrategy({
-    clientID: '1601778010137309',
-    clientSecret: 'ff7edb7bc2cf3d93dd21989ebf9db6fb',
-    callbackURL: "http://localhost:4300/auth/facebook/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));*/
-
-
 //routes
 app.get('/landingPage',immortality.landingPage);
 app.get('/', immortality.index);
@@ -107,6 +80,8 @@ app.post('/addChart', immortality.addChart);
 app.get('/create-chart', immortality.createChart);
 app.get('/chart/:id', immortality.chart);
 app.get('/charts', immortality.charts);
+app.get('/followed-charts', immortality.followedCharts);
+app.post('/followChart', immortality.followChart);
 app.get('/deleteChart/:id',immortality.deleteChart);
 app.get('/editChart/:id', immortality.editChart);
 app.post('/updateChart', immortality.updateChart);
@@ -114,7 +89,6 @@ app.post('/updateChart', immortality.updateChart);
 app.get('/event/:id', immortality.event);
 app.get('/editEvent/:id', immortality.editEvent);
 app.get('/deleteEvent/:id',immortality.deleteEvent);
-
 app.post('/getEvents',immortality.getEvents);
 app.post('/postComment',immortality.postComment);
 app.get('/getComments/:id', immortality.getComments);
@@ -126,6 +100,7 @@ app.get('/create-event', immortality.createEvent);
 app.post('/save', immortality.save);
 app.post('/updateEvent', immortality.updateEvent);
 app.post('/postLike',immortality.postLike);
+app.post('/deleteLike',immortality.deleteLike);
 app.post('/deleteImage',immortality.deleteImage);
 //notifs
 app.get('/notifications',immortality.notifications);
@@ -155,261 +130,21 @@ app.get('/home', immortality.home);
 app.get('/events_timeline/:id/:nb',immortality.events_timeline)
 app.get('/getActivity/:id', immortality.getActivity);
 
-//f
+app.post('/addMessage', immortality.addMessage);
+app.get('/messages/:id/:id2', immortality.messages);
 
-var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
 
 
-app.locals.fb_image = '';
-var countries = {
-        'AF': 'Afghanistan',
-        "AL": "Albania",
-        "DZ": "Algeria",
-        "AS": "American Samoa",
-        "AD": "Andorra",
-        "AO": "Angola",
-        "AI": "Anguilla",
-        "AG": "Antigua and Barbuda",
-        "AR": "Argentina",
-        "AM": "Armenia",
-        "AW": "Aruba",
-        "AU": "Australia",
-        "AT": "Austria",
-        "AZ": "Azerbaijan",
-        "BS": "Bahamas",
-        "BH": "Bahrain",
-        "BD": "Bangladesh",
-        "BB": "Barbados",
-        "BY": "Belarus",
-        "BE": "Belgium",
-        "BZ": "Belize",
-        "BJ": "Benin",
-        "BM": "Bermuda",
-        "BT": "Bhutan",
-        "BO": "Bolivia, Plurinational State of",
-        "BA": "Bosnia and Herzegovina",
-        "BW": "Botswana",
-        "BV": "Bouvet Island",
-        "BR": "Brazil",
-        "IO": "British Indian Ocean Territory",
-        "BN": "Brunei Darussalam",
-        "BG": "Bulgaria",
-        "BF": "Burkina Faso",
-        "BI": "Burundi",
-        "KH": "Cambodia",
-        "CM": "Cameroon",
-        "CA": "Canada",
-        "CV": "Cape Verde",
-        "KY": "Cayman Islands",
-        "CF": "Central African Republic",
-        "TD": "Chad",
-        "CL": "Chile",
-        "CN": "China",
-        "CO": "Colombia",
-        "KM": "Comoros",
-        "CG": "Congo",
-        "CD": "Congo, the Democratic Republic of the",
-        "CK": "Cook Islands",
-        "CR": "Costa Rica",
-        "CI": "C" + "&ocirc;" + "te d'Ivoire",
-        "HR": "Croatia",
-        "CU": "Cuba",
-        "CW": "Cura" + "&ccedil;" + "ao",
-        "CY": "Cyprus",
-        "CZ": "Czech Republic",
-        "DK": "Denmark",
-        "DJ": "Djibouti",
-        "DM": "Dominica",
-        "DO": "Dominican Republic",
-        "EC": "Ecuador",
-        "EG": "Egypt",
-        "SV": "El Salvador",
-        "GQ": "Equatorial Guinea",
-        "ER": "Eritrea",
-        "EE": "Estonia",
-        "ET": "Ethiopia",
-        "FK": "Falkland Islands (Malvinas)",
-        "FO": "Faroe Islands",
-        "FJ": "Fiji",
-        "FI": "Finland",
-        "FR": "France",
-        "GF": "French Guiana",
-        "PF": "French Polynesia",
-        "TF": "French Southern Territories",
-        "GA": "Gabon",
-        "GM": "Gambia",
-        "GE": "Georgia",
-        "DE": "Germany",
-        "GH": "Ghana",
-        "GI": "Gibraltar",
-        "GR": "Greece",
-        "GL": "Greenland",
-        "GD": "Grenada",
-        "GP": "Guadeloupe",
-        "GU": "Guam",
-        "GT": "Guatemala",
-        "GG": "Guernsey",
-        "GN": "Guinea",
-        "GW": "Guinea-Bissau",
-        "GY": "Guyana",
-        "HT": "Haiti",
-        "HM": "Heard Island and McDonald Islands",
-        "VA": "Holy See (Vatican City State)",
-        "HN": "Honduras",
-        "HK": "Hong Kong",
-        "HU": "Hungary",
-        "IS": "Iceland",
-        "IN": "India",
-        "ID": "Indonesia",
-        "IR": "Iran, Islamic Republic of",
-        "IQ": "Iraq",
-        "IE": "Ireland",
-        "IM": "Isle of Man",
-        "IL": "Israel",
-        "IT": "Italy",
-        "JM": "Jamaica",
-        "JP": "Japan",
-        "JE": "Jersey",
-        "JO": "Jordan",
-        "KZ": "Kazakhstan",
-        "KE": "Kenya",
-        "KI": "Kiribati",
-        "KP": "Korea, Democratic People's Republic of",
-        "KR": "Korea, Republic of",
-        "KW": "Kuwait",
-        "KG": "Kyrgyzstan",
-        "LA": "Lao People's Democratic Republic",
-        "LV": "Latvia",
-        "LB": "Lebanon",
-        "LS": "Lesotho",
-        "LR": "Liberia",
-        "LY": "Libya",
-        "LI": "Liechtenstein",
-        "LT": "Lithuania",
-        "LU": "Luxembourg",
-        "MO": "Macao",
-        "MK": "Macedonia, the former Yugoslav Republic of",
-        "MG": "Madagascar",
-        "MW": "Malawi",
-        "MY": "Malaysia",
-        "MV": "Maldives",
-        "ML": "Mali",
-        "MT": "Malta",
-        "MH": "Marshall Islands",
-        "MQ": "Martinique",
-        "MR": "Mauritania",
-        "MU": "Mauritius",
-        "YT": "Mayotte",
-        "MX": "Mexico",
-        "FM": "Micronesia, Federated States of",
-        "MD": "Moldova, Republic of",
-        "MC": "Monaco",
-        "MN": "Mongolia",
-        "ME": "Montenegro",
-        "MS": "Montserrat",
-        "MA": "Morocco",
-        "MZ": "Mozambique",
-        "MM": "Myanmar",
-        "NA": "Namibia",
-        "NR": "Nauru",
-        "NP": "Nepal",
-        "NL": "Netherlands",
-        "NC": "New Caledonia",
-        "NZ": "New Zealand",
-        "NI": "Nicaragua",
-        "NE": "Niger",
-        "NG": "Nigeria",
-        "NU": "Niue",
-        "NF": "Norfolk Island",
-        "MP": "Northern Mariana Islands",
-        "NO": "Norway",
-        "OM": "Oman",
-        "PK": "Pakistan",
-        "PW": "Palau",
-        "PS": "Palestinian Territory, Occupied",
-        "PA": "Panama",
-        "PG": "Papua New Guinea",
-        "PY": "Paraguay",
-        "PE": "Peru",
-        "PH": "Philippines",
-        "PN": "Pitcairn",
-        "PL": "Poland",
-        "PT": "Portugal",
-        "PR": "Puerto Rico",
-        "QA": "Qatar",
-        "RE": "R" + "&eacute;" + "union",
-        "RO": "Romania",
-        "RU": "Russian Federation",
-        "RW": "Rwanda",
-        "SH": "Saint Helena, Ascension and Tristan da Cunha",
-        "KN": "Saint Kitts and Nevis",
-        "LC": "Saint Lucia",
-        "MF": "Saint Martin (French part)",
-        "PM": "Saint Pierre and Miquelon",
-        "VC": "Saint Vincent and the Grenadines",
-        "WS": "Samoa",
-        "SM": "San Marino",
-        "ST": "Sao Tome and Principe",
-        "SA": "Saudi Arabia",
-        "SN": "Senegal",
-        "RS": "Serbia",
-        "SC": "Seychelles",
-        "SL": "Sierra Leone",
-        "SG": "Singapore",
-        "SX": "Sint Maarten (Dutch part)",
-        "SK": "Slovakia",
-        "SI": "Slovenia",
-        "SB": "Solomon Islands",
-        "SO": "Somalia",
-        "ZA": "South Africa",
-        "GS": "South Georgia and the South Sandwich Islands",
-        "SS": "South Sudan",
-        "ES": "Spain",
-        "LK": "Sri Lanka",
-        "SD": "Sudan",
-        "SR": "Suriname",
-        "SZ": "Swaziland",
-        "SE": "Sweden",
-        "CH": "Switzerland",
-        "SY": "Syrian Arab Republic",
-        "TW": "Taiwan, Province of China",
-        "TJ": "Tajikistan",
-        "TZ": "Tanzania, United Republic of",
-        "TH": "Thailand",
-        "TL": "Timor-Leste",
-        "TG": "Togo",
-        "TK": "Tokelau",
-        "TO": "Tonga",
-        "TT": "Trinidad and Tobago",
-        "TN": "Tunisia",
-        "TR": "Turkey",
-        "TM": "Turkmenistan",
-        "TC": "Turks and Caicos Islands",
-        "TV": "Tuvalu",
-        "UG": "Uganda",
-        "UA": "Ukraine",
-        "AE": "United Arab Emirates",
-        "GB": "United Kingdom",
-        "US": "United States",
-        "UM": "United States Minor Outlying Islands",
-        "UY": "Uruguay",
-        "UZ": "Uzbekistan",
-        "VU": "Vanuatu",
-        "VE": "Venezuela, Bolivarian Republic of",
-        "VN": "Viet Nam",
-        "VG": "Virgin Islands, British",
-        "VI": "Virgin Islands, U.S.",
-        "WF": "Wallis and Futuna",
-        "EH": "Western Sahara",
-        "YE": "Yemen",
-        "ZM": "Zambia",
-        "ZW": "Zimbabwe"
-    };
-var obj = _.invert(countries);
-var configFacebook = {scope:['email','user_location','user_birthday']};
-app.locals.facebook = '';
+
+
+
+
+
+var configFacebook = {scope:['email','user_birthday']};
+
 app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res, next) {
     req.facebook.api('/me',{fields: 'id,first_name,last_name,gender,picture.width(800).height(800),email,location{location},birthday'}, function(err, user) {
+        if (err) throw err;
         app.locals.fb_image = user.picture.data.url;
         //console.log(req.facebook);
         request({
@@ -422,7 +157,8 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                     password: 'fb'
                 }
             },
-            function(error, response, body) {
+            function(err, response, body) {
+                if (err) throw err;
                 if(JSON.parse(body).msg == 'user exists'){
                     app.locals.facebook = JSON.parse(body).msg;
                 }
@@ -434,7 +170,7 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                     method: 'POST',
                     form: {
                         email: user.email,
-                        password: ''
+                        password: 'fb'
                     }
                 },
                 function(error, response, sess) {
@@ -477,6 +213,7 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
 
 
 
+
 app.get('/charts/*', function(req, res) {
     res.redirect('/charts');
 });
@@ -489,6 +226,51 @@ if ('development' == app.get('env')) {
     app.use(errorHandler());
 }
 
-http.createServer(app).listen(app.get('port'), function() {
+httpServer = http.createServer(app);
+
+
+
+httpServer.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+var io = require('socket.io').listen(httpServer);
+io.sockets.on('connection', function (socket) {
+  socket.on('join', function (data) {
+    socket.join(data.id); // We are using room of socket io
+  });
+});
+
+var users = {};
+
+io.on('connection', function(socket){
+    var me = false;
+    socket.on('chat message', function(data){
+        //io.emit('chat message', msg);
+        io.sockets.in(data.to_id).emit('new_msg', {msg: data.msg, from_id : data.from_id, to_id : data.to_id});
+    });
+
+    for (var k in users){
+        socket.emit('connected_users',users[k]);
+    }
+
+    socket.on('connected', function(data){
+        me = data;
+        //io.emit('chat message', msg);
+        users[data.id]=me;
+        //console.log(users);
+        socket.broadcast.emit('connected_users', data);
+    });
+
+    socket.on('disconnect', function(){
+        if(!me){
+            return false;
+        }
+        console.log('user disconnected');
+        delete users[me.id];
+        socket.broadcast.emit('dis', me);
+
+    });
+});
+
