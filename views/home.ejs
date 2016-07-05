@@ -1,22 +1,15 @@
 <!doctype html>
 <html data-ng-app="App">
     <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Accueil</title>
-        <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/style.css"> 
-        <!--  <link rel="stylesheet" href="/css/color2.css">-->
+        <%- include layouts/site.ejs %>
+
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/basic-styles.css">
         <link rel="stylesheet" href="/css/header.css">
-        <link rel="stylesheet" href="/css/okayNav.css">
         <link rel="stylesheet" href="/css/ngGallery.css">
-        <script src="/js/jquery.js"></script>
-        <script src="/js/bootstrap.js"></script>
-        <script src="/js/jquery.okayNav.js"></script>
-        <script src="/js/highcharts.js"></script>
-        <script src="/js/exporting.js"></script>
+
+
         <script src="/js/angular.min.js"></script>
         <script src="/js/ng-infinite-scroll.js"></script>
         <script src="/js/angular-animate.js"></script>
@@ -25,13 +18,8 @@
         <script src="/js/moment.js"></script>
         <script src="/js/croppie.js"></script>
         <script src="/js/moment-with-locales.js"></script>
-        <script src="/js/jquery.validate.js"></script>
         <%- include ../public/js/home.js %>
-        <script type="text/javascript">
-          $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-          })
-        </script>
+
     </head>
     <body class="home" data-ng-controller="DemoController as ctrl">
         <%- include layouts/header.ejs %>
@@ -143,13 +131,9 @@
                           </div>
                         </div>
 
-                    <!--
-                      <div ng-if=" event.type=='0' " class="col-xs-10">
-                        <div id="aaa" class="container1">{{$index}}</div>
+
                       </div>
-                      -->
-                      </div>
-                      <div ng-show='reddit.busy'>Loading data...</div>
+                      <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
                     </div>
                     <!--endrow-->
 
@@ -160,23 +144,9 @@
       
       
       </main>
-      <script src="js/jquery.okayNav.js"></script>
-      <script type="text/javascript">
-        var navigation = $('#nav-main').okayNav();
-          
-     /*     $(".activity").affix({
-   offset: { 
-    top: 54,
-    bottom: function () {
-     return (this.bottom = $('footer').outerHeight(true)+ 100 )
-    }
-   }
-  });*/
 
 
-
-
-      </script>
+      <script src="/js/site.js"></script>
       <%- include ../public/js/activity.js %>
    </body>
   

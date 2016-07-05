@@ -1015,9 +1015,7 @@ exports.chart = function (req, res) {
     }
     updateUserInfo(req, res, stored);
 };
-
-
-//page créer une courbe
+//page create chart
 exports.createChart = function (req, res) {
     var stored = function (retour) {
         res.render('create-chart', {

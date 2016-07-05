@@ -29,7 +29,7 @@ var _ = require('lodash');
 //var MemoryStore = express.session.MemoryStore;
 //var sessionStore = new MemoryStore();
 
-
+var cookieSession = require('cookie-session');
 
 
 
@@ -46,21 +46,27 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use(cookieParser());
+//app.use(cookieParser());
 
 app.use(cookieParser('S3CRE7'));
-app.use(express.cookieSession());
 
 app.use(methodOverride());
 app.use(multipart());
-app.use(session({
+
+app.use(cookieSession({
+  key: 'app.sess',
+  secret: 'SUPERsekret'
+}));
+
+
+/*app.use(session({
   secret: '1234567890QWERTY',
   maxAge: 200000,
   expires : new Date(Date.now() + (3600000*24)),
       saveUninitialized:true,
     resave:true,
   cookie: {expires: new Date(253402300000000)}
-}))
+}))*/
 /*app.use(session(
     { secret: "secret", store: sessionStore, maxAge: Date.now() + (30 * 86400 * 1000) 
     }));*/
@@ -419,6 +425,7 @@ var configFacebook = {scope:['email','user_location','user_birthday']};
 app.locals.facebook = '';
 app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res, next) {
     req.facebook.api('/me',{fields: 'id,first_name,last_name,gender,picture.width(800).height(800),email,location{location},birthday'}, function(err, user) {
+        if (err) throw err;
         app.locals.fb_image = user.picture.data.url;
         //console.log(req.facebook);
         request({
@@ -428,10 +435,11 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     email: user.email,
-                    password: 'fb'
+                    password: ''
                 }
             },
-            function(error, response, body) {
+            function(err, response, body) {
+                if (err) throw err;
                 if(JSON.parse(body).msg == 'user exists'){
                     app.locals.facebook = JSON.parse(body).msg;
                 }

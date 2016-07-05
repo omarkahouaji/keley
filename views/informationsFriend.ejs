@@ -30,7 +30,7 @@
     <script src="/js/moment.js"></script>
 <script src="/js/jquery.okayNav.js"></script>
 </head>
-<body class="home">
+<body class="home friend_profile">
   <div class="wait hidden " id="wait">
     <div class="col-md-offset-4 col-md-4">
       <img src="/images/reload.svg">
@@ -51,31 +51,31 @@
 
            <form class=" form-horizontal" >
             <div class="form-group">
-              <label  class="col-md-offset-1 col-sm-2 control-label">Nom :</label>
+              <label>Nom</label>
               <span><%=friends_data.last_name%></span>
             </div>
             <div class="form-group">
-              <label  class="col-md-offset-1 col-sm-2 control-label">Prénom :</label>
+              <label>Prénom</label>
               <span><%=friends_data.first_name%></span>
             </div>
 
             <div class="form-group">
-              <label  class="col-md-offset-1 col-sm-2 control-label">Mobile :</label>
+              <label>Mobile</label>
               <span><%=friends_data.phone%></span>
             </div>
 
             <div class="form-group">
-              <label  class="col-md-offset-1 col-sm-2 control-label">Email :</label>
+              <label>Email</label>
               <span><%=friends_data.email%></span>
             </div>
 
             <div class="form-group">
-            <label  class="col-md-offset-1 col-sm-2 control-label">Sexe :</label>
+            <label >Sexe</label>
              <span id="sexe"></span>
             </div>
 
             <div class="form-group">
-              <label  class="col-sm-3 control-label">Date de naissance :</label>
+              <label>Date de naissance</label>
               <span id="date" ></span>
               <!--<div class="col-sm-7">
                 <input type="text" id="date" name="date" class="form-control datepicker date-style" data-value="<%=friends_data.birthday%>" disabled>
@@ -84,12 +84,12 @@
             </div>
 
             <div class="form-group">
-              <label  class="col-md-offset-1 col-sm-2 control-label">Ville :</label>
+              <label >Ville</label>
               <span><%=friends_data.address%></span>
             </div>
 
               <div class="form-group country">
-                <label  class="col-md-offset-1 col-sm-2 control-label">Pays :</label>
+                <label>Pays</label>
                 <span id="country" ></span>
               </div>
 
