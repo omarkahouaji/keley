@@ -21,7 +21,9 @@ var fs = require('fs');
 var moment = require('moment');
 moment.locale('fr');
 var _ = require('lodash');
+
 var cookieSession = require('cookie-session');
+
 app.set('port', process.env.PORT || 4300);
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/favicon.png'));
@@ -32,13 +34,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+
 app.use(cookieParser('S3CRE7'));
 app.use(methodOverride());
 app.use(multipart());
+
 app.use(cookieSession({
   key: 'app.sess',
   secret: 'SUPERsekret'
 }));
+
+/*app.use(session({
+  secret: '1234567890QWERTY',
+  maxAge: 200000,
+  expires : new Date(Date.now() + (3600000*24)),
+      saveUninitialized:true,
+    resave:true,
+  cookie: {expires: new Date(253402300000000)}
+}))*/
+/*app.use(session(
+    { secret: "secret", store: sessionStore, maxAge: Date.now() + (30 * 86400 * 1000) 
+    }));*/
+
 /*app.use(session({
     store: new RedisStore({
         //host: 'immortality.redis.cache.windows.net',
@@ -154,7 +171,7 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     email: user.email,
-                    password: 'fb'
+                    password: ''
                 }
             },
             function(err, response, body) {

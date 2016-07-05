@@ -11,8 +11,6 @@ var atob = require('atob');
 var nodemailer = require('nodemailer');
 var transporter = nodemailer.createTransport('smtps://omar.kahouaji%40esprit.tn:esprit123@smtp.gmail.com');
 var Jimp = require("jimp");
-var fileExists = require('file-exists');
-
 
 //premiere lettre capitale
 function capitalizeFirstLetter(string) {
@@ -138,14 +136,8 @@ exports.informationsFriend = function (req, res) {
                 },
                     function (error, response, body) {
                         var json = JSON.parse(body);
-                        if(json.data[0].birthday!=null){
-                            var birth = new Date(json.data[0].birthday);
-                            console.log(birth);
-                            json.data[0].age = parseInt(moment(birth).fromNow(true));
-                        }
-                        else{
-                           json.data[0].age = '';
-                        }
+                        var birth = new Date(json.data[0].birthday);
+                        json.data[0].age = parseInt(moment(birth).fromNow(true));
                         if (isFriend == true) {
                             res.render('informationsFriend', { informations: retour.data[0], friends_data: json.data[0] })
                         }
@@ -190,44 +182,6 @@ exports.postLike = function (req, res) {
         }
     },
         function (error, response, body) {
-            res.json(body);
-        });
-}
-
-exports.addMessage = function(req,res){
-    request({
-        url: base_url + 'users/addMessage',
-        method: 'POST',
-        form: {
-            sender_id:parseInt(req.session.data.id_user),
-            recipient_id: req.body.recipient_id,
-            text: req.body.text
-        }
-    },
-    function (error, response, body) {
-            res.json(body);
-    });   
-}
-
-exports.messages = function(req,res){
-       request({
-        url: base_url + 'users/messages/' + parseInt(req.params.id)+'/'+parseInt(req.params.id2),
-        method: 'GET'
-    },
-    function (error, response, body) {
-            var json = JSON.parse(body);
-            res.json(json);
-    });  
-}
-
-exports.deleteLike = function (req, res) {
-    console.log(base_url + 'likes/deleteLike/'+parseInt(req.body.event_id)+'/'+parseInt(req.session.data.id_user));
-    request({
-        url: base_url + 'likes/deleteLike/'+parseInt(req.body.event_id)+'/'+parseInt(req.session.data.id_user),
-        method: 'DELETE'
-    },
-        function (error, response, body) {
-            console.log(body);
             res.json(body);
         });
 }
@@ -449,6 +403,7 @@ exports.getActivity = function (req, res) {
         method: 'GET'
     },
         function (error, response, body) {
+            console.log(body);
             res.json(body);
         }
     )
@@ -667,6 +622,7 @@ exports.home = function (req, res) {
             method: 'GET'
         },
             function (error, response, body) {
+                console.log("aaaa");
                 var json = JSON.parse(body);
                 res.render('home', { informations: retour.data[0], activity: json.data });
             });
@@ -719,17 +675,19 @@ exports.event = function (req, res) {
                 var uploadsFinal = [];
                 for (var j = 0; j < json.data[0].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
-                    if(fileExists(path)){
-
-                    //if (fs.existsSync(path)) {
-
-                        uploadsFinal.push(json.data[0].uploads[j]);
-                        json.data[0].uploads = [];
-                        json.data[0].uploads = uploadsFinal;
-                        uploadsFinal = [];
-                    }
+                    request(path, function (err, resp) {
+                        if (resp.statusCode === 200) {
+                            uploadsFinal.push(json.data[0].uploads[j]);
+                       }
+                    });
                 }
-                res.render('event.ejs', {event: JSON.stringify(json.data[0]),informations: retour.data[0]})
+                json.data[0].uploads = [];
+                json.data[0].uploads = uploadsFinal;
+                uploadsFinal = [];
+                res.render('event.ejs', {
+                    event: JSON.stringify(json.data[0]),
+                    informations: retour.data[0]
+                })
             });
     }
     updateUserInfo(req, res, stored);
@@ -740,6 +698,7 @@ exports.editChart = function (req, res) {
         request({ url: base_url + 'charts/has_chart/' + parseInt(req.session.data.id_user) + '/' + parseInt(req.params.id), method: 'GET' },
             function (err, response, msg) {
                 var has_chart = JSON.parse(msg);
+                console.log(has_chart);
                 if (has_chart == false) {
                     res.redirect('/charts');
                 } else {
@@ -785,16 +744,15 @@ exports.editEvent = function (req, res) {
                                     }
                                     for (var j = 0; j < json.data[0].uploads.length; j++) {
                                         var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
-                                        if(fileExists(path)){
-
-                                        //if (fs.existsSync(path)) {
-
-                                            uploadsFinal.push(json.data[0].uploads[j]);
-                                            json.data[0].uploads = [];
-                                            json.data[0].uploads = uploadsFinal;
-                                            uploadsFinal = [];                                      
-                                        }
+                                        request(path, function (err, resp) {
+                                            if (resp.statusCode === 200) {
+                                                uploadsFinal.push(json.data[0].uploads[j]);
+                                           }
+                                        });
                                     }
+                                    json.data[0].uploads = [];
+                                    json.data[0].uploads = uploadsFinal;
+                                    uploadsFinal = [];
                                     res.render('edit-event', { event: json.data[0], informations: retour.data[0], type: "1", charts: tab, iconTab: iconTab })
                                 });
                         });
@@ -815,26 +773,22 @@ exports.eventsAngular = function (req, res) {
     },
         function (error, response, body) {
             var json = JSON.parse(body);
-            console.log(json.data[0]);
             var uploadsFinal = [];
             for (var i = 0; i < json.data.length; i++) {
                 for (var j = 0; j < json.data[i].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                     //throw new Error(path);
-                    if(fileExists(path)){
-
-                    //if (fs.existsSync(path)) {
-
-                        uploadsFinal.push(json.data[i].uploads[j]);
-                        json.data[i].uploads = [];
-                        json.data[i].uploads = uploadsFinal;
-                        uploadsFinal = [];
-                    }
+                    request(path, function (err, resp) {
+                        if (resp.statusCode === 200) {
+                            uploadsFinal.push(json.data[i].uploads[j]);
+                       }
+                    });
                 }
+                json.data[i].uploads = [];
+                json.data[i].uploads = uploadsFinal;
+                uploadsFinal = [];
             }
-            
             res.json(json);
-
         });
 }
 //function load events
@@ -852,19 +806,20 @@ exports.events_timeline = function (req, res) {
         function (error, response, body) {
             var json = JSON.parse(body);
             var uploadsFinal = [];
+          
             for (var i = 0; i < json.data.length; i++) {
-                for (var j = 0; j < json.data[i].uploads.length; j++) {
-                    var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
-                    if(fileExists(path)){
-
-                    //if (fs.existsSync(path)) {
-
-                            uploadsFinal.push(json.data[i].uploads[j]);
-                            json.data[i].uploads = [];
-                            json.data[i].uploads = uploadsFinal;
-                            uploadsFinal = [];
+                //if (json.data[i].type == "1") {
+                    for (var j = 0; j < json.data[i].uploads.length; j++) {
+                        var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
+                        request(path, function (err, resp) {
+                            if (resp.statusCode === 200) {
+                                uploadsFinal.push(json.data[i].uploads[j]);
+                           }
+                        });
                     }
-                }
+                    json.data[i].uploads = [];
+                    json.data[i].uploads = uploadsFinal;
+                    uploadsFinal = [];
             }
             res.json(json);
         });
@@ -904,6 +859,7 @@ exports.charts = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
+                console.log(json);
                 if (!error && response.statusCode == 200) {
                     var courbes = {}, data = [];
                     var y = [], x = [], title = [], id_event = [];
@@ -936,6 +892,7 @@ exports.charts = function (req, res) {
                                 ress.id = id_event;
                             ress.chartName = json.data[i].title,
                                 ress.id_chart = json.data[i].id_chart;
+                            //console.log(json.data[i].id_chart);
                             courbes.data.push(ress);
                             y = [];
                             x = [];
@@ -950,74 +907,6 @@ exports.charts = function (req, res) {
     updateUserInfo(req, res, stored);
 };
 
-exports.followedCharts = function (req, res) {
-    var stored = function (retour) {
-        request({
-            url: base_url + 'charts/followed/' + parseInt(req.session.data.id_user)+'/0/0',
-            method: 'GET'
-        },
-            function (error, response, body) {
-                var json = JSON.parse(body);
-                if (!error && response.statusCode == 200) {
-                    var courbes = {}, data = [];
-                    var y = [], x = [], title = [], id_event = [];
-                    courbes.data = [];
-                    for (var i = 0; i < json.data.length; i++) {
-                        data.push = {};
-                    }
-                    yData = [], xData = [], name = [], id = [];
-                    for (var i = 0; i < json.data.length; i++) {
-
-                        if (json.data[i].events != null) {
-                            var t = [];
-                            for (var k = 0; k < json.data[i].events.length; k++) {
-
-                                t.push(json.data[i].events[k]);
-                            }
-                            t.sort(function (x, y) {
-                                return Date.parse(x.creation_date) - Date.parse(y.creation_date);
-                            })
-                            for (var j = 0; j < json.data[i].events.length; j++) {
-                                y.push(parseInt(t[j].note));
-                                x.push((moment(t[j].creation_date).format("D MMMM")));
-                                title.push(t[j].title);
-                                id_event.push(t[j].id_event);
-                            }
-                            var ress = {};
-                            ress.yData = y, ress.xData = x,
-                                ress.creation_date = moment(json.data[i].creation_date).format("D MMMM YYYY"),
-                                ress.name = title,
-                                ress.id = id_event;
-                            ress.chartName = json.data[i].title,
-                                ress.id_chart = json.data[i].id_chart;
-                            courbes.data.push(ress);
-                            y = [];
-                            x = [];
-                            title = [];
-                            id_event = [];
-                        }
-                    }
-                    res.render('followed-charts', { charts: JSON.stringify(courbes), informations: retour.data[0], pageTitle: 'Mes courbes' });
-                }
-            });
-    }
-    updateUserInfo(req, res, stored);
-};
-
-exports.followChart = function(req,res){
-     request({
-        url: base_url + 'charts/follow',
-        method: 'POST',
-        form: {
-                        id_user:req.body.id_user,
-                        id_chart: req.body.id_chart
-        }
-    },
-        function (error, response, body) {
-            res.json(body);
-        });   
-}
-
 //charts friend
 exports.chartsFriend = function (req, res) {
     var stored = function (retour) {
@@ -1025,6 +914,7 @@ exports.chartsFriend = function (req, res) {
         request({ url: base_url + 'users/one/' + parseInt(req.params.id), method: 'GET' },
             function (error, response, fdatab) {
                 var fdata = JSON.parse(fdatab);
+                //console.log(fdata);
                 if (fdata.msg == 'success') {
                     var birth = new Date(fdata.data[0].birthday);
                     fdata.data[0].age = parseInt(moment(birth).fromNow(true));
@@ -1033,6 +923,7 @@ exports.chartsFriend = function (req, res) {
                 request({ url: base_url + 'charts/all/' + parseInt(req.params.id), method: 'GET' },
                     function (error, response, body) {
                         var json = JSON.parse(body);
+                        //console.log(json);
                         var courbes = {};
                         var data = [];
                         var y = [];
@@ -1136,7 +1027,9 @@ exports.chart = function (req, res) {
     }
     updateUserInfo(req, res, stored);
 };
-//page create chart
+
+
+//page créer une courbe
 exports.createChart = function (req, res) {
     var stored = function (retour) {
         res.render('create-chart', {
@@ -1151,6 +1044,7 @@ exports.createChart = function (req, res) {
 //fonction ajouter courbe
 exports.addChart = function (req, res) {
     var stored = function (retour) {
+        console.log(retour);
         request({
             url: base_url + 'charts/create',
             method: 'POST',
@@ -1173,6 +1067,7 @@ exports.addChart = function (req, res) {
                 } else {
                     json.data[0].iconTab = "icon-public";
                 }
+                console.log(json.data[0]);
                 res.render('create-event', {
                     type: "0",
                     chart: json.data[0],
@@ -1188,6 +1083,7 @@ exports.addChart = function (req, res) {
 //page créer evenement
 exports.createEvent = function (req, res) {
     var stored = function (retour) {
+        console.log(retour);
         request({
             url: base_url + 'charts/all/' + parseInt(req.session.data.id_user),
             method: 'GET'
@@ -1246,6 +1142,7 @@ exports.updateChart = function (req, res) {
         }
     },
         function (error, response, body) {
+            console.log(body);
             res.redirect('/charts');
         });
 }
@@ -1298,6 +1195,7 @@ exports.updateEvent = function (req, res) {
                             },
                                 function (err, response, body) {
                                     if (err) throw err;
+                                    console.log('ok');
                                     fs.unlinkSync(req.files.file.originalFilename);
                                     fs.unlinkSync('small_' + req.files.file.originalFilename);
                                 });
@@ -1335,6 +1233,7 @@ exports.updateEvent = function (req, res) {
                                     },
                                         function (err, response, body) {
                                             if (err) throw err;
+                                            console.log('image', i+1, 'uploaded');
                                             upload(i + 1);
                                             fs.unlinkSync(req.files.file[i].originalFilename);
                                             fs.unlinkSync('small_'+req.files.file[i].originalFilename);
@@ -1351,6 +1250,7 @@ exports.updateEvent = function (req, res) {
 }
 //function create event
 exports.save = function (req, res) {
+    console.log(req.body.date);
     request({
         url: base_url + 'events/create',
         method: 'POST',
@@ -1394,7 +1294,7 @@ exports.save = function (req, res) {
                             },
                                 function (err, response, body) {
                                     if (err) throw err;
-
+                                    console.log('ok');
                                     fs.unlinkSync(req.files.file.originalFilename);
                                     fs.unlinkSync('small_' + req.files.file.originalFilename);
                                 });
@@ -1432,9 +1332,10 @@ exports.save = function (req, res) {
                                     },
                                         function (err, response, body) {
                                             if (err) throw err;
+                                            console.log('image', i+1, 'uploaded');
                                             upload(i + 1);
-                                            //fs.unlinkSync(req.files.file[i].originalFilename);
-                                            //fs.unlinkSync('small_'+req.files.file[i].originalFilename);
+                                            fs.unlinkSync(req.files.file[i].originalFilename);
+                                            fs.unlinkSync('small_'+req.files.file[i].originalFilename);
                                         });
                                 });
                         });

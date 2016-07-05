@@ -67,7 +67,7 @@
     var html = $(
     '<div class="comments-item"'+
       '<div class="comments-container">'+
-        '<img class="comments-img " src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%-informations.id_user%>/<%-informations.avatar%>" >'+
+        '<img class="comments-img " src="<%= path_avatar %>/<%-informations.id_user%>/<%-informations.avatar%>" >'+
         '<h5 class="comments-user-name"><%-informations.first_name%></h5>'+
         '<span class="comments-date">'+moment(json.data.creation_date).locale('fr').fromNow()+'</span>'+
         '<p>'+content+'</p>'+
@@ -114,8 +114,8 @@
       var img='';
       for (var j=0;j<event.uploads.length;j++){
       
-      ress.thumb='http://localhost:85/api.immortality.life/application/uploads/'+event.user_id+'/'+event.id_event+'/small_'+event.uploads[j].file;
-      ress.img='http://localhost:85/api.immortality.life/application/uploads/'+event.user_id+'/'+event.id_event+'/'+event.uploads[j].file;
+      ress.thumb='<%= upload_path %>'+event.user_id+'/'+event.id_event+'/small_'+event.uploads[j].file;
+      ress.img='<%= upload_path %>'+event.user_id+'/'+event.id_event+'/'+event.uploads[j].file;
       images.push(ress);
       
       ress={};
