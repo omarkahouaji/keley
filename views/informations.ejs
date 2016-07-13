@@ -1,21 +1,17 @@
 <!doctype html>
 <html>
   <head>
-
     <title>Profil</title>
     <%- include layouts/site.ejs %>
-
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/header.css" media="screen">
-
     <link rel="stylesheet" href="/css/default.date.css" media="screen">
     <link rel="stylesheet" href="/css/default.css" media="screen"> <!--date-->
     <link rel="stylesheet" href="/css/bootstrap-tagsinput.css" media="screen">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/flags.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
-
     <script src="/js/picker.js"></script>
     <!--<script src="/js/legacy.js"></script>-->
     <script src="/js/picker.date.js"></script>
@@ -25,11 +21,13 @@
     <script src="/js/croppie.js"></script>
     <script src="/js/jquery.flagstrap.js"></script>
     <script src="/js/fileinput.js"></script>
-    <%- include ../public/js/facebook.js %>
+    
+    <%- include ../public/js/messages.js %>
   </head>
   <body class="home">
     <%- include layouts/header.ejs %>
     <main>
+    <%- include layouts/messages.ejs %>
     <div class="container">
       <div class="row">
         <%- include layouts/profileNav.ejs %>
@@ -170,7 +168,8 @@
     </div>
     </main>
     <script src="/js/site.js"></script>
-    <script type="text/javascript" src="/js/crop_avatar.js"></script>
+    <%- include ../public/js/facebook.js %>
+    <%- include ../public/js/crop_avatar.js %>
     <%- include ../public/js/profile.js %>
   </body>
 </html>

@@ -13,12 +13,14 @@
     <script src="/js/ngGallery.js"></script>
     <script src="/js/moment.js"></script>
     <script src="/js/moment-with-locales.js"></script>
-
     <%- include ../public/js/events_friend.js %>
+    <%- include ../public/js/messages.js %>
+      </head>
     
     <body class="home"  data-ng-controller="DemoController as ctrl" >
       <%- include layouts/header.ejs %>
       <main>
+      <%- include layouts/messages.ejs %>
       <div class="container">
         <div class="row">
           <%- include layouts/profileNavFriend.ejs %>
@@ -44,7 +46,6 @@
                           </div>
                           
                         </div>
-
                       </div>
                     </div>
                     <div class="row">

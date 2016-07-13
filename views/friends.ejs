@@ -1,6 +1,5 @@
 <!doctype html>
 <html data-ng-app="App">
-
 	<head>
 		<%- include layouts/site.ejs %>
 		<title>Amis</title>
@@ -8,8 +7,9 @@
 		<script src="/js/angular.min.js"></script>
 		<script src="/js/ng-infinite-scroll.js"></script>
 		<script src="/js/croppie.js"></script>
-		<%- include ../public/js/facebook.js %>
 		<%- include ../public/js/friends.js %>
+		<%- include ../public/js/messages.js %>
+		
 	</head>
 	<body class="home" data-ng-controller="DemoController">
 		<div class="wait hidden " id="wait">
@@ -22,6 +22,7 @@
 		</div>
 		<%- include layouts/header.ejs %>
 		<main>
+		<%- include layouts/messages.ejs %>
 		<div class="container">
 			<div class="row">
 				<%if(friend==false){%>
@@ -49,7 +50,6 @@
 			</div>
 			</main>
 			<script src="/js/site.js"></script>
-			<script type="text/javascript" src="/js/crop_avatar.js"></script>
+			<%- include ../public/js/crop_avatar.js %>
 		</body>
 	</html>
-

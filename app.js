@@ -21,9 +21,7 @@ var fs = require('fs');
 var moment = require('moment');
 moment.locale('fr');
 var _ = require('lodash');
-
 var cookieSession = require('cookie-session');
-
 app.set('port', process.env.PORT || 4300);
 app.use(express.static(__dirname + '/public'));
 app.use(favicon(__dirname + '/public/favicon.png'));
@@ -34,28 +32,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
 app.use(cookieParser('S3CRE7'));
 app.use(methodOverride());
 app.use(multipart());
-
 app.use(cookieSession({
   key: 'app.sess',
   secret: 'SUPERsekret'
 }));
-
-/*app.use(session({
-  secret: '1234567890QWERTY',
-  maxAge: 200000,
-  expires : new Date(Date.now() + (3600000*24)),
-      saveUninitialized:true,
-    resave:true,
-  cookie: {expires: new Date(253402300000000)}
-}))*/
-/*app.use(session(
-    { secret: "secret", store: sessionStore, maxAge: Date.now() + (30 * 86400 * 1000) 
-    }));*/
-
 /*app.use(session({
     store: new RedisStore({
         //host: 'immortality.redis.cache.windows.net',
@@ -75,14 +58,14 @@ app.locals.upload_path="http://immortality-lif-api.azurewebsites.net/Immortality
 app.locals.path_avatar="http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/avatars";
 app.locals.base_url="http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/";
 var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
-//app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
-//app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
-//app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
-//var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+// app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
+// app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
+// app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
+// var base_url = 'http://localhost:85/api.immortality.life/index.php/';
 app.locals.fb_image = '';
 app.locals.facebook = '';
 //facebook
-app.use(Facebook.middleware({ appId: '1601778010137309', secret: 'ff7edb7bc2cf3d93dd21989ebf9db6fb'}));
+app.use(Facebook.middleware({ appId: '276751416030414', secret: 'f29bf263de6b0803b63507989f9a8d36'}));
 //routes
 app.get('/landingPage',immortality.landingPage);
 app.get('/', immortality.index);
@@ -160,8 +143,10 @@ app.get('/messages/:id/:id2', immortality.messages);
 var configFacebook = {scope:['email','user_birthday']};
 
 app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res, next) {
+    
     req.facebook.api('/me',{fields: 'id,first_name,last_name,gender,picture.width(800).height(800),email,location{location},birthday'}, function(err, user) {
-        if (err) throw err;
+        
+        //if (err) throw err;
         app.locals.fb_image = user.picture.data.url;
         //console.log(req.facebook);
         request({
@@ -171,17 +156,22 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                     first_name: user.first_name,
                     last_name: user.last_name,
                     email: user.email,
-                    password: ''
+                    password: 'fb'
                 }
             },
             function(err, response, body) {
+
+
                 if (err) throw err;
+
                 if(JSON.parse(body).msg == 'user exists'){
                     app.locals.facebook = JSON.parse(body).msg;
                 }
                 else{
                     app.locals.facebook = 'new user';
+                    req.session.image_facebook = user.picture.data.url;
                 }
+
                 request({
                     url: base_url+'users/auth_user',
                     method: 'POST',
@@ -218,6 +208,8 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                             var json = JSON.parse(body);
                             json.data.age = parseInt(moment(req.body.date).fromNow(true));//ajouter age au json
                             req.session.data = json.data;//remplir la session avec le fichier json
+
+                            
                             res.redirect('informations');
                         });
                     }else{

@@ -7,10 +7,12 @@
         <script src="/js/ng-infinite-scroll.js"></script>
         <%- include ../public/js/activity.js %>
         <%- include ../public/js/search.js %>
+        <%- include ../public/js/messages.js %>
     </head>
     <body class="search" data-ng-controller="DemoController">
         <%- include layouts/header.ejs %>
         <main>
+        <%- include layouts/messages.ejs %>
         <div class="container">
             <div class="row">
                 <div class="box-search col-md-7 col-md-offset-1">

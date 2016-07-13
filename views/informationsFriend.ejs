@@ -4,11 +4,13 @@
         <%- include layouts/site.ejs %>
         <script src="/js/moment.js"></script>
         <script src="/js/moment-with-locales.js"></script>
+        <%- include ../public/js/messages.js %>
     </head>
     <body class="home friend_profile">
 
         <%- include layouts/header.ejs %>
         <main>
+        <%- include layouts/messages.ejs %>
         <div class="container">
             <div class="row">
                 <%- include layouts/profileNavFriend.ejs %>
