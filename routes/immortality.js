@@ -509,7 +509,27 @@ exports.register = function (req, res) {
         }
     },
         function (error, response, body) {
-            res.redirect('index');//normalement il faut diriger l'utlisateur vers la page d'accueil ( et auto auth)
+            //res.send(JSON.stringify({error: error, response: response, body: body}))
+           res.redirect('index');
+           /* request({
+                url: base_url + 'users/auth_user',
+                method: 'POST',
+                form: {
+                    email: req.body.email,
+                    password: req.body.password
+                }
+            },function (error, response, body) {
+                var json = JSON.parse(body);
+                if (json.msg == 'success') {
+                    var birth = new Date(json.data.birthday);
+                    json.data.age = parseInt(moment(birth).fromNow(true));
+                    req.session.data = json.data
+                    res.redirect('home');
+                }else{
+                    res.redirect('index'); //normalement il faut diriger l'utlisateur vers la page d'accueil ( et auto auth)
+                }
+                
+            });*/
         }
     );
 }
