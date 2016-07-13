@@ -4,7 +4,6 @@
     <title>Mes événements</title>
     <%- include layouts/site.ejs %>
     <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/basic-styles.css">
     <link rel="stylesheet" href="/css/header.css">
@@ -13,7 +12,6 @@
     <link rel="stylesheet" href="/css/screen.css">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
-
     <script src="/js/angular.min.js"></script>
     <script src="/js/ng-infinite-scroll.js"></script>
     <script src="/js/angular-animate.js"></script>
@@ -22,14 +20,15 @@
     <script src="/js/moment.js"></script>
     <script src="/js/croppie.js"></script>
     <script src="/js/moment-with-locales.js"></script>
-    <%- include ../public/js/facebook.js %>
     <%- include ../public/js/events.js %>
+    <%- include ../public/js/messages.js %>
 
   </head>
 
   <body class="home"  data-ng-controller="DemoController as ctrl" >
     <%- include layouts/header.ejs %>
 <main>
+<%- include layouts/messages.ejs %>
 <div class="container">
   <div class="row">
     <%- include layouts/profileNav.ejs %>
@@ -173,7 +172,7 @@
 </main>
 
 
-<script type="text/javascript" src="/js/crop_avatar.js"></script>
+
 <script src="/js/site.js"></script>
     <script type="text/javascript">
 
@@ -188,5 +187,6 @@
         $('.tmp_modal').remove();
       });
     </script>
+    <%- include ../public/js/crop_avatar.js %>
   </body>
 </html>

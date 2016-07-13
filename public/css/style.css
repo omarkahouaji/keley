@@ -43,14 +43,31 @@ a:hover, a:active{
     color: #000;
     z-index: 6000;   
     display: none;
+    background-color: #EDEEF1;
+    border-radius: 3px 3px 0 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+}
+.chat_box form{
+    position: fixed;
+    bottom: 0px;
+    
+}
+.chat_box form #m{
+    width: 200px;
+    border: none;
+    border-top: 1px solid;
+    height: 30px;
 }
 .chat_box_name{
-    background-color: green;
-    color: #000;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
     display: block;
-    height: 50px;
+    height: 30px;
     cursor: pointer;
     margin-top: 0px;
+    padding: 10px;
 }
 .chat li{
     display: block;
@@ -58,28 +75,47 @@ a:hover, a:active{
     cursor: pointer;
 }
 
-/*.chat_me{
-    background: #0ebeff !important;
-    color: white !important;
-    padding: 10px 10px;
-    border-radius: 100px;
+
+.dropdown-menu-chart, .event-header .dropdown-menu {
+    left: auto !important;
+    right: 0px !important;
+}
+
+.chat_me{
+    margin-top: 20px;
     text-align: right;
+    margin-bottom: 20px;
+}
+.chat_me span{
+    padding: 10px;
+    max-width: 250px;
+    border-radius: 10px;
+    background-color: rgba(61, 191, 183, 0.38);
 }
 .chat_friend{
-    background: white;
-    color: black;
-    padding: 10px 10px;
-    border-radius: 100px;
+    margin-top: 20px;
     text-align: left;
-}*/
+    margin-bottom: 20px;
+}
+.chat_friend span{
+    padding: 10px;
+    max-width: 250px;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+
 
 .chat__users{
-    background-color: blue;
-    color: #000;
+    background-color: #000;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
     display: block;
     height: 50px;
     cursor: pointer;
     margin-top: 0px;
+    padding: 10px;
 }
 
 .landing_page{
@@ -1675,7 +1711,7 @@ legataire_block{
 }
 
 body{
-    font-family: NanamiProRegular6 !important;
+    font-family: 'San Francisco', -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif !important;
 }
 
 .informations_btn:hover{
@@ -1853,9 +1889,7 @@ input[type=range]::-webkit-slider-runnable-track {
 }
 
 
-.dropdown-menu{
-    left:-155px !important;
-}
+
 
 .btn-default.active, .btn-default:active, .open>.dropdown-toggle.btn-default {
     color: #333;

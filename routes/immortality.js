@@ -4,14 +4,15 @@ var fs = require('fs');
 var util = require('util');
 var base_url = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/index.php/';
 var upload_path = 'http://immortality-lif-api.azurewebsites.net/Immortality-api/application/uploads/';
-//var base_url = 'http://localhost:85/api.immortality.life/index.php/';
-//var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
+// var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+// var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
 moment.locale('fr');
 var atob = require('atob');
 var nodemailer = require('nodemailer');
-var transporter = nodemailer.createTransport('smtps://omar.kahouaji%40esprit.tn:esprit123@smtp.gmail.com');
+var transporter = nodemailer.createTransport('smtps://omar.kahouaji%40esprit.tn:espritomar@smtp.gmail.com');
 var Jimp = require("jimp");
 var fileExists = require('file-exists');
+//var socket = io.connect('http://localhost:4300');
 
 
 //premiere lettre capitale
@@ -62,6 +63,10 @@ function updateUserInfo(req, res, stored) {
                                     }
                                     json.data[0].nbNotifs = nb;
                                     json.data[0].percent = percent.percent;
+                                    json.data[0].image_facebook = 'empty';
+                                    if(req.session.image_facebook != undefined){
+                                     json.data[0].image_facebook = req.session.image_facebook;
+                                    }
                                     req.session.data = json.data[0];
                                 }
                                 return stored(json);
@@ -110,7 +115,14 @@ exports.informations = function (req, res) {
                             function (error, response, body_notaire) {
                                 var json_notaire = JSON.parse(body_notaire);
                                 var json = JSON.parse(body);
-                                res.render('informations', { notaire: json_notaire, informations: retour.data[0], pageTitle: 'Informations', friends: friends, immortals: JSON.stringify(json.data) });
+
+                                var image_facebook = 'empty';
+                                console.log(req.session.image_facebook);
+
+
+                                res.render('informations', 
+                                    { notaire: json_notaire, informations: retour.data[0], pageTitle: 'Informations', 
+                                    friends: friends, immortals: JSON.stringify(json.data) });
                             });
                     })
 
@@ -509,7 +521,7 @@ exports.register = function (req, res) {
         }
     },
         function (error, response, body) {
-            res.redirect('index');//normalement il faut diriger l'utlisateur vers la page d'accueil ( et auto auth)
+            res.json(body);
         }
     );
 }
@@ -720,9 +732,7 @@ exports.event = function (req, res) {
                 for (var j = 0; j < json.data[0].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
                     if(fileExists(path)){
-
                     //if (fs.existsSync(path)) {
-
                         uploadsFinal.push(json.data[0].uploads[j]);
                         json.data[0].uploads = [];
                         json.data[0].uploads = uploadsFinal;
@@ -786,9 +796,7 @@ exports.editEvent = function (req, res) {
                                     for (var j = 0; j < json.data[0].uploads.length; j++) {
                                         var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
                                         if(fileExists(path)){
-
                                         //if (fs.existsSync(path)) {
-
                                             uploadsFinal.push(json.data[0].uploads[j]);
                                             json.data[0].uploads = [];
                                             json.data[0].uploads = uploadsFinal;
@@ -822,15 +830,13 @@ exports.eventsAngular = function (req, res) {
                     var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                     //throw new Error(path);
                     if(fileExists(path)){
-
                     //if (fs.existsSync(path)) {
-
                         uploadsFinal.push(json.data[i].uploads[j]);
-                        json.data[i].uploads = [];
-                        json.data[i].uploads = uploadsFinal;
-                        uploadsFinal = [];
                     }
                 }
+                json.data[i].uploads = [];
+                json.data[i].uploads = uploadsFinal;
+                uploadsFinal = [];
             }
             
             res.json(json);
@@ -856,9 +862,7 @@ exports.events_timeline = function (req, res) {
                 for (var j = 0; j < json.data[i].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                     if(fileExists(path)){
-
                     //if (fs.existsSync(path)) {
-
                             uploadsFinal.push(json.data[i].uploads[j]);
                             json.data[i].uploads = [];
                             json.data[i].uploads = uploadsFinal;
@@ -1394,7 +1398,6 @@ exports.save = function (req, res) {
                             },
                                 function (err, response, body) {
                                     if (err) throw err;
-
                                     fs.unlinkSync(req.files.file.originalFilename);
                                     fs.unlinkSync('small_' + req.files.file.originalFilename);
                                 });

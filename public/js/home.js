@@ -20,8 +20,14 @@
 
 //increment  likes length
       $scope.increment=function(event){
-        event.likes.length +=1;
-        event.isLiked=true;
+        if(event.isLiked){
+          event.likes.length -= 1;
+          event.isLiked = false;
+        }
+        else{
+          event.likes.length +=1;
+          event.isLiked=true;       
+        }
       }
 //end increment  likes length
 
@@ -65,27 +71,46 @@
       //ajouter like
       $scope.addLike = function (event,e) {
         event.preventDefault();
-        console.log(e);  
+        if(e.isLiked == false){
+          $.ajax({
+            url:'/postLike',
+            type: 'POST',
+            data:{
+              event_id:e.id_event,
+              event_user_id:e.user_id
+            },
+            dataType: 'json',
+            success:function(data){
+              var json = JSON.parse(data);
+              console.log(json);
+              if(json.msg=='success'){   
+                console.log('Liked !')
+              }else{
+                console.log('Error posting like')
+              }
+            }
+          });
+        }else{
         $.ajax({
-          url:'/postLike',
+          url:'/deleteLike',
           type: 'POST',
           data:{
-            event_id:e.id_event,
-            event_user_id:e.id_user
+            event_id:e.id_event
           },
           dataType: 'json',
           success:function(data){
+            console.log(data);
             var json = JSON.parse(data);
             console.log(json);
             if(json.msg=='success'){   
-              console.log('Liked !')
-
+              console.log('removed !')
             }else{
-              console.log('Error posting like')
+              console.log('Error removing like')
             }
           }
         });
-      }
+        }
+    }
 //end ajouter like
 
         $scope.delete = function (e,event) {

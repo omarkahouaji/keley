@@ -18,7 +18,37 @@
               }
 
           })){
-            $('#f').submit();    
+               event.preventDefault();               
+             $.ajax({
+                        url:'/register',
+                        type: 'POST',
+                        data:{
+                          email:$("#email").val(),
+                          last_name:$("#last_name").val(),
+                          first_name:$("#first_name").val(),
+                          password:$("#password").val()
+                        },
+                        dataType: 'json',
+                        success:function(d){
+                          var data = JSON.parse(d);
+                          console.log(data);
+                            if(data.msg == "user exists"){
+                              alert("user exists");
+                            }else if(data.msg == "failure"){
+                              alert("failure");
+                            }else if(data.msg == "success"){
+                             window.location.href = "/index";
+                            
+                        }else{
+                          alert("failure");
+                        }
+                      }
+                      });
+
+
+
+
+
           }
 
   });

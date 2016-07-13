@@ -13,12 +13,18 @@
     $scope.dateEvent = function(date){
     return moment(date).locale('fr').format('D MMMM YYYY')
     }
-    //increment  likes length
-    $scope.increment=function(event){
-    event.likes.length +=1;
-    event.isLiked=true;
-    }
-    //end increment  likes length
+
+      $scope.increment=function(event){
+        if(event.isLiked){
+          event.likes.length -= 1;
+          event.isLiked = false;
+        }
+        else{
+          event.likes.length +=1;
+          event.isLiked=true;       
+        }
+      }
+
     //ajouter commentaire
     $scope.addComment = function (event,e,content) {
     event.preventDefault();
@@ -55,28 +61,49 @@
       }
       //end ajouter commentaire
       //ajouter like
+      //ajouter like
       $scope.addLike = function (event,e) {
-      event.preventDefault();
-      console.log(e);
-      $.ajax({
-      url:'/postLike',
-      type: 'POST',
-      data:{
-      event_id:e.id_event,
-      event_user_id:e.user_id
-      },
-      dataType: 'json',
-      success:function(data){
-      var json = JSON.parse(data);
-      console.log(json);
-      if(json.msg=='success'){
-      console.log('Liked !')
-      }else{
-      console.log('Error posting like')
-      }
-      }
-      });
-      }
+        event.preventDefault();
+        if(e.isLiked == false){
+          $.ajax({
+            url:'/postLike',
+            type: 'POST',
+            data:{
+              event_id:e.id_event,
+              event_user_id:e.user_id
+            },
+            dataType: 'json',
+            success:function(data){
+              var json = JSON.parse(data);
+              console.log(json);
+              if(json.msg=='success'){   
+                console.log('Liked !')
+              }else{
+                console.log('Error posting like')
+              }
+            }
+          });
+        }else{
+        $.ajax({
+          url:'/deleteLike',
+          type: 'POST',
+          data:{
+            event_id:e.id_event
+          },
+          dataType: 'json',
+          success:function(data){
+            console.log(data);
+            var json = JSON.parse(data);
+            console.log(json);
+            if(json.msg=='success'){   
+              console.log('removed !')
+            }else{
+              console.log('Error removing like')
+            }
+          }
+        });
+        }
+    }
       //end ajouter like
       
       var event =<%-event%>;
