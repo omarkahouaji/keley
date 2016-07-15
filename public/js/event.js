@@ -126,8 +126,10 @@
       images=[];
       //console.log(events[i].images);
       
-      
+
+
       $scope.event=event;
+
       });
       
       

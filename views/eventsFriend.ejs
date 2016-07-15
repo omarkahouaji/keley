@@ -40,7 +40,7 @@
                         </div>
                         <div class="event-right">
                           <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
-                          <i class=" icon-friends "></i>
+                          <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
                           <div ng-init="x = event.note">
                             <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
                           </div>
