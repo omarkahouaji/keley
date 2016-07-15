@@ -53,7 +53,7 @@
           <button class="btn  btn-block informations_btn" type="submit"><i class="icon-event x"></i>Ajouter un événement</button>
         </form>
         <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
-          <div  class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types" ng-hide="deleted" id="{{event.id_event}}">
+          <div ng-if="event.chart_privacy != '0' || event.user_id == '<%-informations.id_user%>'"  class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types" ng-hide="deleted" id="{{event.id_event}}">
             <div >
               <div class="row">
                 <div class="col-md-12">
