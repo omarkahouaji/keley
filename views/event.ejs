@@ -48,7 +48,7 @@
                   </div>
                   <div class="event-right">
                     <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
-                   <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
+                   <i ng-class="event.privacy == 0 ? 'icon-private' : event.privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
 
 
                     <div ng-init="x = event.note">
