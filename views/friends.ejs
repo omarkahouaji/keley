@@ -12,14 +12,6 @@
 		
 	</head>
 	<body class="home" data-ng-controller="DemoController">
-		<div class="wait hidden " id="wait">
-			<div class="col-md-offset-4 col-md-4">
-				<img src="/images/reload.svg">
-			</div>
-			<div class="col-md-offset-4 col-md-4">
-				<span> la création de votre événement est en cours ...</span>
-			</div>
-		</div>
 		<%- include layouts/header.ejs %>
 		<main>
 		<%- include layouts/messages.ejs %>
@@ -32,6 +24,7 @@
 				<%}%>
 				<div class="col-md-7">
 					<div class="friends-box">
+						<span class="msg-warning">Pas d'amis</span>
 						<div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
 							<div class="friends_block" ng-repeat="friend in reddit.friends" >
 								<a ng-href="/{{friend.id_friend}}/informations">

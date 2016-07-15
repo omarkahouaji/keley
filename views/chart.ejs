@@ -98,9 +98,9 @@
                 </div>
             </div>
         </main>
-        <script type="text/javascript" src="/js/crop_avatar.js"></script>
+        <script src="/js/site.js"></script>
+        <%- include ../public/js/crop_avatar.js %>
         <script type="text/javascript">
-            var navigation = $('#nav-main').okayNav();
             var date = moment("<%-data.creation_date%>").locale('fr').format("D MMMM YYYY");
             $('<p>Le '+date+'</p>').appendTo('#date');
         </script>

@@ -1,4 +1,5 @@
-        <script type="text/javascript">
+       <script type="text/javascript">
+       /*
         $(function() {
           var is_open = 0; // chat nav not opened
           var is_open_chat = 1; // chat nav not opened
@@ -73,8 +74,7 @@
                 if(data.data !== undefined){
                 for(var k=0;k<data.data.length;k++){
                   if(data.data[k].sender_id == <%=informations.id_user%>){
-                    /*$('#messages').append($('<li class="chat_me">'));
-                    $('.chat_me').append($('<span>').text(data.data[k].text));*/
+
                     $('#messages').append('<li class="chat_me"><span>'+data.data[k].text+'</span></li>');
                   }else{
                     //$('#messages').append($('<li style="color:red">').text(data.data[k].text));
@@ -158,6 +158,6 @@
 
 
 
-
+*/
 
         </script>

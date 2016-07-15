@@ -7,7 +7,6 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            console.log(json);
             if(json.msg=='success'){   
                 console.log('deleted yesssss !!!');
             }
@@ -164,7 +163,6 @@
     var url = "/eventsAngular/"+<%-informations.id_user%>+"/" + this.after;
 
     $http.get(url).success(function(data) {
-      console.log(data);
     var events =data.data;
     var images = [];
     var ress={};

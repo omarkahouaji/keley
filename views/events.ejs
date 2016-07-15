@@ -3,13 +3,11 @@
   <head>
     <title>Mes événements</title>
     <%- include layouts/site.ejs %>
-    <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/basic-styles.css">
     <link rel="stylesheet" href="/css/header.css">
     
     <link rel="stylesheet" href="/css/ngGallery.css">
-    <link rel="stylesheet" href="/css/screen.css">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
     <script src="/js/angular.min.js"></script>
@@ -175,14 +173,13 @@
 
 <script src="/js/site.js"></script>
     <script type="text/javascript">
-
+    $('#events_link').addClass('items_active');
       $('#aaa').on('show.bs.modal', function (e) {
         var yourparameter = e.relatedTarget.dataset.yourparameter;
         console.log(yourparameter);
         $('<a data-dismiss="modal"  class="tmp_modal btn btn-default" onclick="mdelete('+yourparameter+')">Oui'+
           '</a>').appendTo('.bbb');
       });
-
       $('#aaa').on('hidden.bs.modal', function (e) {
         $('.tmp_modal').remove();
       });

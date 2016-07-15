@@ -23,7 +23,8 @@
                       success:function(data){
                         var json = JSON.parse(data);
                         if(json.msg=='success'){   
-                                console.log('yes');
+                    $('#abonne-span').show();
+                    $('#suivre-btn').remove();
                         }else{
                           console.log('no :(')
                         }
@@ -31,6 +32,13 @@
                     });
                 }
                 //
+
+                $scope.showAbonne = function () {
+                    $('#abonne-span').show();
+                    $('#suivre-btn').remove();
+                }
+
+                
 
         //send Friend Request
         $scope.sendFriendRequest = function (event,user) {

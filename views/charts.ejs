@@ -1,14 +1,11 @@
 <!doctype html>
-<html data-ng-app="App">
+<html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mes Courbes</title>
-
+    <title>Mes Courbes - Immortality</title>
       <link href="css/bootstrap.min.css" rel="stylesheet">
-      <link href="css/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
       <link href="css/style.css" rel="stylesheet">
-      <link rel="stylesheet" type="text/css" href="css/ion.rangeSlider.css">
       <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
       <link rel="stylesheet" type="text/css" href="css/normalize.css">
       <link rel="stylesheet" href="css/basic-styles.css" media="screen">
@@ -29,7 +26,6 @@
       var charts = <%-charts%>;
       $(function () {
       $.each(charts.data, function (i, dataset) {
-      console.log(dataset);
       var pro = [];
       var a={};
       for (var i = 0; i < dataset.name.length; i++) {
@@ -140,25 +136,7 @@
       <%- include layouts/profileNav.ejs %>
       <div class="col-md-7">
         <div class="profil" style="padding: 15px">
-        <!--
-          <ul class="pager">
-            <li class="previous">
-              <input type="checkbox" id="private-checkbox" />
-              <label for="private-checkbox">Privés<i class=" icon-private "></i>
-              </label>
-            </li>
-            <li>
-              <input type="checkbox" id="friends-checkbox" />
-              <label for="friends-checkbox">Amis<i class=" icon-friends "></i>
-              </label>
-            </li>
-            <li class="next">
-              <input type="checkbox" id="public-checkbox" />
-              <label for="public-checkbox">Publics<i class=" icon-public "></i>
-              </label>
-            </li>
-          </ul>
-          -->
+
           <form action="/create-chart">
             <button class="btn  btn-block informations_btn" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
           </form>
@@ -189,7 +167,6 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            console.log(json);
             if(json.msg=='success'){   
                 console.log('deleted yesssss !!!');
                 $('.'+id_chart).remove();
@@ -198,7 +175,6 @@
           }
         });
         $('.'+id_chart).remove();
-  console.log(id_chart);
 }
 
 

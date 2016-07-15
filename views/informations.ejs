@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Profil</title>
+    <title><%=informations.first_name+' '+informations.last_name%> - Immortality</title>
     <%- include layouts/site.ejs %>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap-select.css">
     <link rel="stylesheet" type="text/css" href="/css/normalize.css">
@@ -22,7 +22,7 @@
     <script src="/js/jquery.flagstrap.js"></script>
     <script src="/js/fileinput.js"></script>
     
-    <%- include ../public/js/messages.js %>
+   <!--  <%- include ../public/js/messages.js %> -->
   </head>
   <body class="home">
     <%- include layouts/header.ejs %>

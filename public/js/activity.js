@@ -22,7 +22,7 @@
           if (json.data[i].type == '2') {
             $('.activity_content').append(
               '<div>' +
-              '<img src=' + src + ' alt="...">' +
+              '<a class="white_link" href="/' + json.data[i].id_user + '/events"><img src=' + src + ' alt="..."></a>' +
               '<a class="white_link" href="/' + json.data[i].id_friend + '/events"><span>' + json.data[i].first_name + ' ' + json.data[i].last_name + ' et ' + json.data[i].friend_first_name + ' ' + json.data[i].friend_last_name + ' sont devenus amis</span></a>' +
               '<i class=" icon-friends"></i>' +
               '</div>'
@@ -42,7 +42,7 @@
           if (json.data[i].type == '1') {
             $('.activity_content').append(
               '<div>' +
-              '<img src=' + srcR + ' alt="...">' +
+              '<a class="white_link" href="/' + json.data[i].sender_id + '/events"><img src=' + srcR + ' alt="..."></a>' +
               '<a class="white_link" href="/event/' + json.data[i].event_id + '"><span>' + json.data[i].first_name + ' ' + json.data[i].last_name + ' a commenté l\'événement de  ' + json.data[i].recipient_first_name + ' ' + json.data[i].recipient_last_name + '</span></a>' +
               '<i class=" icon-comment "></i>' +
               '</div>'
@@ -52,7 +52,7 @@
           if (json.data[i].type == '4') {
             $('.activity_content').append(
               '<div>' +
-              '<img src=' + src + ' alt="...">' +
+              '<a class="white_link" href="/' + json.data[i].id_user + '/events"><img src=' + src + ' alt="..."></a>' +
               '<a class="white_link" href="/event/' + json.data[i].id_event + '"><span>' + json.data[i].first_name + ' ' + json.data[i].last_name + ' a ajouté un nouveau événement</span></a>' +
               '<i class=" icon-event "></i>' +
               '</div>'

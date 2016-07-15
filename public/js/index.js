@@ -14,6 +14,7 @@ if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
 
 
      $("#continuer").click(function(event){
+        $('#loading').show();
         var validator = $( "#f" ).validate({
           errorClass: "invalid"
         }
@@ -31,6 +32,7 @@ if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
             var json = JSON.parse(data);
             console.log(json);
             if(json.msg=='success'){
+                $('#loading').hide();
                 $('#password').removeClass('hidden');
                 $('#connexion').removeClass('hidden');
                 $('#continuer').addClass('hidden');
@@ -51,7 +53,7 @@ if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
   });
 //connexion
      $("#connexion").click(function(event){
-
+        $('#loading').show();
         event.preventDefault();
         $.ajax({
         url:'/auth',
@@ -67,6 +69,7 @@ if (navigator.userAgent.toLowerCase().indexOf("chrome") >= 0) {
                 window.location.href = "/home";
             }else{   
                 $('#error').removeClass('hidden');
+                $('#loading').hide();
             }
 }
 })  

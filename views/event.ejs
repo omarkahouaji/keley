@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title></title>
+    <title><%=title%> - Immortality</title>
     <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/font-awesome-4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/css/style.css">
@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="/css/croppie.css" />
     <script src="/js/croppie.js"></script>
    <%- include ../public/js/event.js %>
-   <%- include ../public/js/messages.js %>
+   <!-- <%- include ../public/js/messages.js %> -->
     </head>
     <body class="home"  data-ng-controller="DemoController as ctrl" >
       <%- include layouts/header.ejs %>
@@ -111,14 +111,8 @@
       </div>
     </div>
     </main>
-    <script type="text/javascript" src="/js/crop_avatar.js"></script>
-    <script type="text/javascript">
-    
-    $('#myModal').on('shown.bs.modal', function () {
-    $('#myInput').focus()
-    });
-    
-    var navigation = $('#nav-main').okayNav();
-    </script>
+    <script src="/js/site.js"></script>
+    <%- include ../public/js/crop_avatar.js %>
+
   </body>
 </html>

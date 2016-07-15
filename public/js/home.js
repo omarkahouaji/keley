@@ -178,6 +178,9 @@
      //}
      this.events.push(events[i]);
     }
+    if(this.events.length==0){
+      $('<span>Mmmm ! Votre timeline est vide. Allez ! Ajouter des amis !</span>').appendTo('#msg-vide');
+    }
     this.after = this.events.length;
     this.busy = false;
     }.bind(this));

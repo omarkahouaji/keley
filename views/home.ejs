@@ -1,7 +1,7 @@
 <!doctype html>
 <html data-ng-app="App">
     <head>
-        <title>Accueil</title>
+        <title>Accueil - Immortality</title>
         <%- include layouts/site.ejs %>
 
         <link rel="stylesheet" href="/css/normalize.css">
@@ -66,7 +66,7 @@
                     </div>
                     <!--endrow-->
                     <!--row-->
-                    <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
+                    <div id="msg-vide" infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
                       <div class="row" ng-repeat="event in reddit.events ">
 
                         

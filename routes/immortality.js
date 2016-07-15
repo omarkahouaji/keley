@@ -135,6 +135,9 @@ exports.informations = function (req, res) {
 
 
 exports.informationsFriend = function (req, res) {
+    if(parseInt(req.params.id) == parseInt(req.session.data.id_user)){
+        res.redirect("/informations");
+    }else{
     var stored = function (retour) {
         request({
             url: base_url + 'users/isFriend/' + parseInt(req.session.data.id_user) + '/' + parseInt(req.params.id),
@@ -169,6 +172,7 @@ exports.informationsFriend = function (req, res) {
             });
     }
     updateUserInfo(req, res, stored);
+}
 }
 //landing page
 exports.landingPage = function (req, res) {
@@ -554,6 +558,9 @@ exports.friends = function (req, res) {
 
 
 exports.friendsFriend = function (req, res) {
+    if(parseInt(req.params.id) == parseInt(req.session.data.id_user)){
+        res.redirect("/friends");
+    }else{
     var stored = function (retour) {
         request({
             url: base_url + 'users/one/' + parseInt(req.params.id),
@@ -573,6 +580,7 @@ exports.friendsFriend = function (req, res) {
             });
     }
     updateUserInfo(req, res, stored);
+}
 }
 
 exports.sendFriendRequest = function (req, res) {
@@ -696,6 +704,9 @@ exports.events = function (req, res) {
 
 
 exports.eventsFriend = function (req, res) {
+        if(parseInt(req.params.id) == parseInt(req.session.data.id_user)){
+        res.redirect("/events");
+    }else{
     var stored = function (retour) {
         request({
             url: base_url + 'users/one/' + parseInt(req.params.id),
@@ -718,6 +729,7 @@ exports.eventsFriend = function (req, res) {
 
     updateUserInfo(req, res, stored);
 }
+}
 
 //event page
 exports.event = function (req, res) {
@@ -739,7 +751,7 @@ exports.event = function (req, res) {
                         uploadsFinal = [];
                     }
                 }
-                res.render('event.ejs', {event: JSON.stringify(json.data[0]),informations: retour.data[0]})
+                res.render('event.ejs', {event: JSON.stringify(json.data[0]),title:json.data[0].title,informations: retour.data[0]})
             });
     }
     updateUserInfo(req, res, stored);
@@ -823,7 +835,6 @@ exports.eventsAngular = function (req, res) {
     },
         function (error, response, body) {
             var json = JSON.parse(body);
-            console.log(json.data[0]);
             var uploadsFinal = [];
             for (var i = 0; i < json.data.length; i++) {
                 for (var j = 0; j < json.data[i].uploads.length; j++) {
@@ -832,11 +843,12 @@ exports.eventsAngular = function (req, res) {
                     if(fileExists(path)){
                     //if (fs.existsSync(path)) {
                         uploadsFinal.push(json.data[i].uploads[j]);
+                        json.data[i].uploads = [];
+                        json.data[i].uploads = uploadsFinal;
+                        uploadsFinal = [];
                     }
                 }
-                json.data[i].uploads = [];
-                json.data[i].uploads = uploadsFinal;
-                uploadsFinal = [];
+
             }
             
             res.json(json);
@@ -895,9 +907,13 @@ exports.auth = function (req, res) {
 }
 //log in page
 exports.index = function (req, res) {
-    res.render('index', {
-        pageTitle: 'Connexion'
-    });
+    if( typeof req.session.data == "undefined" || typeof req.session.data.id_user == "undefined"){
+        res.render('index', {
+            pageTitle: 'Connexion'
+        });
+    }else{
+        res.redirect("/home");
+    }
 };
 //charts page
 exports.charts = function (req, res) {
@@ -1024,6 +1040,9 @@ exports.followChart = function(req,res){
 
 //charts friend
 exports.chartsFriend = function (req, res) {
+        if(parseInt(req.params.id) == parseInt(req.session.data.id_user)){
+        res.redirect("/charts");
+    }else{
     var stored = function (retour) {
         //request utilisateur
         request({ url: base_url + 'users/one/' + parseInt(req.params.id), method: 'GET' },
@@ -1052,7 +1071,7 @@ exports.chartsFriend = function (req, res) {
                         name = [];
                         id = [];
                         for (var i = 0; i < json.data.length; i++) {
-                            if (json.data[i].events != null) {
+                            if (json.data[i].events != null && json.data[i].chart_privacy_types_id_privacy != 0) {
                                 var t = [];
                                 for (var k = 0; k < json.data[i].events.length; k++) {
                                     t.push(json.data[i].events[k]);
@@ -1090,6 +1109,7 @@ exports.chartsFriend = function (req, res) {
             });
     }
     updateUserInfo(req, res, stored);
+}
 };
 //search page
 exports.search = function (req, res) {
@@ -1119,9 +1139,13 @@ exports.chart = function (req, res) {
                 if (!error && response.statusCode == 200) {
                     var tab = [];
                     var xItems = [];
-                    for (var i = 0; i < json.data[0].events.length; i++) {
-                        tab.push(json.data[0].events[i]);
+                    if(json.data[0].events != null)
+                    {
+                        for (var i = 0; i < json.data[0].events.length; i++) {
+                            tab.push(json.data[0].events[i]);
+                        }                     
                     }
+
                     tab.sort(function (x, y) {
                         return Date.parse(x.creation_date) - Date.parse(y.creation_date);
                     })

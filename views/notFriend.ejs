@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <title><%=friends_data.first_name+' '+friends_data.last_name%> - Immortality</title>
     <%- include layouts/site.ejs %>
     <%- include ../public/js/messages.js %>
   </head>
@@ -16,8 +16,9 @@
           <div class="box  box-top">
             <span class="box-title"></span>
             <img src="/images/chrolia.svg" width="150px">
+
             <div class="alert alert-warning alert-dismissible" role="alert">
-              Pour voir le profil de <%=friends_data.first_name+' '+friends_data.last_name%>,envoyez-lui une invitation.
+              <%=friends_data.first_name+' '+friends_data.last_name%> n'est pas votre ami ! Devenz des amis.
             </div>
             <button style="float: initial;display: none;    border-color: #fff;" class="btn_not_friend  search_block_add_friend btn" id="addafter" onclick="sendFriendRequest()"><i class=" icon-friends s" ></i><span>Ajouter</span></button>
             <span id="friend" style="display:none" class="btn_not_friend search_block_friend btn"><i class=" icon-friends s" ></i>Amis</span>
@@ -28,7 +29,7 @@
             <button   onclick="addFriend()" class="response btn_not_friend add-btn search_block_friend btn" ng-show="user.notif_type==2&& user.recipient_id==<%-informations.id_user%> && user.friend == null"  type="submit"><i class=" icon-check s"></i></button>
             <button onclick="deleteFriend()"  class="response btn_not_friend search-follow search_block_friend  btn" ng-show="user.notif_type==2 && user.recipient_id==<%-informations.id_user%> && user.friend == null"  type="submit" ><i class=" icon-close s"></i></button>
             <% } else { %>
-            <button style="float: initial;  border-color: #fff;" class="search_block_add_friend btn" id="request"><i class=" icon-friends s" ></i><span>Demande envoyée</span></button>
+            <button style="float: initial;  border-color: #fff;cursor:none" class="search_block_add_friend btn" id="request"><i class=" icon-friends s" ></i><span>Demande envoyée</span></button>
             <% } %>
           </div>
         </div>

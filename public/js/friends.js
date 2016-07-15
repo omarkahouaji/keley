@@ -1,12 +1,8 @@
 <script type="text/javascript">
-
-     var iApp = angular.module("App", ['infinite-scroll']);
-
-
-     iApp.controller('DemoController', function($scope, Reddit) {
-      $scope.reddit = new Reddit();
-      //$scope.types = {private: false, public:false};
-  });
+var iApp = angular.module("App", ['infinite-scroll']);
+iApp.controller('DemoController', function($scope, Reddit) {
+$scope.reddit = new Reddit();
+});
 
 // Reddit constructor function to encapsulate HTTP and pagination logic
 iApp.factory('Reddit', function($http) {
@@ -17,7 +13,6 @@ iApp.factory('Reddit', function($http) {
 };
 
 Reddit.prototype.nextPage = function() {
-
     if (this.busy) return;
     this.busy = true;
     if(<%-friend%>==false){
@@ -26,10 +21,11 @@ Reddit.prototype.nextPage = function() {
     else{
       var url = "/getFriends/"+<%-friends_data.id_user%>+"/" + this.after;
     }
-    
     $http.get(url).success(function(data) {
-        console.log(data);
         var friends =data.data;
+        if(friends.length == 0){
+          $('.msg-warning').show();
+        }
         for (var i = 0; i < friends.length; i++) {
             this.friends.push(friends[i]);
         }

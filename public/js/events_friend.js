@@ -46,7 +46,7 @@
               var html = $(
                 '<div class="comments-item"'+
                 '<div class="comments-container">'+
-                '<img class="comments-img " src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%-me.id_user%>/<%-me.avatar%>" >'+
+                '<img class="comments-img " src="<%= path_avatar %>/<%-me.id_user%>/<%-me.avatar%>" >'+
                 '<h5 class="comments-user-name"><%-me.first_name%></h5>'+
                 '<span class="comments-date">'+json.data.creation_date+'</span>'+
                 '<p>'+content+'</p>'+

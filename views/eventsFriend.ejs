@@ -73,7 +73,7 @@
                       <div class="comments" ng-init="show = false" ng-show="show">
                         <div class="comments-item" ng-repeat="comment in event.comments">
                           <div class="comments-container">
-                            <img class="comments-img " ng-src="http://localhost:85/api.immortality.life/application/uploads/avatars/{{comment.user[0].id_user}}/{{comment.user[0].avatar}}" >
+                            <img class="comments-img " ng-src="<%= path_avatar %>/{{comment.user[0].id_user}}/{{comment.user[0].avatar}}" >
                             <h5 class="comments-user-name">{{comment.user[0].first_name}}</h5>
                             <span class="comments-date">{{formatDate(comment.creation_date )}}</span>
                             <p>{{comment.content}}</p>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="added"></div>
                         <div class="post-comment">
-                          <img class="post-comment-img " src="http://localhost:85/api.immortality.life/application/uploads/avatars/<%=me.id_user%>/<%=me.avatar%>" >
+                          <img class="post-comment-img " src="<%= path_avatar %>/<%=me.id_user%>/<%=me.avatar%>" >
                           <input ng-model="content" id="com-{{$index}}"  type="text" placeholder="Votre commentaire ... "></input>
                           
                           <input ng-click="addComment($event,event,content);content=''"  type="submit" style="position: absolute; left: -9999px"/>

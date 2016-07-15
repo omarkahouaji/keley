@@ -2,7 +2,7 @@
 <html data-ng-app="App">
     <head>
         <%- include layouts/site.ejs %>
-        <title>Recherche</title>
+        <title><%=term%> - Immortality</title>
         <script src="/js/angular.min.js"></script>
         <script src="/js/ng-infinite-scroll.js"></script>
         <%- include ../public/js/activity.js %>
@@ -63,13 +63,18 @@
                                                 </div>
                                             </div>
                                             
-                                            <div ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription==null)" class="pull-right">
-                                                <button class="search-follow btn" ng-click="followChart($event,chart)"><i class=" icon-public s"></i>Suivre</button>
+                                            <div id="suivre-btn" ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription==null)" class="pull-right">
+                                                <span class="search-follow btn" ng-click="followChart($event,chart)"><i class=" icon-public s"></i>Suivre</span>
                                             </div>
 
                                              <div ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription !=null)" class="pull-right">
-                                               <button class="search-follow btn" ><i class=" icon-public s"></i>Abonné</button>
+                                               <span class="search-follow btn" ><i class=" icon-public s"></i>Abonné</span>
                                             </div>
+
+                                             <div style="display:none" id="abonne-span" class="pull-right">
+                                               <span class="search-follow btn" ><i class=" icon-public s"></i>Abonné</span>
+                                            </div>
+
                                             
                                         </div>
                                         <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
