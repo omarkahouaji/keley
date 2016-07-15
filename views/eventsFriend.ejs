@@ -28,7 +28,7 @@
             <div class="profil" style="padding: 15px">
               <div id="container"></div>
               <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
-                <div class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events" >
+                <div class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events" ng-if="event.chart_privacy != '0' || event.user_id == '<%-informations.id_user%>'">
                   <div  ng-hide="deleted">
                     <div class="row">
                       <div class="col-md-12">
@@ -36,7 +36,7 @@
                       <div class="event-header">
                         <div class="event-left">
                           <a ng-href="/event/{{event.id_event}}" class="event-title">{{event.title}}</a>
-                          <span class="event-date">{{'Le '+dateEvent(event.start_date)}}</span>
+                          <span class="event-date">aa{{'Le '+dateEvent(event.start_date)}}</span>
                         </div>
                         <div class="event-right">
                           <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
