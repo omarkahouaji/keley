@@ -2,10 +2,10 @@ request = require('request');
 var moment = require('moment'); //
 var fs = require('fs');
 var util = require('util');
-var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
-var upload_path = 'http://immortality-api-life.azurewebsites.net/application/uploads/';
-// var base_url = 'http://localhost:85/api.immortality.life/index.php/';
-// var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
+// var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
+// var upload_path = 'http://immortality-api-life.azurewebsites.net/application/uploads/';
+var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
 moment.locale('fr');
 var atob = require('atob');
 var nodemailer = require('nodemailer');
@@ -360,18 +360,8 @@ exports.deleteChart = function (req, res) {
     );
 }
 
-//immortals
-exports.deleteImmortal = function (req, res) {
-    request({
-        url: base_url + 'users/deleteImmortal/' + parseInt(req.body.user_id) + '/' + parseInt(req.body.immortal_id),
-        method: 'DELETE',
-    },
-        function (error, response, body) {
-            var json = JSON.parse(body);
-            res.json(json);
-        }
-    );
-}
+
+
 
 exports.deleteImage = function (req, res) {
     request({
@@ -385,21 +375,7 @@ exports.deleteImage = function (req, res) {
     );
 }
 
-exports.addImmortal = function (req, res) {
-    request({
-        url: base_url + 'users/immortal',
-        method: 'POST',
-        form: {
-            user_id: req.body.user_id,
-            immortal_id: req.body.immortal_id
-        }
-    },
-        function (error, response, body) {
-            var json = JSON.parse(body);
-            res.json(json);
-        }
-    );
-}
+
 
 exports.addNotaire = function (req, res) {
     request({
@@ -433,17 +409,7 @@ exports.addNotaire = function (req, res) {
 }
 
 
-exports.getImmortals = function (req, res) {
-    request({
-        url: base_url + 'users/getImmortals/' + parseInt(req.params.user_id),
-        method: 'GET'
-    },
-        function (error, response, body) {
-            var json = JSON.parse(body);
-            res.json(json);
-        }
-    )
-}
+
 
 //fonction pour avoir les notifications 
 exports.getNotifications = function (req, res) {

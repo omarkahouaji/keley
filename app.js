@@ -4,6 +4,7 @@ var request = require('request');
 var http = require('http');
 var path = require('path');
 var immortality = require('./routes/immortality');
+var immortals = require('./routes/immortals');
 var app = express();
 var connection = require('express-myconnection');
 var errorHandler = require('errorhandler');
@@ -54,14 +55,14 @@ app.use(cookieSession({
 app.use(express.static(path.join(__dirname, 'public'), { redirect : false }));
 
 //locals
-app.locals.upload_path="http://immortality-api-life.azurewebsites.net/application/uploads/";
-app.locals.path_avatar="http://immortality-api-life.azurewebsites.net/application/uploads/avatars";
-app.locals.base_url="http://immortality-api-life.azurewebsites.net/index.php/";
-var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
-// app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
-// app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
-// app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
-// var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+// app.locals.upload_path="http://immortality-api-life.azurewebsites.net/application/uploads/";
+// app.locals.path_avatar="http://immortality-api-life.azurewebsites.net/application/uploads/avatars";
+// app.locals.base_url="http://immortality-api-life.azurewebsites.net/index.php/";
+// var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
+app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
+app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
+app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
+var base_url = 'http://localhost:85/api.immortality.life/index.php/';
 app.locals.fb_image = '';
 app.locals.facebook = '';
 //facebook
@@ -111,8 +112,8 @@ app.get('/:id/informations', immortality.informationsFriend);
 app.post('/editProfile', immortality.editProfile);
 app.post('/uploadAvatar', immortality.uploadAvatar);
 app.get('/logout',immortality.logout);
-app.post('/addImmortal',immortality.addImmortal);
-app.post('/deleteImmortal',immortality.deleteImmortal);
+app.post('/addImmortal',immortals.addImmortal);
+app.post('/deleteImmortal',immortals.deleteImmortal);
 app.post('/addNotaire',immortality.addNotaire);
 //friends
 app.get('/friends', immortality.friends);

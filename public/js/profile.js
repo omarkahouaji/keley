@@ -117,4 +117,6 @@ else{
 }
 //end gender
 
+$('#profile_link').addClass('items_active'); 
+
 </script>

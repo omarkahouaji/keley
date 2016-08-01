@@ -133,24 +133,18 @@
             <div class="form-group">
               <label  class="col-md-offset-1 col-sm-2 control-label">Notaire</label>
               
-              <table>
+              <table class="table table-striped">
                 <tr>
-                  <td>
-                    <span>Nom :</span>
-                    <span><%= notaire.data[0].last_name %></span></br>
-                  </td>
+                  <td>Nom</td>
+                  <td><%= notaire.data[0].last_name %></td>
                 </tr>
                 <tr>
-                  <td>
-                    <span>Prénom :</span>
-                    <span><%= notaire.data[0].first_name %></span>
-                  </td>
+                    <td>Prénom</td>
+                    <td><%= notaire.data[0].first_name %></td>
                 </tr>
                 <tr>
-                  <td>
-                    <span>Email :</span>
-                    <span><%= notaire.data[0].email %></span>
-                  </td>
+                    <td>Email</td>
+                    <td><%= notaire.data[0].email %></td>
                 </tr>
               </table>
               <% } %>

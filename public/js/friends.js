@@ -23,16 +23,19 @@ Reddit.prototype.nextPage = function() {
     }
     $http.get(url).success(function(data) {
         var friends =data.data;
-        if(friends.length == 0){
-          $('.msg-warning').show();
-        }
+
         for (var i = 0; i < friends.length; i++) {
             this.friends.push(friends[i]);
         }
         this.after = this.friends.length ;
         this.busy = false;
     }.bind(this));
+
+            if(friends.length == 0){
+          $('.msg-warning').show();
+        }
 };
+
 
 return Reddit;
 });

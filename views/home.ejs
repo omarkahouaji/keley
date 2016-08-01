@@ -51,9 +51,9 @@
                                     <% if(informations.avatar=="no_avatar"){ %>
                                         <img src="/images/default.svg" class="img-circle">
                                     <%  }else{ %>
-                                        <img src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" class="edit-img">
+                                        <a href="/events"><img src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" class="edit-img"></a>
                                     <% } %>
-                                    <span><%=informations.first_name%> <%=informations.last_name%></span>
+                                    <a href="/events" style="color:#FFF"><%=informations.first_name%> <%=informations.last_name%></a>
                                 </div>
                             </div>
                         <div class="col-xs-10">

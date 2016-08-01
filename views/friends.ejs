@@ -7,7 +7,7 @@
 		<script src="/js/angular.min.js"></script>
 		<script src="/js/ng-infinite-scroll.js"></script>
 		<script src="/js/croppie.js"></script>
-		<%- include ../public/js/friends.js %>
+		
 		<%- include ../public/js/messages.js %>
 		
 	</head>
@@ -44,5 +44,9 @@
 			</main>
 			<script src="/js/site.js"></script>
 			<%- include ../public/js/crop_avatar.js %>
+			<%- include ../public/js/friends.js %>
+			<script type="text/javascript">
+				$('#friends_link').addClass('items_active'); 
+			</script>
 		</body>
 	</html>
