@@ -476,12 +476,7 @@ ul.menu img {
     margin-left: 0px;
     margin-right: 0px;
 }
-.event-header {
-    border-bottom: solid 1px rgba(20, 103, 113, 0.26);
-    height: 70px;
-    display: table;
-    width: 100%;
-}
+
 .event-description {
     text-align: left;
     padding: 15px 10px 15px 20px;
@@ -496,20 +491,7 @@ ul.menu img {
     width: 100%;
     height: 100%;
 }
-.event-left {
-    display: table-cell;
-    width: 45%;
-    text-align: left;
-}
-.event-right {
-    display: table-cell;
-    width: 45%;
-    text-align: right;
-}
-.event-edit{
-    display: table-cell;
-    width: 10%;
-}
+
 .event-title {
     font-weight: bolder;
     color: #000;
@@ -876,12 +858,7 @@ li.next div {
 }
 
 
-.dropdown-event{
-    position: relative;
-    display: inline-block;
-    right: -30px;
-    top: -8px; 
-}
+
 .dropdown-event button{
     background-color: transparent;
     color: #000;
@@ -1657,6 +1634,29 @@ legataire_block{
 }
 .pager label::after{
     top: 8px !important;
+}
+.event-header {
+    border-bottom: solid 1px rgba(20, 103, 113, 0.26);
+    height: 70px;
+    display: table;
+    width: 100%;
+    padding: 15px;
+}
+.event-left {
+    display: table-cell;
+    width: 45%;
+    text-align: left;
+}
+.event-right {
+    display: table-cell;
+    width: 45%;
+    text-align: right;
+}
+.event-edit{
+    display: table-cell;
+    width: 10%;
+}
+.dropdown-event{
 }
 
 
