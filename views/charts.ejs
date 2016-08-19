@@ -39,7 +39,7 @@
 
 
 
-      
+
       $('<div class="chart-spacing '+dataset.id_chart+'" ></div><div class="chart '+dataset.id_chart+'"><span>Courbe : </span><span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span><span>Le '+dataset.creation_date+'</span>'+
       '<div class="dropdown dropdown-chart">'+
   '<button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
@@ -54,70 +54,82 @@
       .appendTo('#container');
 
 
-      
-      $('<div class="'+dataset.id_chart+'" width="600px"></div>')
-      .appendTo('#container')
-      .highcharts({
-      title:{
-      text:null
-      },
-      chart: {
-      type: 'spline',
-      },
-      exporting:{
-      enabled:false,
-      },
-      credits: {
-      enabled: false
-      },
-      plotOptions: {
-      spline: {
-      lineWidth:1,
-      marker:{
-      fillColor:'#eb0c4b',
-      width:15,
-      height:15
-      },
-      dataLabels: {
-                useHTML:true,
-                                    style: {
-                        fontSize:"11px",color:"#eb0c4b"
-                    },
-                enabled: true,
-                formatter: function () {
-                    return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>"; 
+
+      $('<div class="'+dataset.id_chart+'" width="600px"></div>').appendTo('#container').highcharts({
+        title:{
+          text:null
+        },
+        tooltip:{
+          enabled:false
+        },
+        chart:{
+          type:'spline',
+        },
+        exporting:{
+          enabled:false,
+        },
+        credits:{
+          enabled: false
+        },
+        plotOptions:{
+
+          tooltip:false,
+          allowPointSelect: true,
+          lineWidth:1,
+          series:{
+            color:"#000000",
+            verticalAlign:'bottom',
+            dataLabels:{
+              useHTML:true,
+              style:{
+                fontSize:"11px",color:"#eb0c4b"
+              },
+              enabled:true,
+              formatter : function(){
+                return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
+              }
+            },
+            cursor:'pointer',
+            allowPointSelect: true,
+            point : {
+              events : {
+                click : function(event,i){
+                  location.href = "/event/"+event.point.id;
+                  //alert(event.point.id);
                 }
-      },
-      enableMouseTracking: false,
-      },
-      series: {
-      color: '#000000'
-      }
-      },
-      xAxis: {
-      gridLineWidth: 1,
-      gridLineColor:"#edeaea",
-      categories: dataset.xData,
-      plotLines: [{
-      color: '#000000',
-      //value: dataset.xData
-      }]
-      },
-      yAxis: {
-      gridLineColor:"#edeaea",
-      max:5,
-      title: {
-      text: null
-      }
-      },
-      series: [{
-      showInLegend: false,
-      data: pro
-      }
-      ]
+              }
+            },
+            marker:{
+              enabled:true,
+              fillColor:'#eb0c4b',
+              width:15,
+              height:15
+            }
+          },
+          enableMouseTracking: false
+        },
+        xAxis:{
+          gridLineWidth: 1,
+          gridLineColor:"#edeaea",
+          categories: dataset.xData,
+          plotLines:[{
+            color: '#000000',
+            //value: dataset.xData
+          }]
+        },
+        yAxis: {
+          gridLineColor:"#edeaea",
+          max:5,
+          title: {
+            text: null
+          }
+        },
+        series: [{
+          showInLegend: false,
+          data: pro
+        }]
       });
-    $('</div>')
-    .appendTo('#container');
+    $('</div>').appendTo('#container');
     });
     });
 
@@ -125,7 +137,7 @@
     </script>
     <%- include ../public/js/messages.js %>
     <title>Mes courbes</title>
- 
+
 </head>
 <body class="home" >
   <%- include layouts/header.ejs %>
@@ -141,9 +153,9 @@
             <button class="btn  btn-block informations_btn" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
           </form>
           <div>
-            
+
             <div id="container"></div></div>
-            
+
           </div>
         </div>
       </div>
@@ -151,7 +163,7 @@
   </div>
   </main>
   <script src="/js/site.js"></script>
-    
+
     <%- include ../public/js/crop_avatar.js %>
 
 
@@ -159,18 +171,18 @@
 
   <script type="text/javascript">
 
-    $('#charts_link').addClass('items_active');    
+    $('#charts_link').addClass('items_active');
 
 
                 function delete_chart(id_chart){
-                          
+
         $.ajax({
           url:'/deleteChart/'+id_chart,
           type: 'GET',
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
                 console.log('deleted yesssss !!!');
                 $('.'+id_chart).remove();
 

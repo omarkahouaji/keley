@@ -4,9 +4,9 @@
     <title>Mes événements</title>
     <%- include layouts/site.ejs %>
     <link rel="stylesheet" href="/css/normalize.css">
+    <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/basic-styles.css">
     <link rel="stylesheet" href="/css/header.css">
-    
     <link rel="stylesheet" href="/css/ngGallery.css">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
@@ -35,18 +35,15 @@
         <ul class="pager">
           <li class="previous">
             <input type="checkbox" id="private-checkbox" data-ng-model='types.private' />
-            <label for="private-checkbox">Privés<i class=" icon-private "></i>
-            </label>
+            <label for="private-checkbox"><i class=" icon-private "></i>Privés</label>
           </li>
           <li>
             <input type="checkbox" id="friends-checkbox" data-ng-model='types.friends'/>
-            <label for="friends-checkbox">Amis<i class=" icon-friends "></i>
-            </label>
+            <label for="friends-checkbox"><i class=" icon-friends "></i>Amis</label>
           </li>
           <li class="next">
             <input type="checkbox" id="public-checkbox" data-ng-model='types.public' />
-            <label for="public-checkbox">Publics<i class=" icon-public " ></i>
-            </label>
+            <label for="public-checkbox"><i class=" icon-public " ></i>Publics</label>
           </li>
         </ul>
         <form action="/create-event">
@@ -56,19 +53,21 @@
           <div class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types"  ng-hide="deleted" id="{{event.id_event}}">
             <div >
               <div class="row">
-                <div class="col-md-12">
-                </div>
                 <div class="event-header">
                   <div class="event-left">
                     <a ng-href="/event/{{event.id_event}}" class="event-title">{{event.title}}</a>
                     <span class="event-date">{{'Le '+dateEvent(event.start_date)}} </span>
                   </div>
                   <div class="event-right">
-                    <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
-                    <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
-                    <div class="dropdown dropdown-event">
+                    <a ng-href="/chart/{{event.chart_id}}" class="event-chart"><i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>{{event.chart_name}}</a>
+                    <div ng-init="x = event.note">
+                      <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
+                    </div>
+                  </div>
+                  <div class="event-edit">
+                      <div class="dropdown dropdown-event">
                       <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <span><i class="icon-arrow" style="font-size:8px"></i></span>
+                      <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                         <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
@@ -76,22 +75,6 @@
                         <li><a href=""  data-toggle="modal" data-target="#aaa" data-yourparameter="{{event.id_event}}">Supprimer evenement</a></li>
                       </ul>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div ng-init="x = event.note">
-                      <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
-                    </div>
-                    
                   </div>
                 </div>
               </div>
