@@ -34,15 +34,15 @@
       <div class="profil" style="padding: 15px">
         <ul class="pager">
           <li class="previous">
-            <input type="checkbox" id="private-checkbox" data-ng-model='types.private' />
+            <input type="checkbox" id="private-checkbox" data-ng-model='types.private' ng-checked="true" />
             <label for="private-checkbox"><i class=" icon-private "></i>Privés</label>
           </li>
           <li>
-            <input type="checkbox" id="friends-checkbox" data-ng-model='types.friends'/>
+            <input type="checkbox" id="friends-checkbox" data-ng-model='types.friends' ng-checked="true"/>
             <label for="friends-checkbox"><i class=" icon-friends "></i>Amis</label>
           </li>
           <li class="next">
-            <input type="checkbox" id="public-checkbox" data-ng-model='types.public' />
+            <input type="checkbox" id="public-checkbox" data-ng-model='types.public' ng-checked="true"/>
             <label for="public-checkbox"><i class=" icon-public " ></i>Publics</label>
           </li>
         </ul>

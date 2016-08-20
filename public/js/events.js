@@ -198,9 +198,11 @@
     iApp.filter('myfilter', function() {
     return function( items, types) {
     var filtered = [];
+    console.log(types);
     angular.forEach(items, function(item) {
     if(types.private == false && types.public == false && types.friends ==false) {
     filtered.push(item);
+    console.log("omar");
     }
     if(types.private == true && item.chart_privacy == '0'){
     filtered.push(item);

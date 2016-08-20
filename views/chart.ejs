@@ -14,9 +14,9 @@
                     <%- include layouts/profileNav.ejs %>
                     <div class="col-md-7">
                         <div class="profil" style="padding: 15px">
-                           <form action="/create-chart">
-                                <button class="btn  btn-block informations_btn" type="submit"><i class="icon-chart x"></i>Ajouter une courbe</button>
-                            </form>      
+                           <form action="/create-event">
+                                <button class="btn  btn-block informations_btn" type="submit"><i class="icon-event x"></i>Ajouter un evenement</button>
+                            </form>
                             <div class="events row">
                                 <div style="text-align: left;padding: 10px 20px;">
                                     <span style="color: #3dbfb7;display: inline-block;font-family: NanamiProRegular7;">Courbe :</span><span><a style="font-family: NanamiProRegular7;color: #000;text-decoration: none;" href="/chart/<%=data.id_chart%>"><%=data.title%></a></span>
@@ -74,7 +74,7 @@
                                                     },
                                                     enabled: true,
                                                     formatter: function () {
-                                                        return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>"; 
+                                                        return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
                                                     }
                                                 },
                                                 enableMouseTracking: false,
@@ -87,7 +87,7 @@
                                           enabled: false
                                         },
                                         series: [{
-                                          showInLegend: false,  
+                                          showInLegend: false,
                                           data: processed_json
                                         }]
                                     });

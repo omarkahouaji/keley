@@ -120,8 +120,8 @@ exports.informations = function (req, res) {
                                 console.log(req.session.image_facebook);
 
 
-                                res.render('informations', 
-                                    { notaire: json_notaire, informations: retour.data[0], pageTitle: 'Informations', 
+                                res.render('informations',
+                                    { notaire: json_notaire, informations: retour.data[0], pageTitle: 'Informations',
                                     friends: friends, immortals: JSON.stringify(json.data) });
                             });
                     })
@@ -222,7 +222,7 @@ exports.addMessage = function(req,res){
     },
     function (error, response, body) {
             res.json(body);
-    });   
+    });
 }
 
 exports.messages = function(req,res){
@@ -233,7 +233,7 @@ exports.messages = function(req,res){
     function (error, response, body) {
             var json = JSON.parse(body);
             res.json(json);
-    });  
+    });
 }
 
 exports.deleteLike = function (req, res) {
@@ -390,11 +390,11 @@ exports.addNotaire = function (req, res) {
     },
         function (error, response, body) {
             var mailOptions = {
-                from: '"Immortality 👥" <kahouajiomar@gmail.com>', // sender address 
-                to: req.body.email, // list of receivers 
-                subject: 'Hello ✔', // Subject line 
-                text: 'Bonjour ' + req.body.first_name + ' ' + req.body.last_name + ', Vous etes invité à contacter l\'équipe de immortality. Cordialement, ', // plaintext body 
-                //html: '<b>Hello world </b>' // html body 
+                from: '"Immortality 👥" <kahouajiomar@gmail.com>', // sender address
+                to: req.body.email, // list of receivers
+                subject: 'Hello ✔', // Subject line
+                text: 'Bonjour ' + req.body.first_name + ' ' + req.body.last_name + ', Vous etes invité à contacter l\'équipe de immortality. Cordialement, ', // plaintext body
+                //html: '<b>Hello world </b>' // html body
             };
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
@@ -411,7 +411,7 @@ exports.addNotaire = function (req, res) {
 
 
 
-//fonction pour avoir les notifications 
+//fonction pour avoir les notifications
 exports.getNotifications = function (req, res) {
     request({
         url: base_url + 'notifications/all/' + parseInt(req.params.id) + '/' + parseInt(req.params.nb),
@@ -478,7 +478,7 @@ exports.uploadAvatar = function (req, res) {
 };
 
 
-//fonction inscription 
+//fonction inscription
 exports.register = function (req, res) {
     request({
         url: base_url + 'users/register',
@@ -609,7 +609,7 @@ exports.getFriends = function (req, res) {
 
 
 
-//fonction modifier informations  
+//fonction modifier informations
 exports.editProfile = function (req, res) {
     var country = req.body.country;
     if (typeof (req.body.country) === 'object') {
@@ -722,7 +722,7 @@ exports.event = function (req, res) {
     }
     updateUserInfo(req, res, stored);
 }
-//function edit chart 
+//function edit chart
 exports.editChart = function (req, res) {
     var stored = function (retour) {
         request({ url: base_url + 'charts/has_chart/' + parseInt(req.session.data.id_user) + '/' + parseInt(req.params.id), method: 'GET' },
@@ -778,7 +778,7 @@ exports.editEvent = function (req, res) {
                                             uploadsFinal.push(json.data[0].uploads[j]);
                                             json.data[0].uploads = [];
                                             json.data[0].uploads = uploadsFinal;
-                                            uploadsFinal = [];                                      
+                                            uploadsFinal = [];
                                         }
                                     }
                                     res.render('edit-event', { event: json.data[0], informations: retour.data[0], type: "1", charts: tab, iconTab: iconTab })
@@ -816,7 +816,7 @@ exports.eventsAngular = function (req, res) {
                 }
 
             }
-            
+
             res.json(json);
 
         });
@@ -1001,7 +1001,7 @@ exports.followChart = function(req,res){
     },
         function (error, response, body) {
             res.json(body);
-        });   
+        });
 }
 
 //charts friend
@@ -1102,6 +1102,15 @@ exports.chart = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
+                var privacy_icon;
+                if (json.data[0].chart_privacy_types_id_privacy == '0'){
+                  privacy_icon = 'private';
+                }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
+                  privacy_icon = 'friends';
+                }else{
+                  privacy_icon = 'public';
+                }
+                req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
                 if (!error && response.statusCode == 200) {
                     var tab = [];
                     var xItems = [];
@@ -1109,7 +1118,7 @@ exports.chart = function (req, res) {
                     {
                         for (var i = 0; i < json.data[0].events.length; i++) {
                             tab.push(json.data[0].events[i]);
-                        }                     
+                        }
                     }
 
                     tab.sort(function (x, y) {
@@ -1133,6 +1142,7 @@ exports.chart = function (req, res) {
 //page create chart
 exports.createChart = function (req, res) {
     var stored = function (retour) {
+
         res.render('create-chart', {
             informations: retour.data[0],
             msgWarning: false,
@@ -1158,6 +1168,15 @@ exports.addChart = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
+                var privacy_icon;
+                if (json.data[0].chart_privacy_types_id_privacy == '0'){
+                  privacy_icon = 'private';
+                }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
+                  privacy_icon = 'friends';
+                }else{
+                  privacy_icon = 'public';
+                }
+                req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
 
 
                 if (json.data[0].chart_privacy_types_id_privacy == '0') {
@@ -1167,12 +1186,13 @@ exports.addChart = function (req, res) {
                 } else {
                     json.data[0].iconTab = "icon-public";
                 }
-                res.render('create-event', {
+                /*res.render('create-event', {
                     type: "0",
                     chart: json.data[0],
                     informations: retour.data[0],
                     pageTitle: 'Créer un événement'
-                });
+                });*/
+                res.redirect('/create-event');
             }
         );
     }
@@ -1245,7 +1265,25 @@ exports.updateChart = function (req, res) {
 }
 
 
-
+exports.updateLastChart = function(req,res){
+  request({
+      url: base_url + 'charts/one/' + req.body.id,
+      method: 'GET'
+  },
+      function (error, response, body) {
+          var json = JSON.parse(body);
+          var privacy_icon;
+          if (json.data[0].chart_privacy_types_id_privacy == '0'){
+            privacy_icon = 'private';
+          }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
+            privacy_icon = 'friends';
+          }else{
+            privacy_icon = 'public';
+          }
+          req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
+          res.json(req.session.last_chart);
+        });
+}
 
 exports.updateEvent = function (req, res) {
     request({
@@ -1339,12 +1377,12 @@ exports.updateEvent = function (req, res) {
                 }
                 upload(0);
             }
-            
+
             res.redirect('events');
         });
 }
 //function create event
-exports.save = function (req, res) {
+exports.save = function (req, res,next) {
     request({
         url: base_url + 'events/create',
         method: 'POST',
@@ -1435,6 +1473,6 @@ exports.save = function (req, res) {
                 }
                 upload(0);
             }
-            res.redirect('events');
+            res.redirect('/chart/'+req.body.courbe);
         });
 }

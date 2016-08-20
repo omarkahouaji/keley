@@ -6,6 +6,7 @@
     <title>Mes Courbes - Immortality</title>
       <link href="css/bootstrap.min.css" rel="stylesheet">
       <link href="css/style.css" rel="stylesheet">
+      <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="css/bootstrap-select.css">
       <link rel="stylesheet" type="text/css" href="css/normalize.css">
       <link rel="stylesheet" href="css/basic-styles.css" media="screen">
@@ -43,11 +44,13 @@
       $('<div class="chart-spacing '+dataset.id_chart+'" ></div><div class="chart '+dataset.id_chart+'"><span>Courbe : </span><span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span><span>Le '+dataset.creation_date+'</span>'+
       '<div class="dropdown dropdown-chart">'+
   '<button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">'+
-    '<span><i class="icon-arrow" style="font-size:8px"></i></span>'+
+    '<span><i class="fa fa-pencil" style="font-size:15px"></i></span>'+
   '</button>'+
   '<ul class="dropdown-menu-chart dropdown-menu" aria-labelledby="dropdownMenu1">'+
-    '<li><a href="#" onclick="delete_chart('+dataset.id_chart+');return false;">Supprimer courbe</a></li>'+
+    '<li><a href="create-event" id="'+dataset.id_chart+'" class="update_last_chart" data-id="'+dataset.id_chart+'" >Ajouter evenement</a></li>'+
     '<li><a href="editChart/'+dataset.id_chart+'" >Modifier courbe</a></li>'+
+    '<li><a href="#" onclick="delete_chart('+dataset.id_chart+');return false;">Supprimer courbe</a></li>'+
+
   '</ul>'+
 '</div>'+
         '</div>')
@@ -170,6 +173,15 @@
 
 
   <script type="text/javascript">
+  $('body').on('click','.update_last_chart', function(event){
+    event.preventDefault();
+
+    var id = $(this).data('id');
+    console.log(id);
+    $.post( "/updateLastChart",{id:id}).done(function(data){
+      location.href = "create-event";
+    });
+  });
 
     $('#charts_link').addClass('items_active');
 

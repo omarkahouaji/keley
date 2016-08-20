@@ -20,7 +20,7 @@
         <div class="  col-md-7">
         <div class="box">
           <span class="box-title">Créer un événement</span>
-          
+
            <form class="form-horizontal" action="/save" method="post" enctype="multipart/form-data" id="cf">
             <div class="form-group">
               <label  class="col-sm-offset-1 col-sm-offset-1 col-sm-2 control-label">Title</label>
@@ -53,15 +53,26 @@
           <label  class="col-sm-offset-1 col-sm-2 control-label">Courbe</label>
           <div class="col-sm-8">
             <select class="selectpicker" name="courbe">
+              <% for(var i=0;i < charts.length;i++){
+                if(charts[i].id_chart == last_chart[0]){ %>
+              <option selected data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
+              <% }else{ %>
+              <option data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
+              <% }} %>
+
+<!--
               <%  if(type!="0"){
-              for(var i=0;i < charts.length;i++) { 
+              for(var i=0;i < charts.length;i++) {
               %>
               <option data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
-              <% }} 
+              <% }}
                 else{
                %>
               <option data-content="<%=chart.title%><i class=<%=chart.iconTab%>></i>" value="<%=parseInt(chart.id_chart)%>"></option>
               <%}%>
+
+
+            -->  
             </select>
           </div>
         </div>
@@ -91,7 +102,7 @@
 </div>
 </div>
 </main>
-   
+
 
 
 
@@ -112,7 +123,7 @@
     showCaption:false,
     showRemove:false
   });
-  
+
     var $input = $('.datepicker').pickadate({
         monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
         format: 'd mmmm yyyy',
@@ -137,11 +148,11 @@
      step:0.1,
      onChange : function (data) {
       console.log(data.from);
-      document.getElementById('event-slider').value=data.from; 
+      document.getElementById('event-slider').value=data.from;
     },
     onFinish: function (data) {
       console.log(data.from);
-      document.getElementById('event-slider').value=data.from; 
+      document.getElementById('event-slider').value=data.from;
     }
   });
   });
@@ -154,7 +165,7 @@ console.log("omar");
             //event.preventDefault();
              if($("#cf").validate()){
               console.log("omar");
-            $("#cf").submit();    
+            $("#cf").submit();
           }
 
 
@@ -163,7 +174,7 @@ console.log("omar");
 
 
 /*$("#form").submit(function(event){
-    $('.loading').removeClass('hidden');    
+    $('.loading').removeClass('hidden');
     })*/
 
 

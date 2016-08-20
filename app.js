@@ -6,6 +6,7 @@ var path = require('path');
 var immortality = require('./routes/immortality');
 var immortals = require('./routes/immortals');
 var app = express();
+
 var connection = require('express-myconnection');
 var errorHandler = require('errorhandler');
 //var rewrite = require('express-urlrewrite');
@@ -54,6 +55,12 @@ app.use(cookieSession({
 }));*/
 app.use(express.static(path.join(__dirname, 'public'), { redirect : false }));
 
+app.use(function(req, res, next) {
+  res.locals.last_chart = req.session.last_chart;
+  console.log("last_chart is doing well")
+  next();
+});
+
 //locals
 app.locals.upload_path="http://immortality-api-life.azurewebsites.net/application/uploads/";
 app.locals.path_avatar="http://immortality-api-life.azurewebsites.net/application/uploads/avatars";
@@ -68,6 +75,13 @@ app.locals.facebook = '';
 //facebook
 app.use(Facebook.middleware({ appId: '276751416030414', secret: 'f29bf263de6b0803b63507989f9a8d36'}));
 //routes
+
+app.all('/charts',function(req, res, next) {
+    // do logging
+    console.log('Something is happening.');
+    next(); // make sure we go to the next routes and don't stop here
+});
+
 app.get('/landingPage',immortality.landingPage);
 app.get('/', immortality.index);
 app.get('/index', immortality.index);
@@ -86,6 +100,7 @@ app.post('/followChart', immortality.followChart);
 app.get('/deleteChart/:id',immortality.deleteChart);
 app.get('/editChart/:id', immortality.editChart);
 app.post('/updateChart', immortality.updateChart);
+app.post('/updateLastChart', immortality.updateLastChart);
 //events
 app.get('/event/:id', immortality.event);
 app.get('/editEvent/:id', immortality.editEvent);
@@ -144,9 +159,9 @@ app.get('/messages/:id/:id2', immortality.messages);
 var configFacebook = {scope:['email','user_birthday']};
 
 app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res, next) {
-    
+
     req.facebook.api('/me',{fields: 'id,first_name,last_name,gender,picture.width(800).height(800),email,location{location},birthday'}, function(err, user) {
-        
+
         //if (err) throw err;
         app.locals.fb_image = user.picture.data.url;
         //console.log(req.facebook);
@@ -199,7 +214,7 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                                 email: user.email,
                                 password: '',
                                 phone: '',
-                                address: '', 
+                                address: '',
                                 birthday: '',
                                 sex: user.gender,
                                 country: ''
@@ -210,7 +225,7 @@ app.get('/facebook', Facebook.loginRequired(configFacebook), function (req, res,
                             json.data.age = parseInt(moment(req.body.date).fromNow(true));//ajouter age au json
                             req.session.data = json.data;//remplir la session avec le fichier json
 
-                            
+
                             res.redirect('informations');
                         });
                     }else{
@@ -283,4 +298,3 @@ io.on('connection', function(socket){
 
     });
 });
-
