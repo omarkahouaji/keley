@@ -1130,10 +1130,10 @@ exports.chart = function (req, res) {
                     }
 
                     tab.sort(function (x, y) {
-                        return Date.parse(x.creation_date) - Date.parse(y.creation_date);
+                        return Date.parse(x.start_date) - Date.parse(y.start_date);
                     })
                     for (var i = 0; i < tab.length; i++) {
-                        xItems.push((moment(tab[i].creation_date).format("D MMMM")));
+                        xItems.push((moment(tab[i].start_date).format("D MMMM")));
                     }
                     res.render('chart', {
                         informations: retour.data[0],
