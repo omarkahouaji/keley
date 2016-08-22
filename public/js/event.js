@@ -1,5 +1,5 @@
  <script type="text/javascript">
-    
+
     var iApp = angular.module("App", ['ngAnimate','ui.bootstrap','jkuri.gallery']);
     iApp.filter('trusted', ['$sce', function ($sce) {
     return function(url) {
@@ -14,6 +14,30 @@
     return moment(date).locale('fr').format('D MMMM YYYY')
     }
 
+    $scope.delete = function(id){
+        console.log(id);
+        //var id = $(this).data('id');
+        swal({
+          title: 'Supprimer l\'évènement?',
+          text: "Cet évènement sera supprimé et vous ne pourrez plus le trouver.",
+          type: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Supprimer l\'évènement',
+          cancelButtonText: 'Annuler'
+        }).then(function() {
+          $.ajax({
+            url:'/deleteEvent/'+id,
+            type:'GET',
+            dataType: 'json',
+            success:function(data){
+              window.location.href = "/events";
+            }
+          });
+        })
+    }
+
       $scope.increment=function(event){
         if(event.isLiked){
           event.likes.length -= 1;
@@ -21,7 +45,7 @@
         }
         else{
           event.likes.length +=1;
-          event.isLiked=true;       
+          event.isLiked=true;
         }
       }
 
@@ -76,7 +100,7 @@
             success:function(data){
               var json = JSON.parse(data);
               console.log(json);
-              if(json.msg=='success'){   
+              if(json.msg=='success'){
                 console.log('Liked !')
               }else{
                 console.log('Error posting like')
@@ -95,7 +119,7 @@
             console.log(data);
             var json = JSON.parse(data);
             console.log(json);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
               console.log('removed !')
             }else{
               console.log('Error removing like')
@@ -105,19 +129,19 @@
         }
     }
       //end ajouter like
-      
+
       var event =<%-event%>;
-      
+
       var images = [];
       var ress={};
       var thumb='';
       var img='';
       for (var j=0;j<event.uploads.length;j++){
-      
+
       ress.thumb='<%= upload_path %>'+event.user_id+'/'+event.id_event+'/small_'+event.uploads[j].file;
       ress.img='<%= upload_path %>'+event.user_id+'/'+event.id_event+'/'+event.uploads[j].file;
       images.push(ress);
-      
+
       ress={};
       thumb='';
       img='';
@@ -125,12 +149,14 @@
       event.images =images;
       images=[];
       //console.log(events[i].images);
-      
+
 
 
       $scope.event=event;
 
       });
-      
-      
+
+
+
+
       </script>

@@ -61,15 +61,21 @@ app.use(function(req, res, next) {
   next();
 });
 
-//locals
-app.locals.upload_path="http://immortality-api-life.azurewebsites.net/application/uploads/";
-app.locals.path_avatar="http://immortality-api-life.azurewebsites.net/application/uploads/avatars";
-app.locals.base_url="http://immortality-api-life.azurewebsites.net/index.php/";
-var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
-//app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
-//app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
-//app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
-//var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+
+if ( app.get('env') === 'development' ) {
+  app.locals.path_avatar="http://localhost:85/api.immortality.life/application/uploads/avatars";
+  app.locals.base_url="http://localhost:85/api.immortality.life/index.php/";
+  app.locals.upload_path="http://localhost:85/api.immortality.life/application/uploads/";
+  var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+}else{
+  app.locals.upload_path="http://immortality-api-life.azurewebsites.net/application/uploads/";
+  app.locals.path_avatar="http://immortality-api-life.azurewebsites.net/application/uploads/avatars";
+  app.locals.base_url="http://immortality-api-life.azurewebsites.net/index.php/";
+  var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
+}
+
+
+console.log(app.get('env'));
 app.locals.fb_image = '';
 app.locals.facebook = '';
 //facebook

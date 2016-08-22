@@ -7,7 +7,7 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
                 console.log('deleted yesssss !!!');
             }
           }
@@ -22,7 +22,7 @@
     };
     }]);
     iApp.controller('DemoController', function($scope, Reddit) {
-      
+
       $scope.reddit = new Reddit();
       $scope.types = {private: false, public:false,friends:false};
 
@@ -41,7 +41,7 @@
         }
         else{
           event.likes.length +=1;
-          event.isLiked=true;       
+          event.isLiked=true;
         }
       }
 
@@ -49,7 +49,7 @@
       //ajouter commentaire
       $scope.addComment = function (event,e,content) {
         event.preventDefault();
-        console.log(e);  
+        console.log(e);
         $.ajax({
           url:'/postComment',
           type: 'POST',
@@ -61,7 +61,7 @@
           dataType: 'json',
           success:function(data){
             var json = JSON.parse(data);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
               console.log("tawwa");
               var html = $(
                 '<div class="comments-item"'+
@@ -97,7 +97,7 @@
             success:function(data){
               var json = JSON.parse(data);
               console.log(json);
-              if(json.msg=='success'){   
+              if(json.msg=='success'){
                 console.log('Liked !')
               }else{
                 console.log('Error posting like')
@@ -116,7 +116,7 @@
             console.log(data);
             var json = JSON.parse(data);
             console.log(json);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
               console.log('removed !')
             }else{
               console.log('Error removing like')
@@ -129,28 +129,36 @@
 
 //end delete like
 
-        $scope.delete = function (e,id) {
-        e.preventDefault();
-        $.ajax({
-          url:'/deleteEvent/'+id,
-          type: 'GET',
-          dataType: 'json',
-          success:function(data){
-            var json = JSON.parse(data);
-            console.log(json);
-            if(json.msg=='success'){   
-                console.log('deleted yesssss !!!');
-
-            }
-          }
-        });
-      }
+$scope.delete = function(id){
+    console.log(id);
+    //var id = $(this).data('id');
+    swal({
+      title: 'Supprimer l\'évènement?',
+      text: "Cet évènement sera supprimé et vous ne pourrez plus le trouver.",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Supprimer l\'évènement',
+      cancelButtonText: 'Annuler'
+    }).then(function() {
+      $.ajax({
+        url:'/deleteEvent/'+id,
+        type:'GET',
+        dataType: 'json',
+        success:function(data){
+          //window.location.href = "/events";
+          $('#event-'+id).remove();
+        }
+      });
+    })
+}
     });
-    
-      
 
-    
-    
+
+
+
+
     iApp.factory('Reddit', function($http) {
     var Reddit = function() {
     this.events = [];
@@ -171,13 +179,13 @@
 
     for (var i = 0; i < events.length; i++) {
     for (var j=0;j<events[i].uploads.length;j++){
-    
+
     ress.thumb='<%-upload_path%>'+events[i].user_id+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
     ress.img='<%-upload_path%>'+events[i].user_id+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
     ress.id=events[i].uploads[j].id_upload;
     ress.event_id=events[i].id_event;
     images.push(ress);
-    
+
     ress={};
     thumb='';
     img='';
@@ -193,7 +201,7 @@
     };
     return Reddit;
     });
-    
+
     //filter public privée amis
     iApp.filter('myfilter', function() {
     return function( items, types) {
@@ -217,5 +225,5 @@
     return filtered;
     };
     });
-    //end filter 
+    //end filter
   </script>

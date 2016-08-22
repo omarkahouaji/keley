@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><%=title%> - Immortality</title>
     <link rel="stylesheet" href="/css/bootstrap/css/bootstrap.min.css">
+    <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/basic-styles.css">
@@ -12,6 +13,7 @@
     <link rel="stylesheet" href="/css/okayNav.css">
     <link rel="stylesheet" href="/css/ngGallery.css">
     <link rel="stylesheet" href="/css/croppie.css" />
+    <link href="/css/sweetalert2.css" rel="stylesheet">
     <script src="/js/jquery.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/jquery.okayNav.js"></script>
@@ -21,8 +23,9 @@
     <script src="/js/moment.js"></script>
     <script src="/js/moment-with-locales.js"></script>
     <script src="/js/ngGallery.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
     <!--croppie-->
-   
+
     <script src="/js/croppie.js"></script>
    <%- include ../public/js/event.js %>
    <!-- <%- include ../public/js/messages.js %> -->
@@ -36,7 +39,7 @@
           <%- include layouts/profileNav.ejs %>
           <div class="  col-md-7">
             <div class="profil" style="padding: 15px">
-              
+
               <div ng-if="event.privacy != '0' || event.user_id == '<%-informations.id_user%>'" class="events row">
               <div class="row">
                 <div class="col-md-12">
@@ -54,7 +57,19 @@
                     <div ng-init="x = event.note">
                       <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
                     </div>
-                    
+
+                  </div>
+                  <div class="event-edit">
+                      <div class="dropdown dropdown-event">
+                      <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                      <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
+                        <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
+                        <li><a ng-href="#" ng-click="delete(event.id_event)">Supprimer evenement</a></li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -96,16 +111,16 @@
                   <div class="post-comment">
                     <img class="post-comment-img " src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" >
                     <input ng-model="content" id="com-{{$index}}"  type="text" placeholder="Votre commentaire ... "></input>
-                    
+
                     <input ng-click="addComment($event,event,content);content=''"  type="submit" style="position: absolute; left: -9999px"/>
-                    
+
                   </div>
-                  
+
                 </div>
               </form>
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>

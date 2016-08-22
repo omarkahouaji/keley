@@ -72,7 +72,7 @@
               <%}%>
 
 
-            -->  
+            -->
             </select>
           </div>
         </div>
@@ -101,8 +101,8 @@
   </div>
 </div>
 </div>
+<div id="datepicker-container"></div>
 </main>
-
 
 
 
@@ -115,6 +115,14 @@
 <%- include ../public/js/crop_avatar.js %>
 <script type="text/javascript">
 
+
+$('#button__api-open-close').click(function(){
+  var picker = $('.datepicker').pickadate('picker')
+  picker.stop()
+picker.start()
+picker.open()
+picker.get('open')
+})
 
 
 
@@ -131,10 +139,22 @@
         selectMonths: true,
         hiddenName: true,
         selectYears: 100,
+        container: '#datepicker-container',
         onSet:function(){
               document.getElementById('date').value=this.get();
+              $('.picker').appendTo('body');
         }
     });
+
+    var picker = $input.pickadate('picker')
+    $('.icon-event').click(function(e){
+      // stop the click from bubbling
+      e.stopPropagation();
+      // prevent the default click action
+      e.preventDefault();
+      // open the date picker
+      picker.open();
+    })
 
   var navigation = $('#nav-main').okayNav();
 
@@ -156,6 +176,8 @@
     }
   });
   });
+
+
 
 
 

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/ngGallery.css">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
+    <link href="/css/sweetalert2.css" rel="stylesheet">
     <script src="/js/angular.min.js"></script>
     <script src="/js/ng-infinite-scroll.js"></script>
     <script src="/js/angular-animate.js"></script>
@@ -18,6 +19,7 @@
     <script src="/js/moment.js"></script>
     <script src="/js/croppie.js"></script>
     <script src="/js/moment-with-locales.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
     <%- include ../public/js/events.js %>
     <%- include ../public/js/messages.js %>
 
@@ -50,7 +52,7 @@
           <button class="btn  btn-block informations_btn" type="submit"><i class="icon-event x"></i>Ajouter un événement</button>
         </form>
         <div infinite-scroll='reddit.nextPage()' infinite-scroll-disabled='reddit.busy' infinite-scroll-distance='3'  >
-          <div class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types"  ng-hide="deleted" id="{{event.id_event}}">
+          <div class="events row" ng-init="deleted=false" ng-repeat="event in reddit.events | myfilter:types"  ng-hide="deleted" id="event-{{event.id_event}}">
             <div >
               <div class="row">
                 <div class="event-header">
@@ -70,9 +72,9 @@
                       <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
+                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier l'évènement</a></li>
                         <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
-                        <li><a href=""  data-toggle="modal" data-target="#aaa" data-yourparameter="{{event.id_event}}">Supprimer evenement</a></li>
+                        <li><a href="javascript:" ng-click="delete(event.id_event)">Supprimer l'évènement</a></li>
                       </ul>
                     </div>
                   </div>
@@ -116,16 +118,16 @@
                   <div class="post-comment">
                     <img class="post-comment-img " src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" >
                     <input ng-model="content" id="com-{{$index}}"  type="text" placeholder="Votre commentaire ... "></input>
-                    
+
                     <input ng-click="addComment($event,event,content);content=''"  type="submit" style="position: absolute; left: -9999px"/>
-                    
+
                   </div>
-                  
+
                 </div>
               </form>
             </div>
           </div>
-          
+
         </div>
         <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
       </div>
@@ -142,7 +144,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <span>Voulez-vous supprimer l'évenement ?</span>
       <div class="bbb"><button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Non</button></div>
-      
+
        <!-- <a href="/events" ng-click="delete($event,yourparameter);deleted=true">Oui</a> -->
       </div>
     </div>
@@ -157,15 +159,6 @@
 <script src="/js/site.js"></script>
     <script type="text/javascript">
     $('#events_link').addClass('items_active');
-      $('#aaa').on('show.bs.modal', function (e) {
-        var yourparameter = e.relatedTarget.dataset.yourparameter;
-        console.log(yourparameter);
-        $('<a data-dismiss="modal"  class="tmp_modal btn btn-default" onclick="mdelete('+yourparameter+')">Oui'+
-          '</a>').appendTo('.bbb');
-      });
-      $('#aaa').on('hidden.bs.modal', function (e) {
-        $('.tmp_modal').remove();
-      });
     </script>
     <%- include ../public/js/crop_avatar.js %>
   </body>

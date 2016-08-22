@@ -1,32 +1,32 @@
 <!doctype html>
 <html data-ng-app="App">
-  <head>
-    <%- include layouts/site.ejs %>
-    <title><%=term%> - Immortality</title>
-    <script src="/js/angular.min.js"></script>
-    <script src="/js/ng-infinite-scroll.js"></script>
-    <%- include ../public/js/activity.js %>
-    <%- include ../public/js/search.js %>
-    <%- include ../public/js/messages.js %>
-  </head>
-  <body class="search" data-ng-controller="DemoController">
-    <%- include layouts/header.ejs %>
-    <main>
-    <%- include layouts/messages.ejs %>
-    <div class="container">
-      <div class="row">
-        <div class="box-search col-md-7 col-md-offset-1">
-          <div style="margin: 0px -15px;">
+    <head>
+        <%- include layouts/site.ejs %>
+        <title><%=term%> - Immortality</title>
+        <script src="/js/angular.min.js"></script>
+        <script src="/js/ng-infinite-scroll.js"></script>
+        <%- include ../public/js/activity.js %>
+        <%- include ../public/js/search.js %>
+        <%- include ../public/js/messages.js %>
+    </head>
+    <body class="search" data-ng-controller="DemoController">
+        <%- include layouts/header.ejs %>
+        <main>
+        <%- include layouts/messages.ejs %>
+        <div class="container">
+            <div class="row">
+                <div class="box-search col-md-7 col-md-offset-1">
+                    <div style="margin: 0px -15px;">
                         <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist">
-            <span>Trier par :</span>
-              <li role="presentation" class="active"><a href="#personnes" aria-controls="personnes" role="tab" data-toggle="tab">Personnes</a></li>
-              <li role="presentation"><a href="#courbes" aria-controls="courbes" role="tab" data-toggle="tab">Courbes</a></li>
-              <li role="presentation"><a href="#evenements" aria-controls="evenements" role="tab" data-toggle="tab">Evenements</a></li>
-            </ul>
+                        <ul class="nav nav-tabs" role="tablist">
+                        <span>Trier par :</span>
+                            <li role="presentation" class="active"><a href="#personnes" aria-controls="personnes" role="tab" data-toggle="tab">Personnes</a></li>
+                            <li role="presentation"><a href="#courbes" aria-controls="courbes" role="tab" data-toggle="tab">Courbes</a></li>
+                            <li role="presentation"><a href="#evenements" aria-controls="evenements" role="tab" data-toggle="tab">Evenements</a></li>
+                        </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane" id="personnes">
+                            <div role="tabpanel" class="tab-pane active" id="personnes">
                                 <div infinite-scroll='RedditUsers.nextPage()' infinite-scroll-disabled='RedditUsers.busy' infinite-scroll-distance='3'>
                                     <div class="search_block " ng-init="sent=false;accepted=false;refused==false"  ng-repeat="user in RedditUsers.users" >
                                         <div class="search_block_item">

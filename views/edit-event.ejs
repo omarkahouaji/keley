@@ -4,6 +4,8 @@
 <title>Modifier événement</title>
 <%- include layouts/head.ejs %>
    <link rel="stylesheet" href="/css/croppie.css" />
+   <link rel="stylesheet" href="/css/dropzone.css" />
+   <script src="/js/dropzone.js"></script>
    <script src="/js/croppie.js"></script>
 </head>
 <body class="home">
@@ -19,7 +21,12 @@
         <div class="  col-md-7">
         <div class="box">
           <span class="box-title">Modifier un événement</span>
-          
+
+<!--
+          <form action="/file-upload"
+        class="dropzone"
+        id="my-awesome-dropzone"></form>
+-->
            <form class="form-horizontal" action="/updateEvent" method="post" enctype="multipart/form-data" id="form">
             <div class="form-group">
               <label  class="col-sm-2 control-label">Title</label>
@@ -54,13 +61,13 @@
           <div class="col-sm-10">
             <select class="custom_select selectpicker " name="courbe">
               <%  if(type!="0"){
-              for(var i=0;i < charts.length;i++) { 
+              for(var i=0;i < charts.length;i++) {
               %>
               <%if(parseInt(charts[i].id_chart)==parseInt(event.chart_id)){ %>
               <option selected data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
               <% } else { %>
               <option data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
-              <% }}} 
+              <% }}}
                 else{
                %>
               <option data-content="<%=chart.title%><i class=<%=chart.iconTab%>></i>" value="<%=parseInt(chart.id_chart)%>"></option>
@@ -75,25 +82,20 @@
           <input id="input-id" class="file" name="file" type="file" multiple></input>
         </div>
         </div>
+
         <div class="form-group">
               <label  class="col-sm-2 control-label"></label>
               <div class="col-sm-10">
                 <button type="submit" id="event-form" name="submit" value="Valider" class="box-button btn btn-default">Modifier</button>
               </div>
             </div>
-                    <div class="form-group">
-        <div class="share social col-sm-offset-2 col-sm-10">
-          <button type="submit" class="btn share-fb"><i class="fa fa-facebook"></i><span>Partager</span></button>
-          <button type="submit" class="btn share-gp"><i class="fa fa-google-plus"></i><span>Partager</span></button>
-        </div>
-        </div>
       </form>
     </div>
   </div>
 </div>
 </div>
 </main>
-   
+
 
 
 
@@ -107,9 +109,23 @@
 <%- include ../public/js/crop_avatar.js %>
 <script type="text/javascript">
 
+Dropzone.options.myAwesomeDropzone = {
+  maxFiles: 1,
+  addRemoveLinks:true,
+  accept: function(file, done) {
+    console.log("uploaded");
+    done();
+  },
+  init: function() {
+    this.on("maxfilesexceeded", function(file){
+        alert("No more files please!");
+    });
+  }
+};
+
 
   $("#input-id").fileinput();
-  
+
     var $input = $('.datepicker').pickadate({
         monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
         format: 'd mmmm yyyy',
@@ -134,18 +150,18 @@
      step:0.1,
      onChange : function (data) {
       console.log(data.from);
-      document.getElementById('event-slider').value=data.from; 
+      document.getElementById('event-slider').value=data.from;
     },
     onFinish: function (data) {
       console.log(data.from);
-      document.getElementById('event-slider').value=data.from; 
+      document.getElementById('event-slider').value=data.from;
     }
   });
   });
 
 
 $("#form").submit(function(event){
-    $('.loading').removeClass('hidden');    
+    $('.loading').removeClass('hidden');
     })
 
 

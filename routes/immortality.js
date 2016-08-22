@@ -1,11 +1,20 @@
 request = require('request');
+var express = require('express');
+var app = express();
+
+if ( app.get('env') === 'development' ) {
+  var base_url = 'http://localhost:85/api.immortality.life/index.php/';
+  var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
+}else{
+  var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
+  var upload_path = 'http://immortality-api-life.azurewebsites.net/application/uploads/';
+}
+
 var moment = require('moment'); //
 var fs = require('fs');
 var util = require('util');
-var base_url = 'http://immortality-api-life.azurewebsites.net/index.php/';
-var upload_path = 'http://immortality-api-life.azurewebsites.net/application/uploads/';
-//var base_url = 'http://localhost:85/api.immortality.life/index.php/';
-//var upload_path = '/Applications/MAMP/htdocs/api.immortality.life/application/uploads/';
+
+
 moment.locale('fr');
 var atob = require('atob');
 var nodemailer = require('nodemailer');
@@ -343,8 +352,7 @@ exports.deleteEvent = function (req, res) {
         function (error, response, body) {
             var json = JSON.parse(body);
             res.json(json);
-        }
-    );
+        });
 }
 
 //supprimer courbe
@@ -803,18 +811,18 @@ exports.eventsAngular = function (req, res) {
             var json = JSON.parse(body);
             var uploadsFinal = [];
             for (var i = 0; i < json.data.length; i++) {
-                for (var j = 0; j < json.data[i].uploads.length; j++) {
+                /*for (var j = 0; j < json.data[i].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[i].uploads[j].event_user_id) + '/' + parseInt(json.data[i].uploads[j].event_id) + '/' + json.data[i].uploads[j].file;
                     //throw new Error(path);
                     if(fileExists(path)){
+                        console.log(path);
                     //if (fs.existsSync(path)) {
                         uploadsFinal.push(json.data[i].uploads[j]);
                         json.data[i].uploads = [];
                         json.data[i].uploads = uploadsFinal;
                         uploadsFinal = [];
                     }
-                }
-
+                }*/
             }
 
             res.json(json);
