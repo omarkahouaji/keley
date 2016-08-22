@@ -915,17 +915,17 @@ exports.charts = function (req, res) {
                                 t.push(json.data[i].events[k]);
                             }
                             t.sort(function (x, y) {
-                                return Date.parse(x.creation_date) - Date.parse(y.creation_date);
+                                return Date.parse(x.start_date) - Date.parse(y.start_date);
                             })
                             for (var j = 0; j < json.data[i].events.length; j++) {
                                 y.push(parseInt(t[j].note));
-                                x.push((moment(t[j].creation_date).format("D MMMM")));
+                                x.push((moment(t[j].start_date).format("D MMMM")));
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
                             }
                             var ress = {};
                             ress.yData = y, ress.xData = x,
-                                ress.creation_date = moment(json.data[i].creation_date).format("D MMMM YYYY"),
+                                ress.start_date = moment(json.data[i].start_date).format("D MMMM YYYY"),
                                 ress.name = title,
                                 ress.id = id_event;
                             ress.chartName = json.data[i].title,

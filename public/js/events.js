@@ -16,37 +16,31 @@
       }
 
     var iApp = angular.module("App", ['infinite-scroll','ngAnimate','ui.bootstrap','jkuri.gallery']);
-    iApp.filter('trusted', ['$sce', function ($sce) {
-    return function(url) {
-    return $sce.trustAsResourceUrl(url);
-    };
-    }]);
-    iApp.controller('DemoController', function($scope, Reddit) {
-
-      $scope.reddit = new Reddit();
-      $scope.types = {private: false, public:false,friends:false};
-
-      $scope.formatDate=function(date){
-           return moment(date).locale('fr').fromNow();
-      }
-      $scope.dateEvent = function(date){
-        return moment(date).locale('fr').format('D MMMM YYYY')
-      }
-
-
-      $scope.increment=function(event){
-        if(event.isLiked){
-          event.likes.length -= 1;
-          event.isLiked = false;
+      iApp.filter('trusted', ['$sce', function ($sce) {
+          return function(url) {
+              return $sce.trustAsResourceUrl(url);
+            };
+      }]);
+      iApp.controller('DemoController', function($scope, Reddit) {
+        $scope.reddit = new Reddit();
+        $scope.types = {private: false, public:false,friends:false};
+        $scope.formatDate=function(date){
+          return moment(date).locale('fr').fromNow();
         }
-        else{
-          event.likes.length +=1;
-          event.isLiked=true;
+        $scope.dateEvent = function(date){
+          return moment(date).locale('fr').format('D MMMM YYYY')
         }
-      }
-
-
-      //ajouter commentaire
+        $scope.increment=function(event){
+          if(event.isLiked){
+            event.likes.length -= 1;
+            event.isLiked = false;
+          }
+          else{
+            event.likes.length +=1;
+            event.isLiked=true;
+          }
+        }
+      //add comment
       $scope.addComment = function (event,e,content) {
         event.preventDefault();
         console.log(e);
@@ -80,9 +74,7 @@
           }
         });
       }
-//end ajouter commentaire
-
-      //ajouter like
+      //like
       $scope.addLike = function (event,e) {
         event.preventDefault();
         if(e.isLiked == false){
@@ -125,10 +117,8 @@
         });
         }
     }
-//end ajouter like
 
-//end delete like
-
+//remove like
 $scope.delete = function(id){
     console.log(id);
     //var id = $(this).data('id');
@@ -206,11 +196,9 @@ $scope.delete = function(id){
     iApp.filter('myfilter', function() {
     return function( items, types) {
     var filtered = [];
-    console.log(types);
     angular.forEach(items, function(item) {
     if(types.private == false && types.public == false && types.friends ==false) {
     filtered.push(item);
-    console.log("omar");
     }
     if(types.private == true && item.chart_privacy == '0'){
     filtered.push(item);

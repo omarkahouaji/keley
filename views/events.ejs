@@ -22,7 +22,6 @@
     <script src="/js/sweetalert2.min.js"></script>
     <%- include ../public/js/events.js %>
     <%- include ../public/js/messages.js %>
-
   </head>
 
   <body class="home"  data-ng-controller="DemoController as ctrl" >
@@ -118,44 +117,19 @@
                   <div class="post-comment">
                     <img class="post-comment-img " src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" >
                     <input ng-model="content" id="com-{{$index}}"  type="text" placeholder="Votre commentaire ... "></input>
-
                     <input ng-click="addComment($event,event,content);content=''"  type="submit" style="position: absolute; left: -9999px"/>
-
                   </div>
-
                 </div>
               </form>
             </div>
           </div>
-
         </div>
         <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
       </div>
     </div>
   </div>
 </div>
-
-  <div class="modal fade" id="aaa" tabindex="-1" role="dialog" aria-labelledby="myModalLabell">
-    <div class="modal-dialog" role="document">
-        <div class="modal-header">
-
-        </div>
-      <div class="modal-content">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <span>Voulez-vous supprimer l'évenement ?</span>
-      <div class="bbb"><button type="button" class="btn btn-default" data-dismiss="modal" aria-label="Close">Non</button></div>
-
-       <!-- <a href="/events" ng-click="delete($event,yourparameter);deleted=true">Oui</a> -->
-      </div>
-    </div>
-  </div>
-
-
-
 </main>
-
-
-
 <script src="/js/site.js"></script>
     <script type="text/javascript">
     $('#events_link').addClass('items_active');
