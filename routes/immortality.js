@@ -919,13 +919,13 @@ exports.charts = function (req, res) {
                             })
                             for (var j = 0; j < json.data[i].events.length; j++) {
                                 y.push(parseInt(t[j].note));
-                                x.push((moment(t[j].start_date).format("D MMMM")));
+                                x.push((moment(t[j].start_date).format("D MMMM YYYY")));
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
                             }
                             var ress = {};
                             ress.yData = y, ress.xData = x,
-                                ress.start_date = moment(json.data[i].start_date).format("D MMMM YYYY"),
+                                ress.creation_date = moment(json.data[i].creation_date).format("D MMMM YYYY"),
                                 ress.name = title,
                                 ress.id = id_event;
                             ress.chartName = json.data[i].title,
@@ -969,11 +969,11 @@ exports.followedCharts = function (req, res) {
                                 t.push(json.data[i].events[k]);
                             }
                             t.sort(function (x, y) {
-                                return Date.parse(x.creation_date) - Date.parse(y.creation_date);
+                                return Date.parse(x.start_date) - Date.parse(y.start_date);
                             })
                             for (var j = 0; j < json.data[i].events.length; j++) {
                                 y.push(parseInt(t[j].note));
-                                x.push((moment(t[j].creation_date).format("D MMMM")));
+                                x.push((moment(t[j].start_date).format("D MMMM")));
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
                             }
@@ -1051,11 +1051,11 @@ exports.chartsFriend = function (req, res) {
                                     t.push(json.data[i].events[k]);
                                 }
                                 t.sort(function (x, y) {
-                                    return Date.parse(x.creation_date) - Date.parse(y.creation_date);
+                                    return Date.parse(x.start_date) - Date.parse(y.start_date);
                                 })
                                 for (var j = 0; j < json.data[i].events.length; j++) {
                                     y.push(parseInt(t[j].note));
-                                    x.push((moment(t[j].creation_date).format("D MMMM")));
+                                    x.push((moment(t[j].start_date).format("D MMMM YYYY")));
                                     title.push(t[j].title);
                                     id_event.push(t[j].id_event);
                                 }
@@ -1110,15 +1110,7 @@ exports.chart = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
-                var privacy_icon;
-                if (json.data[0].chart_privacy_types_id_privacy == '0'){
-                  privacy_icon = 'private';
-                }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
-                  privacy_icon = 'friends';
-                }else{
-                  privacy_icon = 'public';
-                }
-                req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
+                req.session.last_chart = json.data[0].id_chart;
                 if (!error && response.statusCode == 200) {
                     var tab = [];
                     var xItems = [];
@@ -1133,7 +1125,7 @@ exports.chart = function (req, res) {
                         return Date.parse(x.start_date) - Date.parse(y.start_date);
                     })
                     for (var i = 0; i < tab.length; i++) {
-                        xItems.push((moment(tab[i].start_date).format("D MMMM")));
+                        xItems.push((moment(tab[i].start_date).format("D MMMM YYYY")));
                     }
                     res.render('chart', {
                         informations: retour.data[0],
@@ -1160,6 +1152,16 @@ exports.createChart = function (req, res) {
     updateUserInfo(req, res, stored);
 }
 
+exports.unfollow_chart = function(req,res){
+    request({
+        url : base_url + 'charts/unfollow_chart/'+req.body.chart_id+'/'+req.body.user_id,
+        method : 'DELETE'
+    },function(error, response, body){
+        if (error) console.log(error);
+        res.json(body);
+    });
+}
+
 //fonction ajouter courbe
 exports.addChart = function (req, res) {
     var stored = function (retour) {
@@ -1176,17 +1178,7 @@ exports.addChart = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
-                var privacy_icon;
-                if (json.data[0].chart_privacy_types_id_privacy == '0'){
-                  privacy_icon = 'private';
-                }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
-                  privacy_icon = 'friends';
-                }else{
-                  privacy_icon = 'public';
-                }
-                req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
-
-
+                req.session.last_chart = json.data[0].id_chart;
                 if (json.data[0].chart_privacy_types_id_privacy == '0') {
                     json.data[0].iconTab = "icon-private";
                 } else if (json.data[0].chart_privacy_types_id_privacy == '1') {
@@ -1280,15 +1272,7 @@ exports.updateLastChart = function(req,res){
   },
       function (error, response, body) {
           var json = JSON.parse(body);
-          var privacy_icon;
-          if (json.data[0].chart_privacy_types_id_privacy == '0'){
-            privacy_icon = 'private';
-          }else if (json.data[0].chart_privacy_types_id_privacy == '1'){
-            privacy_icon = 'friends';
-          }else{
-            privacy_icon = 'public';
-          }
-          req.session.last_chart = [json.data[0].id_chart,json.data[0].title, privacy_icon];
+          req.session.last_chart = json.data[0].id_chart;
           res.json(req.session.last_chart);
         });
 }

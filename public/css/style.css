@@ -15,7 +15,7 @@
 
 /*basics*/
 body{
-    font-family:    Tahoma !important;
+    font-family:    Comic Sans MS !important;
 }
 #datepicker-container{
   position: fixed;
@@ -483,7 +483,7 @@ ul.menu img {
 
 .event-description {
     text-align: left;
-    padding: 15px 10px 15px 20px;
+    padding: 10px 10px 5px 15px;
 }
 .event-image {
     width: 25%;
@@ -491,7 +491,7 @@ ul.menu img {
     padding: 5px;
 }
 .event-images {
-    padding: 10px 15px 25px 15px;
+    padding: 0px 10px 10px 10px;
     width: 100%;
     height: 100%;
 }
@@ -510,7 +510,6 @@ ul.menu img {
     color: #000;
 }
 .event-comment-like {
-    padding-top: 20px;
     padding-right: 20px;
     text-align: right;
     padding-bottom: 10px;
@@ -1661,4 +1660,26 @@ legataire_block{
     width: 10%;
 }
 .dropdown-event{
+}
+
+
+/*search*/
+.search-right .followed, .search-right .follow{
+    background-color: #3dbfb7;
+    color: #fff;
+}
+.search-right .unfollow{
+    background-color: #ff0000;
+    color: #fff;
+}
+.search-right .followed:hover, .search-right .follow:hover{
+    background-color: #3dbfb7 !important;
+    color: #fff !important;
+}
+.search-right .followed i, .search-right .follow i{
+    font-size: 15px;
+    padding-right: 10px;
+}
+.search-right .followed i:before, .search-right .follow i:before{
+    font-weight: bold;
 }

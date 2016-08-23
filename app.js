@@ -107,6 +107,7 @@ app.get('/deleteChart/:id',immortality.deleteChart);
 app.get('/editChart/:id', immortality.editChart);
 app.post('/updateChart', immortality.updateChart);
 app.post('/updateLastChart', immortality.updateLastChart);
+app.post('/unfollow_chart',immortality.unfollow_chart);
 //events
 app.get('/event/:id', immortality.event);
 app.get('/editEvent/:id', immortality.editEvent);

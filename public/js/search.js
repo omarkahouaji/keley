@@ -8,10 +8,17 @@
             return moment(date).fromNow();
         }
 
+        $scope.toggleMe = function(){
+            console.log($scope.toggle);
+            $scope.toggle = !$scope.toggle;
+        }
+            $scope.toggleMee = function(){
+     $scope.toggle1 = !$scope.toggle1;
+    }
+
             //followchart
                 $scope.followChart = function (event,chart) {
-                    console.log("omar");
-                    //event.preventDefault();
+                    console.log("f m");
                     $.ajax({
                       url:'/followChart',
                       type: 'POST',
@@ -22,9 +29,7 @@
                       dataType: 'json',
                       success:function(data){
                         var json = JSON.parse(data);
-                        if(json.msg=='success'){   
-                    $('#abonne-span').show();
-                    $('#suivre-btn').remove();
+                        if(json.msg=='success'){  
                         }else{
                           console.log('no :(')
                         }
@@ -33,34 +38,55 @@
                 }
                 //
 
-                $scope.showAbonne = function () {
-                    $('#abonne-span').show();
-                    $('#suivre-btn').remove();
+                $scope.unfollow_effect = function(){
+                    $('.search-right .followed').addClass('unfollow');
+                    $('.search-right .followed').removeClass('followed');
+                    $('.search-right .unfollow').html('Se désabonner')
+                }
+                $scope.follow_effect = function(){
+                    $('.search-right .unfollow').addClass('followed');
+                    $('.search-right .unfollow').removeClass('unfollow');
+                    $('.search-right .followed').html('<i class="icon-public"></i>Abonné')
                 }
 
+                $scope.unfollow_chart = function (chart) {
+                    console.log("u m");
+                    $.ajax({
+                      url:'/unfollow_chart',
+                      type: 'POST',
+                      data:{
+                        user_id:<%-informations.id_user%>,
+                        chart_id: chart.id_chart
+                      },
+                      dataType: 'json',
+                      success:function(data){
+                        console.log(data);
+                      }
+                    });
+                }
                 
 
         //send Friend Request
         $scope.sendFriendRequest = function (event,user) {
-        event.preventDefault();
-        $.ajax({
-          url:'/sendFriendRequest',
-          type: 'POST',
-          data:{
-            sender_id:<%-informations.id_user%>,
-            recipient_id:user.id_user
-          },
-          dataType: 'json',
-          success:function(data){
-            var json = JSON.parse(data);
-            if(json.msg=='success'){   
-                    console.log('yes');
-            }else{
-              console.log('no :(')
-            }
-          }
-        });
-      }
+            event.preventDefault();
+            $.ajax({
+              url:'/sendFriendRequest',
+              type: 'POST',
+              data:{
+                sender_id:<%-informations.id_user%>,
+                recipient_id:user.id_user
+              },
+              dataType: 'json',
+              success:function(data){
+                var json = JSON.parse(data);
+                if(json.msg=='success'){   
+                        console.log('yes');
+                }else{
+                  console.log('no :(')
+                }
+              }
+            });
+        }
       //end
 
       //addFriend

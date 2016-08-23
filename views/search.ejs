@@ -64,19 +64,29 @@
                                                 </div>
                                             </div>
 
-                                            <div id="suivre-btn" ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription==null)" class="pull-right">
-                                                <span class="search-follow btn" ng-click="followChart($event,chart)"><i class=" icon-public s"></i>Suivre</span>
-                                            </div>
+<!--
+<div id="suivre-btn" ng-if="((chart.user_id != <%-informations.id_user%> && chart.id_subscription==null) || showFollow==true)" ng-init="showFollow=false" class="search-right pull-right">
+<span class="follow btn" ng-click="followChart($event,chart)"><i class=" icon-public"></i>Suivre</span>
+</div>
 
-                                             <div ng-if="(chart.user_id != <%-informations.id_user%> && chart.id_subscription !=null)" class="pull-right">
-                                               <span class="search-follow btn" ><i class=" icon-public s"></i>Abonné</span>
-                                            </div>
+ <div ng-if="((chart.user_id != <%-informations.id_user%> && chart.id_subscription !=null) || showFollowed==true)" ng-init="showFollowed=false" class="search-right pull-right">
+<span class="followed btn" ng-click="unfollow_chart(chart.id_subscription)" ng-mouseover="unfollow_effect()" ng-mouseleave="follow_effect()"><i class=" icon-public"></i>Abonné</span>
+</div>
+-->
+<div ng-if="chart.user_id != <%-informations.id_user%>">
+	<div ng-init="toggle = (chart.id_subscription==null)">
+        ng-if toggle: {{ toggle }}
+        <p>
+		<div id="suivre-btn" ng-show="toggle" ng-click="toggle=false;followChart($event,chart)" class="search-right pull-right">
+			<span class="follow btn"><i class=" icon-public"></i>Suivre</span>
+		</div>
 
-                                             <div style="display:none" id="abonne-span" class="pull-right">
-                                               <span class="search-follow btn" ><i class=" icon-public s"></i>Abonné</span>
-                                            </div>
+		<div id="suivre-btn" ng-show="!toggle" ng-click="toggle=true;unfollow_chart(chart)" ng-mouseover="unfollow_effect()" ng-mouseleave="follow_effect()" class="search-right pull-right">
+			<span class="followed btn" ><i class=" icon-public"></i>Abonné</span>
+		</div>
 
-
+	</div>	
+</div>
                                         </div>
                                         <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>
                                     </div>

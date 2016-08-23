@@ -54,7 +54,7 @@
           <div class="col-sm-8">
             <select class="selectpicker" name="courbe">
               <% for(var i=0;i < charts.length;i++){
-                if(charts[i].id_chart == last_chart[0]){ %>
+                if(typeof last_chart !== 'undefined' && charts[i].id_chart == last_chart){ %>
               <option selected data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
               <% }else{ %>
               <option data-content="<%=charts[i].title%><i class=<%=iconTab[i]%>></i>" value="<%=parseInt(charts[i].id_chart)%>"></option>
