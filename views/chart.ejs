@@ -77,6 +77,9 @@ function delete_chart(id_chart){
                                         title:{
                                             text:null
                                         },
+                                        tooltip:{
+                                            enabled:false
+                                        },
                                         chart: {
                                             type: 'spline',
                                         },
@@ -98,31 +101,45 @@ function delete_chart(id_chart){
                                                 text: null
                                             }
                                         },
-                                        plotOptions: {
-                                            spline: {
-                                                lineWidth:1,
+        plotOptions:{
 
-                                                marker:{
-                                                    fillColor:'#eb0c4b',
-                                                    width:15,
-                                                    height:15
-                                                },
-                                                dataLabels: {
-                                                    useHTML:true,
-                                                    style: {
-                                                        fontFamily:'NanamiProRegular6',color:"#eb0c4b"
-                                                    },
-                                                    enabled: true,
-                                                    formatter: function () {
-                                                        return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
-                                                    }
-                                                },
-                                                enableMouseTracking: false,
-                                            },
-                                            series: {
-                                                color: '#000000'
-                                            }
-                                        },
+          tooltip:false,
+          allowPointSelect: true,
+          lineWidth:1,
+          series:{
+            color:"#000000",
+            verticalAlign:'bottom',
+            dataLabels:{
+              useHTML:true,
+              style:{
+                fontSize:"11px",color:"#eb0c4b"
+              },
+              enabled:true,
+              allowOverlap: true,
+              padding:10,
+              formatter : function(){
+                return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
+              }
+            },
+            cursor:'pointer',
+            allowPointSelect: true,
+            point : {
+              events : {
+                click : function(event,i){
+                  location.href = "/event/"+event.point.id;
+                  //alert(event.point.id);
+                }
+              }
+            },
+            marker:{
+              enabled:true,
+              fillColor:'#eb0c4b',
+              width:15,
+              height:15
+            }
+          },
+          enableMouseTracking: false
+        },
                                         credits: {
                                           enabled: false
                                         },
