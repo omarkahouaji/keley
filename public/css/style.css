@@ -1617,6 +1617,11 @@ legataire_block{
     width: 50%;
     text-align: left;
 }
+.note-error{
+    color: red;
+    display: -webkit-inline-box;
+    margin-left: -55px;
+}
 .events .row {
     margin-left: 0px;
     margin-right: 0px;
