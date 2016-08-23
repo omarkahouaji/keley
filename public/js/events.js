@@ -200,6 +200,8 @@ $scope.delete = function(id){
     if(types.private == false && types.public == false && types.friends ==false) {
     filtered.push(item);
     }
+    if(types.private == true && types.public == true && types.friends ==true) {
+    }
     if(types.private == true && item.chart_privacy == '0'){
     filtered.push(item);
     }
