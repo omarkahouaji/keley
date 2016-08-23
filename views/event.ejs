@@ -52,23 +52,18 @@
                   <div class="event-right">
                     <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
                    <i ng-class="event.privacy == 0 ? 'icon-private' : event.privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
-
-
-                    <div ng-init="x = event.note">
-                      <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
-                    </div>
-
+                    <div class="dropdown dropdown-event">
+                    <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
+                      <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
+                      <li><a ng-href="#" ng-click="delete(event.id_event)">Supprimer evenement</a></li>
+                    </ul>
                   </div>
-                  <div class="event-edit">
-                      <div class="dropdown dropdown-event">
-                      <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier evenement</a></li>
-                        <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
-                        <li><a ng-href="#" ng-click="delete(event.id_event)">Supprimer evenement</a></li>
-                      </ul>
+                    <div class="event-note" ng-init="x = event.note">
+                      <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
                     </div>
                   </div>
                 </div>

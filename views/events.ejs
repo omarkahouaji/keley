@@ -60,21 +60,20 @@
                     <span class="event-date">{{'Le '+dateEvent(event.start_date)}} </span>
                   </div>
                   <div class="event-right">
-                    <a ng-href="/chart/{{event.chart_id}}" class="event-chart"><i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>{{event.chart_name}}</a>
-                    <div ng-init="x = event.note">
+                    <a ng-href="/chart/{{event.chart_id}}" class="event-chart">{{event.chart_name}}</a>
+                    <i ng-class="event.chart_privacy == 0 ? 'icon-private' : event.chart_privacy == 1 ? 'icon-friends' : 'icon-public' "></i>
+                    <div class="dropdown dropdown-event">
+                    <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                      <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier l'évènement</a></li>
+                      <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
+                      <li><a href="javascript:" ng-click="delete(event.id_event)">Supprimer l'évènement</a></li>
+                    </ul>
+                  </div>                   
+                    <div class="event-note" ng-init="x = event.note">
                       <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
-                    </div>
-                  </div>
-                  <div class="event-edit">
-                      <div class="dropdown dropdown-event">
-                      <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                      <span><i class="fa fa-pencil" style="font-size:18px"></i></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a ng-href="/editEvent/{{event.id_event}}" >Modifier l'évènement</a></li>
-                        <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
-                        <li><a href="javascript:" ng-click="delete(event.id_event)">Supprimer l'évènement</a></li>
-                      </ul>
                     </div>
                   </div>
                 </div>
