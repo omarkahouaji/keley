@@ -37,7 +37,11 @@
           a.id=dataset.id[i];
           pro.push(a);
       }
-      $('<div class="chart-spacing '+dataset.id_chart+'" ></div><div class="chart '+dataset.id_chart+'"><span>Courbe : </span><span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span><span>Le '+dataset.creation_date+'</span>'+
+      $('<div class="chart-spacing '+dataset.id_chart+'" ></div>'+
+        '<div class="chart '+dataset.id_chart+'">'+
+        //'<span>Courbe : </span>'+
+        '<span><a class="chart_link" href="/chart/'+dataset.id_chart+'">'+dataset.chartName+'</a></span>'+
+        '<i class="'+dataset.privacy+'"></i>'+
         '</div>')
       .appendTo('#container');
       $('<div class="'+dataset.id_chart+'" width="600px"></div>')

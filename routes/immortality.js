@@ -933,6 +933,14 @@ exports.charts = function (req, res) {
                                 ress.id = id_event;
                             ress.chartName = json.data[i].title,
                                 ress.id_chart = json.data[i].id_chart;
+                                var privacy;
+                                if(json.data[i].chart_privacy_types_id_privacy == "0"){
+                                    ress.privacy = 'icon-private';
+                                }else if(json.data[i].chart_privacy_types_id_privacy == "1"){
+                                    ress.privacy = 'icon-friends';
+                                }else{
+                                    ress.privacy = 'icon-public';
+                                }
                             courbes.data.push(ress);
                             y = [];
                             x = [];
@@ -987,6 +995,14 @@ exports.followedCharts = function (req, res) {
                                 ress.id = id_event;
                             ress.chartName = json.data[i].title,
                                 ress.id_chart = json.data[i].id_chart;
+                                var privacy;
+                                if(json.data[i].chart_privacy_types_id_privacy == "0"){
+                                    ress.privacy = 'icon-private';
+                                }else if(json.data[i].chart_privacy_types_id_privacy == "1"){
+                                    ress.privacy = 'icon-friends';
+                                }else{
+                                    ress.privacy = 'icon-public';
+                                }
                             courbes.data.push(ress);
                             y = [];
                             x = [];
@@ -1070,7 +1086,14 @@ exports.chartsFriend = function (req, res) {
                                     ress.id = id_event;
                                 ress.chartName = json.data[i].title,
                                     ress.id_chart = json.data[i].id_chart;
-                                ress.privacy = json.data[i].chart_privacy_types_id_privacy;
+                                var privacy;
+                                if(json.data[i].chart_privacy_types_id_privacy == "0"){
+                                    ress.privacy = 'icon-private';
+                                }else if(json.data[i].chart_privacy_types_id_privacy == "1"){
+                                    ress.privacy = 'icon-friends';
+                                }else{
+                                    ress.privacy = 'icon-public';
+                                }
                                 courbes.data.push(ress);
                                 y = [];
                                 x = [];
@@ -1130,12 +1153,21 @@ exports.chart = function (req, res) {
                     for (var i = 0; i < tab.length; i++) {
                         xItems.push((moment(tab[i].start_date).format("D MMMM YYYY")));
                     }
+                    var privacy;
+                        if(json.data[0].chart_privacy_types_id_privacy == "0"){
+                            privacy = 'icon-private';
+                        }else if(json.data[0].chart_privacy_types_id_privacy == "1"){
+                            privacy = 'icon-friends';
+                        }else{
+                            privacy = 'icon-public';
+                    }
                     res.render('chart', {
                         informations: retour.data[0],
                         data: json.data[0],
                         json: JSON.stringify(tab),
                         xItems: JSON.stringify(xItems),
-                        pageTitle: 'Courbe'
+                        pageTitle: 'Courbe',
+                        privacy : privacy
                     });
                 }
             });

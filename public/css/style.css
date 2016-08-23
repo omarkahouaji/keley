@@ -758,7 +758,7 @@ li.next div {
     display: block;
     text-align: center;
     vertical-align: middle;
-    text-align: left;
+    text-align: right;
     background-color: #fff;
     border-bottom: solid 1px rgba(20, 103, 113, 0.2);
     border-radius: 5px 5px 0px 0px;
@@ -766,15 +766,31 @@ li.next div {
 }
 .chart span:nth-child(1) {
     color: #3dbfb7;
+    margin-right: 5px;
     /*display: inline-block;*/
 }
-
-
+.dropdown-chart{
+    float: right;
+    margin-top: -8px;
+}
+.dropdown-chart button{
+    background-color: #fff;
+    border-color: #fff;
+}
+.dropdown-chart button span{
+    color: #000 !important;
+}
+.dropdown-chart button:hover,.dropdown-chart button:active,.dropdown-chart button:focus{
+    color: #000 !important;
+    background-color: #fff !important;
+    border-color: #fff !important;
+}
 .chart_link{
     text-decoration: none;
     color: #000;
     font-weight: bolder;
     cursor: pointer;
+
 }
 .chart_link:hover{
     color: #000;
@@ -782,7 +798,12 @@ li.next div {
 .chart span:nth-child(3) {
     display: block;
 }
-
+.chart-header{
+    text-align: right;
+    padding: 20px 20px;
+    border-bottom: solid 1px rgba(20, 103, 113, 0.2);
+    height: 60px;
+}
 .box-title {
     color: #3dbfb7;
     padding: 30px;
@@ -1411,28 +1432,6 @@ legataire_block{
     background-color: #fff;
     border-color: #adadad;
 }
-
-
-
-
-.dropdown-chart{
-    float: right;
-    margin-top: -10px;
-}
-.dropdown-chart button{
-    background-color: #fff;
-    border-color: #fff;
-}
-.dropdown-chart button span{
-    color: #000 !important;
-}
-.dropdown-chart button:hover,.dropdown-chart button:active,.dropdown-chart button:focus{
-    color: #000 !important;
-    background-color: #fff !important;
-    border-color: #fff !important;
-
-}
-
 #add i, #request i{
     margin-left: 10px;
 }

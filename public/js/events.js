@@ -120,8 +120,6 @@
 
 //remove like
 $scope.delete = function(id){
-    console.log(id);
-    //var id = $(this).data('id');
     swal({
       title: 'Supprimer l\'évènement?',
       text: "Cet évènement sera supprimé et vous ne pourrez plus le trouver.",
@@ -143,6 +141,8 @@ $scope.delete = function(id){
       });
     })
 }
+
+
     });
 
 
