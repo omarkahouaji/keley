@@ -31,7 +31,6 @@
                                     $.map(json, function (obj, i) {
                                         processed_json.push({name: obj.title,y: parseFloat(obj.note),x:obj.creation_date,id:parseInt(obj.id_event)});
                                     });
-                                    //console.log(processed_json);
                                     $('.chart').highcharts({
                                         title:{
                                             text:null
@@ -53,7 +52,6 @@
                                         },
                                         yAxis: {
                                             gridLineColor:"#edeaea",
-                                            max:5,
                                             title: {
                                                 text: null
                                             }

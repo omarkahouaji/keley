@@ -898,6 +898,7 @@ exports.charts = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
+                console.log(body);
                 if (!error && response.statusCode == 200) {
                     var courbes = {}, data = [];
                     var y = [], x = [], title = [], id_event = [];
@@ -918,11 +919,13 @@ exports.charts = function (req, res) {
                                 return Date.parse(x.start_date) - Date.parse(y.start_date);
                             })
                             for (var j = 0; j < json.data[i].events.length; j++) {
-                                y.push(parseInt(t[j].note));
+                                y.push(parseFloat(t[j].note));
+
                                 x.push((moment(t[j].start_date).format("D MMMM YYYY")));
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
                             }
+                            
                             var ress = {};
                             ress.yData = y, ress.xData = x,
                                 ress.creation_date = moment(json.data[i].creation_date).format("D MMMM YYYY"),
@@ -972,7 +975,7 @@ exports.followedCharts = function (req, res) {
                                 return Date.parse(x.start_date) - Date.parse(y.start_date);
                             })
                             for (var j = 0; j < json.data[i].events.length; j++) {
-                                y.push(parseInt(t[j].note));
+                                y.push(parseFloat(t[j].note));
                                 x.push((moment(t[j].start_date).format("D MMMM")));
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
@@ -1054,7 +1057,7 @@ exports.chartsFriend = function (req, res) {
                                     return Date.parse(x.start_date) - Date.parse(y.start_date);
                                 })
                                 for (var j = 0; j < json.data[i].events.length; j++) {
-                                    y.push(parseInt(t[j].note));
+                                    y.push(parseFloat(t[j].note));
                                     x.push((moment(t[j].start_date).format("D MMMM YYYY")));
                                     title.push(t[j].title);
                                     id_event.push(t[j].id_event);
