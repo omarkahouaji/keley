@@ -243,9 +243,13 @@ uiload > div {
 
 .uil-ring-css {
   background: none;
-  position: relative;
+  position: absolute;
   top: 0;
-  margin: 180px auto 0 auto;
+  left : 50%;
+  margin-left:-50px;
+  margin-top: 180px;
+  z-index: 11;
+  /*margin: 180px auto 0 auto;*/
   width: 100px;
   height: 100px; 
 }
