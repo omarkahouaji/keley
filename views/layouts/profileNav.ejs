@@ -6,9 +6,17 @@
       <%  }else{%>
       <img src="<%=path_avatar%>/<%=informations.id_user%>/<%=informations.avatar%>" class="profile_image">
       <%  }%>
+      <!-- <span class="edit" data-toggle="modal" data-target="#myModal" data-yourparameter="<%=informations.id_user%>"> -->
+
+<div class="edit btn">
+    <i class="icon-edit"></i>
+    <input type="file" class="edit-upload-btn" />
+</div>
+      <!--
       <span class="edit" data-toggle="modal" data-target="#myModal" data-yourparameter="<%=informations.id_user%>">
         <i class="icon-edit"></i>
       </span>
+      -->
     </div>
     <div>
       <span class="img-title"><%=informations.first_name%> <%=informations.last_name%></span>
@@ -31,6 +39,7 @@
         <span class="progress-bar-profil"><span class="progress-in-profil" style="width: <%=informations.percent%>%"></span></span>
       </div>
     </div>
+
     <div class="items list-group">
       <a href="/informations" class="list-group-item" id="profile_link"><i class=" icon-profil x"></i><span>Mes informations</span></a>
       <a href="/friends" class="list-group-item" id="friends_link"><i class=" icon-friends x "></i><span>Mes amis</span></a>
@@ -38,30 +47,29 @@
       <a href="/events" class="list-group-item" id="events_link"><i class=" icon-event x"></i><span>Mes événements</span></a>
       <a href="/charts" class="list-group-item" id="charts_link"><i class=" icon-chart x "></i><span>Mes courbes</span></a>
     </div>
+
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        </div>
-        
-        <!-- <i class="icon-arrow-right" id="right"></i>-->
-        
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Créer une photo de profil</h4>
+      </div>
         <form action="/uploadAvatar" method="post" enctype="multipart/form-data" id="form">
-          
           <div>
-          <span>Ajouter une photo</span>
-          <input id="upload" class="upload_btn file" name="file" type="file" ></input>
+          <!-- <input id="upload" class="upload_btn file" name="file" type="file" ></input> -->
           </div>
           <div id="crop-box"></div>
-          <a href="#" id="rotate"><img class="rotate_img" src="../images/rotate.svg"></a>
           <input type="hidden" id="imagebase64" name="imagebase64">
-
-          <a href="#" class="submit_upload btn btn-default">Valider</a>
-          <!-- <button type="submit" id="event-form" class="upload-result" name="submit" value="Valider" >Ajouter</button> -->
-        </form>
+          <!-- <button type="submit" id="event-form" class="upload-result" name="submit" value="Valider" >Ajouter</button> --> 
+        <div class="modal-footer">
+          <button type="button" id="rotate" class="btn btn-default"><i class="fa fa-repeat"></i></button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+          <a href="#" class="submit_upload btn btn-default">Enregistrer</a>
+        </div>
+      </form>
       </div>
     </div>
   </div>

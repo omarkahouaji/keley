@@ -15,7 +15,7 @@
 
 /*basics*/
 body{
-    font-family: Tahoma !important;
+    font-family: Comic Sans MS !important;
 }
 #datepicker-container{
   position: fixed;
@@ -1434,18 +1434,6 @@ legataire_block{
 }
 
 
-
-
-.rotate_img{
-    cursor: pointer;
-    width: 40px;
-}
-#rotate{
-    position: relative;
-    top: -152px;
-    left: 145px;
-}
-
 .submit_upload{
     background-color: #3dbfb7;
     color: #fff;
@@ -1684,4 +1672,21 @@ legataire_block{
 }
 .search-right .followed i:before, .search-right .follow i:before{
     font-weight: bold;
+}
+
+
+/*profile navbar*/
+.edit-upload-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.edit i:before{
+    font-weight: bold !important;
 }

@@ -88,6 +88,18 @@ app.all('/charts',function(req, res, next) {
     next(); // make sure we go to the next routes and don't stop here
 });
 
+app.all('/chart/:id',function(req, res, next) {
+    console.log("processing...")
+    request({
+        url: base_url + 'charts/is_it_my_chart/'+ req.session.data.id_user + '/' + req.params.id,
+        method: 'GET'
+    },
+    function (error, response, body) {
+        if(body == 'true') next();
+            else res.send('courbe privée');
+    });
+});
+
 app.get('/landingPage',immortality.landingPage);
 app.get('/', immortality.index);
 app.get('/index', immortality.index);
