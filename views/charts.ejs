@@ -16,8 +16,13 @@
       <link href="/css/sweetalert2.css" rel="stylesheet">
       <script src="/js/jquery.js"></script>
       <script src="/js/jquery.okayNav.js"></script>
-      <script src="/js/highcharts.js"></script>
-      <script src="/js/exporting.js"></script>
+    <!--  <script src="/js/highcharts.js"></script>
+<script src="/js/exporting.js"></script>
+  -->
+      <script src="http://code.highcharts.com/stock/highstock.js"></script>
+      <script src="http://code.highcharts.com/stock/modules/exporting.js"></script>
+
+
       <script src="/js/bootstrap.js"></script>
       <script src="/js/croppie.js"></script>
       <script src="/js/sweetalert2.min.js"></script>
@@ -29,6 +34,7 @@
       $(function () {
       $.each(charts.data, function (i, dataset) {
       var pro = [];
+      var data_scroll = new Array();
       var a={};
       for (var i = 0; i < dataset.name.length; i++) {
       a={};
@@ -37,8 +43,13 @@
       a.name=dataset.name[i];
       a.id=dataset.id[i];
       pro.push(a);
-      }
 
+
+      }
+      for (var i = 0; i < pro.length; i++) {
+        data_scroll.push({name:pro[i].name,y:pro[i].y,id:pro[i].id});
+      }
+      console.log(data_scroll);
 
 
 
@@ -71,8 +82,7 @@
           enabled:false
         },
         chart:{
-          type:'spline',
-          zoomType: 'x'
+          type:'spline'
         },
         exporting:{
           enabled:false,
@@ -125,10 +135,15 @@
           gridLineWidth: 1,
           gridLineColor:"#edeaea",
           categories: dataset.xData,
+          min:0,
+          max:data_scroll.length>15 ? 14 : null,
           plotLines:[{
             color: '#000000',
             //value: dataset.xData
           }]
+        },
+        scrollbar: {
+          enabled : data_scroll.length>15 ? true : false
         },
         yAxis: {
           max:5,
@@ -140,7 +155,7 @@
         },
         series: [{
           showInLegend: false,
-          data: pro
+          data: data_scroll
         }]
       });
     $('</div>').appendTo('#container');

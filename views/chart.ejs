@@ -28,7 +28,7 @@
                                         <span><i class="fa fa-pencil" style="font-size:15px"></i></span>
                                       </button>
                                       <ul class="dropdown-menu-chart dropdown-menu" aria-labelledby="dropdownMenu1">
-                                        <li><a href="editChart/<%=data.id_chart%>" >Modifier courbe</a></li>
+                                        <li><a href="/editChart/<%=data.id_chart%>" >Modifier courbe</a></li>
                                         <li><a href="#" onclick="delete_chart(data.id_chart);return false;">Supprimer courbe</a></li>
                                       </ul>
                                     </div>
@@ -36,6 +36,9 @@
                                 </div>
                                 <div class="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                                 <script type="text/javascript">
+
+
+
 
 
 function delete_chart(id_chart){
@@ -66,90 +69,105 @@ function delete_chart(id_chart){
 
 
 
-                                    var xItems = <%-xItems%>;
-                                    var json = <%-json%>;
-                                    //console.log(json);
-                                    var processed_json = new Array();
-                                    $.map(json, function (obj, i) {
-                                        processed_json.push({name: obj.title,y: parseFloat(obj.note),x:obj.creation_date,id:parseInt(obj.id_event)});
-                                    });
-                                    $('.chart').highcharts({
-                                        title:{
-                                            text:null
-                                        },
-                                        tooltip:{
-                                            enabled:false
-                                        },
-                                        chart: {
-                                            type: 'spline',
-                                        },
-                                        exporting:{
-                                            enabled:false,
-                                        },
-                                        xAxis: {
-                                            gridLineWidth: 1,
-                                            gridLineColor:"#edeaea",
-                                            categories: xItems,
-                                                        plotLines: [{
-                                                    color: '#000000',
-                                                    value: xItems
-                                                }]
-                                        },
-                                        yAxis: {
-                                            gridLineColor:"#edeaea",
-                                            title: {
-                                                text: null
-                                            }
-                                        },
-        plotOptions:{
+var xItems = <%-xItems%>;
+var json = <%-json%>;
+var data_scroll = new Array();
+var processed_json = new Array();
 
-          tooltip:false,
-          allowPointSelect: true,
-          lineWidth:1,
-          series:{
-            color:"#000000",
-            verticalAlign:'bottom',
-            dataLabels:{
-              align : "center",
-              y : -10,
-              useHTML:true,
-              style:{
-                fontSize:"11px",color:"#eb0c4b"
-              },
-              enabled:true,
-              allowOverlap: true,
-              padding:0,
-              formatter : function(){
-                return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
-              }
-            },
-            cursor:'pointer',
-            allowPointSelect: true,
-            point : {
-              events : {
-                click : function(event,i){
-                  location.href = "/event/"+event.point.id;
-                  //alert(event.point.id);
-                }
-              }
-            },
-            marker:{
-              enabled:true,
-              fillColor:'#3dbfb7',
-              width:15,
-              height:15
-            }
+
+
+
+$.map(json, function (obj, i) {
+    processed_json.push({name: obj.title,y: parseFloat(obj.note),x:obj.creation_date,id:parseInt(obj.id_event)});
+});
+for (var i = 0; i < processed_json.length; i++) {
+  data_scroll.push({name:processed_json[i].name,y:processed_json[i].y,id:processed_json[i].id});
+}
+console.log(JSON.stringify(processed_json));
+$('.chart').highcharts({
+	title:{
+     	text:null
+    	},
+    	credits: {
+      enabled: false
+    	},
+    	tooltip:{
+     	enabled:false
+    	},
+    	chart: {
+     	type: 'spline',
+    	},
+    scrollbar:{
+      enabled : data_scroll.length>25 ? true : false
+    },
+    exporting:{
+        enabled:false,
+    },
+    xAxis: {
+      gridLineWidth: 1,
+      gridLineColor:"#edeaea",
+      categories: xItems,
+      min:0,
+      max  :data_scroll.length>25 ? 24 : null
+      //categories: ['Jan', 'Feb','ee', 'eesse', "gggg", 'ffgg']
+      /*plotLines: [{
+        color: '#000000',
+        value: xItems
+      }]*/
+    },
+    yAxis: {
+      gridLineColor:"#edeaea",
+      title: {
+        text: null
+      }
+    },
+    plotOptions:{
+      tooltip:false,
+      allowPointSelect: true,
+      cursor:'pointer',
+      lineWidth:1,
+      series:{
+        color:"#000000",
+        verticalAlign:'bottom',
+        dataLabels:{
+          align : "center",
+          y : -10,
+          useHTML:true,
+          style:{
+            fontSize:"11px",color:"#eb0c4b"
           },
-          enableMouseTracking: false
+          enabled:true,
+          allowOverlap: true,
+          padding:0,
+          formatter : function(){
+
+            return "<a class='events_chart' href='/event/"+this.point.id+"'>" + this.point.name + "</a>";
+          }
         },
-                                        credits: {
-                                          enabled: false
-                                        },
-                                        series: [{
-                                          showInLegend: false,
-                                          data: processed_json
-                                        }]
-                                    });
+        point : {
+          events : {
+            click : function(event,i){
+              location.href = "/event/"+event.point.id;
+            }
+          }
+        },
+        marker:{
+          enabled:true,
+          fillColor:'#3dbfb7',
+          width:15,
+          height:15
+        }
+      },
+      enableMouseTracking: false,
+    },
+    series: [{
+      showInLegend: false,
+      //data: JSON.stringify(processed_json)
+      //data: [29.9, 71.5, 106.4, 129.2, 144.0]
+      data : data_scroll
+
+    }]
+});
                                 </script>
                             </div>
                         </div>
