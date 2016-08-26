@@ -1,7 +1,7 @@
 <!doctype html>
 <html data-ng-app="App">
   <head>
-    <title>Mes événements</title>
+    <title>Mes événements - Immortality</title>
     <%- include layouts/site.ejs %>
     <link rel="stylesheet" href="/css/normalize.css">
     <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -71,7 +71,7 @@
                       <!-- <li><a href="" ng-click="delete($event,event);deleted=true">Supprimer evenement</a></li> -->
                       <li><a href="javascript:" ng-click="delete(event.id_event)">Supprimer l'évènement</a></li>
                     </ul>
-                  </div>                   
+                  </div>
                     <div class="event-note" ng-init="x = event.note">
                       <uib-rating ng-model="x" max="5" read-only="true" state-on="'green icon-star-filled'" state-off="'green icon-star-empty'" aria-labelledby="custom-icons-1"></uib-rating>
                     </div>
