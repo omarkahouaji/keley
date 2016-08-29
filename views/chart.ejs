@@ -107,8 +107,8 @@ $('.chart').highcharts({
       gridLineWidth: 1,
       gridLineColor:"#edeaea",
       categories: xItems,
-      min:0,
-      max  :data_scroll.length>25 ? 24 : null
+      min:data_scroll.length>25 ? (data_scroll.length-25) : null,
+      //max  :data_scroll.length>25 ? 24 : null
       //categories: ['Jan', 'Feb','ee', 'eesse', "gggg", 'ffgg']
       /*plotLines: [{
         color: '#000000',
