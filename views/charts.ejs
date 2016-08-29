@@ -134,8 +134,8 @@
           gridLineWidth: 1,
           gridLineColor:"#edeaea",
           categories: dataset.xData,
-          min:0,
-          max:data_scroll.length>15 ? 14 : null,
+          min:data_scroll.length>15 ? (data_scroll.length-15) : null,
+          //max:data_scroll.length>3 ? 2 : null,
           plotLines:[{
             color: '#000000',
             //value: dataset.xData
