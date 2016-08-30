@@ -325,23 +325,23 @@
         showUpload: true,
         showZoom: true,
         showDrag: true,
-        removeIcon: '<i class="glyphicon glyphicon-trash text-danger"></i>',
+        removeIcon: '<i class="fa fa-trash text-danger"></i>',
         removeClass: 'btn btn-xs btn-default',
         removeTitle: 'Remove file',
-        uploadIcon: '<i class="glyphicon glyphicon-upload text-info"></i>',
+        uploadIcon: '<i class="fa fa-upload text-info"></i>',
         uploadClass: 'btn btn-xs btn-default',
         uploadTitle: 'Upload file',
-        zoomIcon: '<i class="glyphicon glyphicon-zoom-in"></i>',
+        zoomIcon: '<i class="fa fa-search-plus"></i>',
         zoomClass: 'btn btn-xs btn-default',
         zoomTitle: 'View Details',
-        dragIcon: '<i class="glyphicon glyphicon-menu-hamburger"></i>',
+        dragIcon: '<i class="fa fa-bars"></i>',
         dragClass: 'text-info',
         dragTitle: 'Move / Rearrange',
         dragSettings: {},
-        indicatorNew: '<i class="glyphicon glyphicon-hand-down text-warning"></i>',
-        indicatorSuccess: '<i class="glyphicon glyphicon-ok-sign text-success"></i>',
-        indicatorError: '<i class="glyphicon glyphicon-exclamation-sign text-danger"></i>',
-        indicatorLoading: '<i class="glyphicon glyphicon-hand-up text-muted"></i>',
+        indicatorNew: '<i class="fa fa-hand-o-down text-warning"></i>',
+        indicatorSuccess: '<i class="fa fa-check-circle text-success"></i>',
+        indicatorError: '<i class="fa fa-exclamation-circle text-danger"></i>',
+        indicatorLoading: '<i class="fa fa-hand-o-up text-muted"></i>'
         indicatorNewTitle: 'Not uploaded yet',
         indicatorSuccessTitle: 'Uploaded',
         indicatorErrorTitle: 'Upload Error',
@@ -370,7 +370,7 @@
         '    </div>\n' +
         '</div>';
     tClose = '<div class="close fileinput-remove">&times;</div>\n';
-    tFileIcon = '<i class="glyphicon glyphicon-file kv-caption-icon"></i>';
+    fileIcon: '<i class="fa fa-file kv-caption-icon"></i> ';
     tCaption = '<div tabindex="500" class="form-control file-caption {class}">\n' +
         '   <div class="file-caption-name"></div>\n' +
         '</div>\n';
@@ -3173,12 +3173,12 @@
         previewTemplates: defaultPreviewTemplates,
         previewZoomSettings: defaultPreviewZoomSettings,
         previewZoomButtonIcons: {
-            prev: '<i class="glyphicon glyphicon-triangle-left"></i>',
-            next: '<i class="glyphicon glyphicon-triangle-right"></i>',
-            toggleheader: '<i class="glyphicon glyphicon-resize-vertical"></i>',
-            fullscreen: '<i class="glyphicon glyphicon-fullscreen"></i>',
-            borderless: '<i class="glyphicon glyphicon-resize-full"></i>',
-            close: '<i class="glyphicon glyphicon-remove"></i>'
+          prev: '<i class="fa fa-caret-left fa-lg"></i>',
+          next: '<i class="fa fa-caret-right fa-lg"></i>',
+          toggleheader: '<i class="fa fa-arrows-v"></i>',
+          fullscreen: '<i class="fa fa-arrows-alt"></i>',
+          borderless: '<i class="fa fa-external-link"></i>',
+          close: '<i class="fa fa-remove"></i>'
         },
         previewZoomButtonClasses: {
             prev: 'btn btn-navigate',
@@ -3197,18 +3197,18 @@
         customPreviewTags: {},
         previewSettings: defaultPreviewSettings,
         fileTypeSettings: defaultFileTypeSettings,
-        previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
+        previewFileIcon: '<i class="fa fa-file"></i>',
         previewFileIconClass: 'file-other-icon',
         previewFileIconSettings: {},
         previewFileExtSettings: {},
         buttonLabelClass: 'hidden-xs',
-        browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>&nbsp;',
+        browseIcon: '<i class="fa fa-folder-open"></i>',
         browseClass: 'btn btn-primary',
-        removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+        removeIcon: '<i class="fa fa-trash"></i>',
         removeClass: 'btn btn-default',
-        cancelIcon: '<i class="glyphicon glyphicon-ban-circle"></i>',
+        cancelIcon: '<i class="fa fa-ban"></i>',
         cancelClass: 'btn btn-default',
-        uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
+        uploadIcon: '<i class="fa fa-upload"></i>',
         uploadClass: 'btn btn-default',
         uploadUrl: null,
         uploadAsync: true,
@@ -3228,7 +3228,7 @@
         maxFileCount: 0,
         validateInitialCount: false,
         msgValidationErrorClass: 'text-danger',
-        msgValidationErrorIcon: '<i class="glyphicon glyphicon-exclamation-sign"></i> ',
+        msgValidationErrorIcon: '<i class="fa fa-exclamation-circle"></i> ',
         msgErrorClass: 'file-error-message',
         progressThumbClass: "progress-bar progress-bar-success progress-bar-striped active",
         progressClass: "progress-bar progress-bar-success progress-bar-striped active",
