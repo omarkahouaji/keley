@@ -164,7 +164,6 @@ exports.informationsFriend = function (req, res) {
                         var json = JSON.parse(body);
                         if(json.data[0].birthday!=null){
                             var birth = new Date(json.data[0].birthday);
-                            console.log(birth);
                             json.data[0].age = parseInt(moment(birth).fromNow(true));
                         }
                         else{
@@ -234,6 +233,19 @@ exports.addMessage = function(req,res){
     });
 }
 
+exports.upload_image= function(req,res){
+  request({
+      url: base_url + 'uploads/add_tmp',
+      method: 'POST',
+      formData: {
+          file: fs.createReadStream(req.files.file.path)
+      }
+  },
+  function (err, response, body) {
+    res.json(body);
+  });
+}
+
 exports.messages = function(req,res){
        request({
         url: base_url + 'users/messages/' + parseInt(req.params.id)+'/'+parseInt(req.params.id2),
@@ -246,13 +258,11 @@ exports.messages = function(req,res){
 }
 
 exports.deleteLike = function (req, res) {
-    console.log(base_url + 'likes/deleteLike/'+parseInt(req.body.event_id)+'/'+parseInt(req.session.data.id_user));
     request({
         url: base_url + 'likes/deleteLike/'+parseInt(req.body.event_id)+'/'+parseInt(req.session.data.id_user),
         method: 'DELETE'
     },
         function (error, response, body) {
-            console.log(body);
             res.json(body);
         });
 }
@@ -714,17 +724,17 @@ exports.event = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
-                var uploadsFinal = [];
+                /*var uploadsFinal = [];
                 for (var j = 0; j < json.data[0].uploads.length; j++) {
                     var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
-                    if(fileExists(path)){
+                    //if(fileExists(path)){
                     //if (fs.existsSync(path)) {
                         uploadsFinal.push(json.data[0].uploads[j]);
                         json.data[0].uploads = [];
                         json.data[0].uploads = uploadsFinal;
                         uploadsFinal = [];
-                    }
-                }
+                    //}
+                }*/
                 res.render('event.ejs', {event: JSON.stringify(json.data[0]),title:json.data[0].title,informations: retour.data[0]})
             });
     }
@@ -752,48 +762,43 @@ exports.editChart = function (req, res) {
 //function edit event
 exports.editEvent = function (req, res) {
     var stored = function (retour) {
-        request({ url: base_url + 'events/hasEvent/' + parseInt(req.session.data.id_user) + '/' + parseInt(req.params.id), method: 'GET' },
-            function (error, response, hasEvent_body) {
-                var test = JSON.parse(hasEvent_body);
-                var hasEvent = test.hasEvent;
-                if (hasEvent == false) {
-                    res.redirect('/events');
-                }
-                else {
-                    request({ url: base_url + 'events/one/' + parseInt(req.params.id), method: 'GET' },
+
+                    request(
+                      { url: base_url + 'events/one/' + parseInt(req.params.id), method: 'GET' },
                         function (error, response, body) {
                             var json = JSON.parse(body);
                             var uploadsFinal = [];
                             request({ url: base_url + 'charts/all/' + parseInt(req.session.data.id_user), method: 'GET' },
                                 function (error, response, charts_body) {
-                                    var charts_json = JSON.parse(charts_body);
-                                    var tab = [];
-                                    var iconTab = [];
-                                    for (var i = 0; i < charts_json.data.length; i++) {
-                                        if (charts_json.data[i].chart_privacy_types_id_privacy == 0) {
-                                            iconTab.push("icon-private")
-                                        } else if (charts_json.data[i].chart_privacy_types_id_privacy == 1) {
-                                            iconTab.push("icon-friends")
-                                        } else {
-                                            iconTab.push("icon-public")
-                                        }
-                                        tab.push(charts_json.data[i]);
-                                    }
-                                    for (var j = 0; j < json.data[0].uploads.length; j++) {
-                                        var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
-                                        if(fileExists(path)){
-                                        //if (fs.existsSync(path)) {
-                                            uploadsFinal.push(json.data[0].uploads[j]);
-                                            json.data[0].uploads = [];
-                                            json.data[0].uploads = uploadsFinal;
-                                            uploadsFinal = [];
-                                        }
-                                    }
+                                  var charts_json = JSON.parse(charts_body);
+                                  var tab = [];
+                                  var iconTab = [];
+                                  for (var i = 0; i < charts_json.data.length; i++) {
+                                      if (charts_json.data[i].chart_privacy_types_id_privacy == 0) {
+                                          iconTab.push("icon-private")
+                                      } else if (charts_json.data[i].chart_privacy_types_id_privacy == 1) {
+                                          iconTab.push("icon-friends")
+                                      } else {
+                                          iconTab.push("icon-public")
+                                      }
+                                      tab.push(charts_json.data[i]);
+                                  }
+                                  //json.data[0].uploads = [];
+                                  for (var j = 0; j < json.data[0].uploads.length; j++) {
+                                      var path = upload_path + parseInt(json.data[0].uploads[j].event_user_id) + '/' + parseInt(json.data[0].uploads[j].event_id) + '/' + json.data[0].uploads[j].file;
+                                      //if(fileExists(path)){
+                                          uploadsFinal.push(json.data[0].uploads[j]);
+
+
+                                          //uploadsFinal = [];
+                                      //}
+                                  }
+                                    json.data[0].uploads = uploadsFinal;
+                                  console.log(json.data[0].uploads);
                                     res.render('edit-event', { event: json.data[0], informations: retour.data[0], type: "1", charts: tab, iconTab: iconTab })
                                 });
                         });
-                }
-            });
+
     }
     updateUserInfo(req, res, stored);
 }
@@ -898,7 +903,6 @@ exports.charts = function (req, res) {
         },
             function (error, response, body) {
                 var json = JSON.parse(body);
-                console.log(body);
                 if (!error && response.statusCode == 200) {
                     var courbes = {}, data = [];
                     var y = [], x = [], title = [], id_event = [];
@@ -925,7 +929,7 @@ exports.charts = function (req, res) {
                                 title.push(t[j].title);
                                 id_event.push(t[j].id_event);
                             }
-                            
+
                             var ress = {};
                             ress.yData = y, ress.xData = x,
                                 ress.creation_date = moment(json.data[i].creation_date).format("D MMMM YYYY"),
@@ -1312,7 +1316,7 @@ exports.updateLastChart = function(req,res){
         });
 }
 
-exports.updateEvent = function (req, res) {
+/*exports.updateEvent = function (req, res) {
     request({
         url: base_url + 'events/update/' + parseInt(req.body.id_event),
         method: 'POST',
@@ -1407,9 +1411,63 @@ exports.updateEvent = function (req, res) {
 
             res.redirect('events');
         });
+}*/
+exports.updateEvent = function (req, res) {
+    request({
+        url: base_url + 'events/update/' + parseInt(req.body.id_event),
+        method: 'POST',
+        form: {
+            title: req.body.title,
+            user_id: parseInt(req.session.data.id_user),
+            description: req.body.description,
+            chart_id: req.body.courbe,
+            //creation_date: req.body.date,
+            start_date: req.body.date,
+            end_date: req.body.date,
+            note: req.body.note,
+            chart_category_id: 0
+        }
+    },
+        function (error, response, body) {
+            request({
+                url: base_url + 'uploads/move_from_tmp',
+                method: 'POST',
+                form: {
+                    event_id : parseInt(req.body.id_event),
+                    user_id : parseInt(req.session.data.id_user),
+                    images_tmp : req.body.images_tmp
+                }
+            },
+            function(error, response, body){
+              res.redirect('/event/'+req.body.id_event);
+            });
+        });
 }
+
+
+
+
+
+exports.delete_image = function(req,res){
+  console.log(req.body);
+  request({
+    url:base_url+'uploads/delete/'+req.body.id+'/'+req.body.id_user+'/'+req.body.id_event,
+    method:'DELETE'
+},function(error, response, body){
+  console.log(body);
+    res.json(body);
+})
+}
+
+
+
+
+
+
+
+
 //function create event
-exports.save = function (req, res,next) {
+/*exports.save = function (req, res,next) {
     request({
         url: base_url + 'events/create',
         method: 'POST',
@@ -1502,4 +1560,40 @@ exports.save = function (req, res,next) {
             }
             res.redirect('/chart/'+req.body.courbe);
         });
+}*/
+exports.save = function (req, res) {
+    request({
+        url: base_url + 'events/create',
+        method: 'POST',
+        form: {
+            title: capitalizeFirstLetter(req.body.title),
+            user_id: parseInt(req.session.data.id_user),
+            chart_id: req.body.courbe,
+            description: req.body.description,
+            //creation_date: req.body.date,
+            start_date: req.body.date,
+            end_date: req.body.date,
+            note: req.body.note,
+            chart_category_id: 0
+        }
+    },
+        function (error, response, body) {
+            var json = JSON.parse(body);
+            console.log(json.data[0].id_event);
+            console.log(req.body.images_tmp);
+            request({
+                url: base_url + 'uploads/move_from_tmp',
+                method: 'POST',
+                form: {
+                    event_id : parseInt(json.data[0].id_event),
+                    user_id : parseInt(req.session.data.id_user),
+                    images_tmp : req.body.images_tmp
+                }
+            },
+            function(error, response, body){
+              res.redirect('/chart/'+req.body.courbe);
+            });
+
+        }
+      );
 }

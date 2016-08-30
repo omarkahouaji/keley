@@ -6,7 +6,7 @@
     };
     }]);
     iApp.controller('DemoController', function($scope, Reddit) {
-      
+
       $scope.reddit = new Reddit();
       $scope.types = {private: false, public:false,friends:false};
 
@@ -26,7 +26,7 @@
         }
         else{
           event.likes.length +=1;
-          event.isLiked=true;       
+          event.isLiked=true;
         }
       }
 //end increment  likes length
@@ -34,7 +34,7 @@
       //ajouter commentaire
       $scope.addComment = function (event,e,content) {
         event.preventDefault();
-        console.log(e);  
+        console.log(e);
         $.ajax({
           url:'/postComment',
           type: 'POST',
@@ -47,7 +47,7 @@
           success:function(data){
             var json = JSON.parse(data);
             console.log("omar"+json);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
               console.log("tawwa");
               var html = $(
                 '<div class="comments-item"'+
@@ -83,7 +83,7 @@
             success:function(data){
               var json = JSON.parse(data);
               console.log(json);
-              if(json.msg=='success'){   
+              if(json.msg=='success'){
                 console.log('Liked !')
               }else{
                 console.log('Error posting like')
@@ -102,7 +102,7 @@
             console.log(data);
             var json = JSON.parse(data);
             console.log(json);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
               console.log('removed !')
             }else{
               console.log('Error removing like')
@@ -122,7 +122,7 @@
           success:function(data){
             var json = JSON.parse(data);
             console.log(json);
-            if(json.msg=='success'){   
+            if(json.msg=='success'){
                 console.log('deleted yesssss !!!');
 
             }
@@ -135,11 +135,11 @@
 
 
     });
-    
-      
 
-    
-    
+
+
+
+
     iApp.factory('Reddit', function($http) {
     var Reddit = function() {
     this.events = [];
@@ -160,13 +160,13 @@
       //console.log(events[i].type);
       //if(events[i].type =="1"){
           for (var j=0;j<events[i].uploads.length;j++){
-          
+
           ress.thumb='<%-upload_path%>'+events[i].id_user+'/'+events[i].id_event+'/small_'+events[i].uploads[j].file;
           ress.img='<%-upload_path%>'+events[i].id_user+'/'+events[i].id_event+'/'+events[i].uploads[j].file;
           ress.id=events[i].uploads[j].id_upload;
           ress.event_id=events[i].id_event;
           images.push(ress);
-          
+
           ress={};
           thumb='';
           img='';
@@ -174,7 +174,7 @@
           events[i].images =images;
           images=[];
           //console.log(events[i].images);
-          
+
      //}
      this.events.push(events[i]);
     }
@@ -187,6 +187,6 @@
     };
     return Reddit;
     });
-    
-    
+
+
   </script>

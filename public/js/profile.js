@@ -1,20 +1,34 @@
 <script type="text/javascript">
-//fileinput
-$(".file").fileinput({
-  showUpload:false,
-  showRemove:false,
-  showPreview:false,
-  showCaption:false
-});
-//endfileinput
 
-//flagstrap
 $('.flagstrap').flagStrap({
   onSelect: function (value, element) {
     value = $(element).children("option[selected=selected]").val(); //This is the correct value
   }
 });
-//end flagstrap
+
+
+if ( document.location.href.indexOf('informations') > -1 ) {
+  console.log("omar");
+  $('#notaire').click(function(event) {
+    event.preventDefault();
+    $.ajax({
+      url:'/addNotaire',
+      type: 'POST',
+      data:{
+        user_id:<%= typeof informations!='undefined' ? informations.id_user : '' %>,
+        first_name:$('#first_name').val(),
+        last_name:$('#last_name').val(),
+        email:$('#email').val()
+      },
+      dataType: 'json',
+      success:function(data){
+        console.log("added !");
+        window.location.href = "/informations";
+      }
+    })
+  });
+};
+
 
 //start pick a date
 var $input = $('.datepicker').pickadate({
@@ -54,7 +68,7 @@ $('#tag').tagsinput({
 
 for (var i = 0; i < immortals.length; i++) {
   $('#tag').tagsinput('add', immortals[i]);
-}  
+}
 
 $('#tag').on('itemAdded', function(event) {
   $.ajax({
@@ -68,7 +82,7 @@ $('#tag').on('itemAdded', function(event) {
     success:function(data){
       console.log("Added !");
     }
-  }) 
+  })
 });
 
 $('#tag').on('itemRemoved', function(event) {
@@ -83,29 +97,12 @@ $('#tag').on('itemRemoved', function(event) {
     success:function(data){
     console.log("Removed !");
     }
-  })  
+  })
 });
 //end tagsinput
 
 //notaire
-$('#notaire').click(function(event) {
-  event.preventDefault();
-  $.ajax({
-    url:'/addNotaire',
-    type: 'POST',
-    data:{
-      user_id:<%-informations.id_user%>,
-      first_name:$('#first_name').val(),
-      last_name:$('#last_name').val(),
-      email:$('#email').val()
-    },
-    dataType: 'json',
-    success:function(data){
-      console.log("added !");
-      window.location.href = "/informations";
-    }
-  }) 
-});
+
 //end notaire
 
 //gender
@@ -117,6 +114,6 @@ else{
 }
 //end gender
 
-$('#profile_link').addClass('items_active'); 
+$('#profile_link').addClass('items_active');
 
 </script>

@@ -169,7 +169,8 @@ app.post('/addMessage', immortality.addMessage);
 app.get('/messages/:id/:id2', immortality.messages);
 
 
-
+app.post('/upload_image', immortality.upload_image);
+app.post('/delete_image', immortality.delete_image);
 
 
 

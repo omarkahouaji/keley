@@ -12,20 +12,11 @@
     <link rel="stylesheet" href="/css/bootstrap-tagsinput.css" media="screen">
     <link rel="stylesheet" href="/css/croppie.css" />
     <link rel="stylesheet" href="/css/flags.css" />
-    <link rel="stylesheet" href="/css/fileinput.min.css" media="screen">
-    <script src="/js/picker.js"></script>
-    <!--<script src="/js/legacy.js"></script>-->
-    <script src="/js/picker.date.js"></script>
-    <script src="/js/canvas-to-blob.min.js"></script>
-    <script src="/js/bootstrap-tagsinput.js"></script>
-    <script src="/js/bootstrap3-typeahead.js"></script>
-    <script src="/js/croppie.js"></script>
-    <script src="/js/jquery.flagstrap.js"></script>
-    <script src="/js/fileinput.js"></script>
-    
+
+
    <!--  <%- include ../public/js/messages.js %> -->
   </head>
-  <body class="home">
+  <body class="home profile_page">
     <%- include layouts/header.ejs %>
     <main>
     <%- include layouts/messages.ejs %>
@@ -133,7 +124,7 @@
             <% } else { %>
             <div class="form-group">
               <label  class="col-md-offset-1 col-sm-2 control-label">Notaire</label>
-              
+
               <table class="table table-striped">
                 <tr>
                   <td>Nom</td>
@@ -149,7 +140,7 @@
                 </tr>
               </table>
               <% } %>
-           
+
             <div class="informations-line"></div>
             <div class="form-group leg">
               <label  class="col-md-offset-1 col-sm-2 control-label">Légataire</label>
@@ -162,9 +153,19 @@
       </div>
     </div>
     </main>
-    <script src="/js/site.js"></script>
-    <%- include ../public/js/facebook.js %>
-    <%- include ../public/js/crop_avatar.js %>
-    <%- include ../public/js/profile.js %>
   </body>
+  <script src="/js/picker.js"></script>
+  <!--<script src="/js/legacy.js"></script>-->
+  <script src="/js/picker.date.js"></script>
+  <script src="/js/canvas-to-blob.min.js"></script>
+  <script src="/js/bootstrap-tagsinput.js"></script>
+  <script src="/js/bootstrap3-typeahead.js"></script>
+  <script src="/js/croppie.js"></script>
+  <script src="/js/jquery.flagstrap.js"></script>
+  <script src="/js/jquery.validate.js"></script>
+  <script src="/js/site.js"></script>
+    <%- include ../public/js/main.js %>
+  <%- include ../public/js/facebook.js %>
+  <%- include ../public/js/crop_avatar.js %>
+  <%- include ../public/js/profile.js %>
 </html>

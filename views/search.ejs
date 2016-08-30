@@ -75,17 +75,13 @@
 -->
 <div ng-if="chart.user_id != <%-informations.id_user%>">
 	<div ng-init="toggle = (chart.id_subscription==null)">
-        ng-if toggle: {{ toggle }}
-        <p>
 		<div id="suivre-btn" ng-show="toggle" ng-click="toggle=false;followChart($event,chart)" class="search-right pull-right">
 			<span class="follow btn"><i class=" icon-public"></i>Suivre</span>
 		</div>
-
 		<div id="suivre-btn" ng-show="!toggle" ng-click="toggle=true;unfollow_chart(chart)" ng-mouseover="unfollow_effect()" ng-mouseleave="follow_effect()" class="search-right pull-right">
 			<span class="followed btn" ><i class=" icon-public"></i>Abonné</span>
 		</div>
-
-	</div>	
+	</div>
 </div>
                                         </div>
                                         <div ng-show='reddit.busy'><img src="../images/rolling.svg" width="20px"></div>

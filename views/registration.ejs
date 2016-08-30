@@ -17,7 +17,7 @@
       </div>
       <div class="row">
         <div class="col-md-offset-4 col-md-4">
-          <form id="f" action="/register" method="post" class="registration form-horizontal">
+          <form id="registration-form" action="/register" method="post" class="registration form-horizontal">
             <input type="text" class="form-control" id="last_name" placeholder="Nom" minlength="2" name="last_name" required>
             <input type="text" class="form-control" id="first_name" placeholder="Prénom" name="first_name" required>
             <input type="email" id="email" class="form-control" placeholder="Email" value="<%=mail%>" name="email"   required>
@@ -32,6 +32,6 @@
       </a>
       <a class="download btn btn-default disabled" type="button"><span>Télecharger<br>pour iOS</span><i class="ios fa fa-apple fa-2x"></i></a>
     </div>
-    <script src="/js/registration.js"></script>
   </body>
+    <%- include ../public/js/main.js %>
 </html>

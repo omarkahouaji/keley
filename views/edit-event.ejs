@@ -4,9 +4,9 @@
 <title>Modifier événement</title>
 <%- include layouts/head.ejs %>
    <link rel="stylesheet" href="/css/croppie.css" />
-   <link rel="stylesheet" href="/css/dropzone.css" />
-   <script src="/js/dropzone.js"></script>
+   <link href="/css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
    <script src="/js/croppie.js"></script>
+
 </head>
 <body class="home">
 <div class="loading hidden" id="loading">
@@ -22,16 +22,14 @@
         <div class="box">
           <span class="box-title">Modifier un événement</span>
 
-<!--
-          <form action="/file-upload"
-        class="dropzone"
-        id="my-awesome-dropzone"></form>
--->
+
+
            <form class="form-horizontal" action="/updateEvent" method="post" enctype="multipart/form-data" id="form">
             <div class="form-group">
               <label  class="col-sm-2 control-label">Title</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" name="title" id="title" value="<%=event.title%>">
+                <input type="hidden"  name="images_tmp" id="images_tmp">
                 <input type="hidden" class="form-control" name="id_event"  value="<%=event.id_event%>">
               </div>
             </div>
@@ -44,8 +42,9 @@
 
            <div class="form-group">
             <label  class="col-sm-2 control-label">Date</label>
-            <div class="col-sm-10">
+            <div class="input-group col-sm-8" style="padding: 0px 15px">
              <input type="date" id="date" class="form-control datepicker date-style" name="date" data-value="<%=event.start_date%>">
+             <div class="input-group-addon input-group-addon-create-event"><i class="icon-event icon-date-picker"></i></div>
            </div>
          </div>
 
@@ -76,12 +75,9 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <label  class="col-sm-2 control-label">Photos</label>
-          <div class="col-sm-10">
-          <input id="input-id" class="file" name="file" type="file" multiple></input>
-        </div>
-        </div>
+     <input id="input-id" class="file" name="file" type="file" multiple></input>
+
+
 
         <div class="form-group">
               <label  class="col-sm-2 control-label"></label>
@@ -109,38 +105,96 @@
 <%- include ../public/js/crop_avatar.js %>
 <script type="text/javascript">
 
-Dropzone.options.myAwesomeDropzone = {
-  maxFiles: 1,
-  addRemoveLinks:true,
-  accept: function(file, done) {
-    console.log("uploaded");
-    done();
-  },
-  init: function() {
-    this.on("maxfilesexceeded", function(file){
-        alert("No more files please!");
-    });
-  }
-};
+var config =new Array();
+var arr_images = new Array();
+//var arr = '<%- event.uploads %>';
+var uploads = [];
+var size = '<%- event.uploads.length %>';
 
 
-  $("#input-id").fileinput();
 
-    var $input = $('.datepicker').pickadate({
-        monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-        format: 'd mmmm yyyy',
-          formatSubmit:'yyyy/mm/dd',
-        selectMonths: true,
-        hiddenName: true,
-        selectYears: 100,
-        onSet:function(){
-              document.getElementById('date').value=this.get();
-        }
-    });
+<% for(var i=0; i < event.uploads.length; i++) { %>
+  var id = <%- event.uploads[i].id_upload %>
+  var event_id = <%- event.uploads[i].event_id %>
+  var user_id = <%- event.uploads[i].event_user_id %>
+  var file = '<%- event.uploads[i].file %>'
+  var src= '<%-upload_path%>'+user_id+'/'+event_id+'/'+file
+  arr_images.push('<img src="'+src+'" class="file-preview-image" alt="'+file+'" title="'+file+'">');
+  config.push({
+          caption: file,
+          width: '150px',
+          url: '/delete_image', // server delete action
+          key: 100,
+          extra: {id: id, id_user:user_id,id_event:event_id}
+      });
 
-  var navigation = $('#nav-main').okayNav();
+<% } %>
 
-  $(document).ready(function () {
+
+
+
+
+var tmp_ids = new Array();
+//var data_delete;
+$("#input-id").fileinput({
+  ShowDelete:false,
+  showCaption:false,
+    theme:'fa',
+    uploadUrl: "/upload_image", // server upload action
+    uploadAsync: true,
+    browseOnZoneClick: true,
+    maxFileCount: 10,
+    initialPreview: arr_images,
+    initialPreviewConfig: config,
+    fileActionSettings:{
+      showRemove:false
+    }
+}).on("filebatchselected", function(event, files) {
+    // trigger upload method immediately after files are selected
+    $("#input-id").fileinput("upload");
+}).on('fileuploaded', function(event, data, msg) {
+  var d = JSON.parse(data.response);
+  //data_delete = JSON.parse(data.response);
+  tmp_ids.push(d.data.data.id_upload);
+  $('#images_tmp').val(JSON.stringify(tmp_ids));
+});
+
+/*$('#input-id').on('filesuccessremove', function(event) {
+var id_delete=data_delete.data.data.id_upload;
+var a = tmp_ids.indexOf(id_delete);
+delete tmp_ids[a];
+  $('#images_tmp').val(JSON.stringify(tmp_ids));
+});*/
+
+
+
+
+//datepicker config
+var $input = $('.datepicker').pickadate({
+    monthsFull: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+    format: 'd mmmm yyyy',
+      formatSubmit:'yyyy/mm/dd',
+    selectMonths: true,
+    hiddenName: true,
+    selectYears: 100,
+    onSet:function(){
+          document.getElementById('date').value=this.get();
+    }
+});
+
+var picker = $input.pickadate('picker')
+$('.icon-date-picker').click(function(e){
+  // stop the click from bubbling
+  e.stopPropagation();
+  // prevent the default click action
+  e.preventDefault();
+  // open the date picker
+  picker.open();
+})
+
+
+//slider config
+$(document).ready(function () {
     $("#event-slider").ionRangeSlider({
      hide_min_max: true,
      type: "single",
@@ -149,25 +203,24 @@ Dropzone.options.myAwesomeDropzone = {
      from: <%-event.note%>,
      step:0.1,
      onChange : function (data) {
-      console.log(data.from);
       document.getElementById('event-slider').value=data.from;
     },
     onFinish: function (data) {
-      console.log(data.from);
       document.getElementById('event-slider').value=data.from;
     }
-  });
-  });
+    });
+});
 
 
+//show animation after submit form
 $("#form").submit(function(event){
     $('.loading').removeClass('hidden');
-    })
+})
 
 
 
 
-
+  var navigation = $('#nav-main').okayNav();
 
 </script>
 <script src="/js/site.js"></script>
