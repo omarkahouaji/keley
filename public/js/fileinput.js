@@ -29,7 +29,7 @@
 
     $.fn.fileinputLocales = {};
     $.fn.fileinputThemes = {};
-    $.fn.fileinputThemes.fa = {
+    /*$.fn.fileinputThemes.fa = {
       fileActionSettings: {
           removeIcon: '<i class="fa fa-trash text-danger"></i>',
           uploadIcon: '<i class="fa fa-upload text-info"></i>',
@@ -58,7 +58,7 @@
       uploadIcon: '<i class="fa fa-upload"></i>',
       msgValidationErrorIcon: '<i class="fa fa-exclamation-circle"></i> '
 
-    };
+    };*/
 
     var NAMESPACE, MODAL_ID, STYLE_SETTING, OBJECT_PARAMS, DEFAULT_PREVIEW, objUrl, compare, isIE, handler,
         previewCache, getNum, hasFileAPISupport, hasDragDropSupport, hasFileUploadSupport, addCss, tMain1, tMain2,
