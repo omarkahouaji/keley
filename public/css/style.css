@@ -811,6 +811,7 @@ li.next div {
     position: relative;
     max-width: 150px;
     cursor: pointer;
+        margin-left: -10px;
 }
 
 .events_img img{

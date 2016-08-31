@@ -119,7 +119,7 @@ var size = '<%- event.uploads.length %>';
   var src= '<%-upload_path%>'+user_id+'/'+event_id+'/'+file
   arr_images.push('<img src="'+src+'" class="file-preview-image" alt="'+file+'" title="'+file+'">');
   config.push({
-          caption: file,
+          //caption: file,
           width: '150px',
           url: '/delete_image', // server delete action
           key: 100,

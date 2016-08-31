@@ -921,6 +921,7 @@ exports.charts = function (req, res) {
                         data.push = {};
                     }
                     yData = [], xData = [], name = [], id = [];
+                    var empty_charts = [];
                     for (var i = 0; i < json.data.length; i++) {
 
                         if (json.data[i].events != null) {
@@ -960,9 +961,11 @@ exports.charts = function (req, res) {
                             x = [];
                             title = [];
                             id_event = [];
+                        }else{
+                          empty_charts.push(json.data[i]);
                         }
                     }
-                    res.render('charts', { charts: JSON.stringify(courbes), informations: retour.data[0], pageTitle: 'Mes courbes' });
+                    res.render('charts', { charts: JSON.stringify(courbes), informations: retour.data[0],empty_charts:empty_charts, pageTitle: 'Mes courbes' });
                 }
             });
     }

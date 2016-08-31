@@ -162,8 +162,8 @@
     });
 
 
+
     </script>
-    <%- include ../public/js/messages.js %>
     <title>Mes courbes</title>
 
 </head>
@@ -183,6 +183,37 @@
           <div>
 
             <div id="container"></div></div>
+            <div id="empty">
+            <% for(var i=0; i<empty_charts.length; i++) {%>
+              <div class="chart-spacing <%= empty_charts[i].id_chart %>" ></div>
+                <div class="chart <%= empty_charts[i].id_chart %>">
+                <span><a class="chart_link" href="/chart/<%= empty_charts[i].id_chart %>"><%= empty_charts[i].title %></a></span>
+                <i class="'+dataset.privacy+'"></i>
+                <div class="dropdown dropdown-chart">
+                  <button class="dropdown-toggle btn btn-default " type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <span><i class="fa fa-pencil" style="font-size:15px"></i></span>
+                  </button>
+                  <ul class="dropdown-menu-chart dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a href="create-event" id="<%= empty_charts[i].id_chart %>" class="update_last_chart" data-id="<%= empty_charts[i].id_chart %>" >Ajouter evenement</a></li>
+                    <li><a href="editChart/<%= empty_charts[i].id_chart %>" >Modifier courbe</a></li>
+                    <li><a href="#" onclick="delete_chart(<%= empty_charts[i].id_chart %>);return false;">Supprimer courbe</a></li>
+                  </ul>
+                </div>
+                <div><span>aucun événement</span></div>
+                </div>
+
+            <% } %>
+            </div>
+
+
+
+
+
+
+
+
+
+
 
           </div>
         </div>
