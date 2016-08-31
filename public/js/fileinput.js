@@ -341,7 +341,7 @@
         indicatorNew: '<i class="fa fa-hand-o-down text-warning"></i>',
         indicatorSuccess: '<i class="fa fa-check-circle text-success"></i>',
         indicatorError: '<i class="fa fa-exclamation-circle text-danger"></i>',
-        indicatorLoading: '<i class="fa fa-hand-o-up text-muted"></i>'
+        indicatorLoading: '<i class="fa fa-hand-o-up text-muted"></i>',
         indicatorNewTitle: 'Not uploaded yet',
         indicatorSuccessTitle: 'Uploaded',
         indicatorErrorTitle: 'Upload Error',
