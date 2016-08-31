@@ -127,7 +127,8 @@ $("#input-id").fileinput({
     browseOnZoneClick: true,
     maxFileCount: 10,
     fileActionSettings:{
-      showRemove:false
+      showRemove:false,
+      showDrag:true
     }
 }).on("filebatchselected", function(event, files) {
     // trigger upload method immediately after files are selected

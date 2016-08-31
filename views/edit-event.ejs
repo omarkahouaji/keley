@@ -155,6 +155,20 @@ $("#input-id").fileinput({
   //data_delete = JSON.parse(data.response);
   tmp_ids.push(d.data.data.id_upload);
   $('#images_tmp').val(JSON.stringify(tmp_ids));
+}).on('filesorted', function(event, params) {
+    for (var i = 0; i < params.stack.length; i++) {
+      console.log(params.stack[i].extra.id);
+      $.ajax({
+        url:'/change_order_images/'+params.stack[i].extra.id+'/'+i,
+        type: 'GET',
+        dataType: 'json',
+        success:function(data){
+          var json = JSON.parse(data);
+          console.log(json);
+        }
+      });
+
+    }
 });
 
 /*$('#input-id').on('filesuccessremove', function(event) {

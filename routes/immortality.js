@@ -233,6 +233,16 @@ exports.addMessage = function(req,res){
     });
 }
 
+exports.change_order_images = function(req,res){
+    request({
+        url: base_url + 'uploads/change_order_images/'+req.params.id+'/'+req.params.order,
+        method: 'GET'
+    },
+    function (error, response, body) {
+            res.json(body);
+    });
+}
+
 exports.upload_image= function(req,res){
   request({
       url: base_url + 'uploads/add_tmp',
